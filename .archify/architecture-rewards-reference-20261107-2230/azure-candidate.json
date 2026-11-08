@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lealtad — infraestructura Azure propuesta",
+    "locale": "es",
+    "output": "docs/architecture-reference/azure-infrastructure.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "channels",
+      "type": "external",
+      "label": "Canales y POS",
+      "sublabel": "SPA · móvil · compras",
+      "pos": [35, 360],
+      "size": [190, 85]
+    },
+    {
+      "id": "web-hosting",
+      "type": "cloud",
+      "label": "Static Web Apps / Front Door",
+      "sublabel": "O Storage + CDN · elección TBD",
+      "pos": [320, 150],
+      "size": [250, 76]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "Entra External ID",
+      "sublabel": "Google federation opcional",
+      "pos": [320, 330],
+      "size": [220, 76]
+    },
+    {
+      "id": "gateway",
+      "type": "backend",
+      "label": "Azure API Management",
+      "sublabel": "validate-jwt · roles/scopes",
+      "pos": [610, 350],
+      "size": [240, 82]
+    },
+    {
+      "id": "private-link",
+      "type": "cloud",
+      "label": "APIM VNet + internal ingress",
+      "sublabel": "Conectividad privada propuesta",
+      "pos": [920, 350],
+      "size": [240, 76]
+    },
+    {
+      "id": "aks",
+      "type": "backend",
+      "label": "Azure Kubernetes Service",
+      "sublabel": "6 microservicios independientes",
+      "pos": [1210, 350],
+      "size": [240, 82]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL Flexible Server",
+      "sublabel": "6 DBs aisladas · una por servicio",
+      "pos": [1210, 540],
+      "size": [245, 80]
+    },
+    {
+      "id": "redis",
+      "type": "database",
+      "label": "Azure Managed Redis",
+      "sublabel": "Opcional por consumidor · cache only",
+      "pos": [920, 560],
+      "size": [225, 80]
+    },
+    {
+      "id": "bus",
+      "type": "messagebus",
+      "label": "Event Grid",
+      "sublabel": "Enrutamiento de eventos",
+      "pos": [610, 760],
+      "size": [220, 75]
+    },
+    {
+      "id": "queues",
+      "type": "messagebus",
+      "label": "Service Bus queues + DLQ",
+      "sublabel": "Cola aislada por consumidor",
+      "pos": [920, 760],
+      "size": [240, 75]
+    },
+    {
+      "id": "region",
+      "type": "cloud",
+      "label": "Subscription y región TBD",
+      "sublabel": "Azure · PROPOSED · zones/subnets TBD",
+      "pos": [590, 120],
+      "size": [380, 66]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Azure subscription/region TBD — PROPOSED",
+      "wraps": [
+        "web-hosting",
+        "identity",
+        "gateway",
+        "private-link",
+        "aks",
+        "postgres",
+        "redis",
+        "bus",
+        "queues"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "VNet propuesta — placement/subnets TBD",
+      "wraps": ["private-link", "aks", "postgres", "redis"],
+      "pad": 18
+    }
+  ],
+  "connections": [
+    {
+      "id": "web-request",
+      "from": "channels",
+      "to": "web-hosting",
+      "label": "HTTPS SPA"
+    },
+    {
+      "id": "mobile-request",
+      "from": "channels",
+      "to": "gateway",
+      "label": "HTTPS API"
+    },
+    {
+      "id": "oidc",
+      "from": "identity",
+      "to": "channels",
+      "label": "OIDC / JWT",
+      "variant": "security"
+    },
+    {
+      "id": "gateway-auth",
+      "from": "gateway",
+      "to": "identity",
+      "label": "valida issuer/audience",
+      "variant": "security"
+    },
+    { "id": "gateway-link", "from": "gateway", "to": "private-link" },
+    { "id": "link-aks", "from": "private-link", "to": "aks" },
+    { "id": "aks-dbs", "from": "aks", "to": "postgres", "label": "conexión por dueño" },
+    { "id": "aks-cache", "from": "aks", "to": "redis", "label": "opt-in, no saldo" },
+    {
+      "id": "aks-bus",
+      "from": "aks",
+      "to": "bus",
+      "label": "outbox / eventos",
+      "variant": "dashed"
+    },
+    { "id": "bus-queues", "from": "bus", "to": "queues", "label": "reglas → colas" },
+    {
+      "id": "queues-aks",
+      "from": "queues",
+      "to": "aks",
+      "label": "consumo idempotente",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Autenticación Azure",
+      "items": [
+        "Entra External ID/OIDC; APIM valida firma, issuer, audience y scopes.",
+        "Google puede integrarse como proveedor OIDC federado si se configura."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Integridad",
+      "items": [
+        "PostgreSQL Flexible Server con bases aisladas por servicio; Ledger posee el saldo.",
+        "Event Grid y Service Bus por consumidor con DLQ; Redis nunca autoriza saldo."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Despliegue propuesto",
+      "items": [
+        "Bicep es la opción IaC nativa de Azure; Terraform es alternativa multi-cloud.",
+        "Azure Managed Redis es el producto propuesto; Azure Cache for Redis tiene retiro anunciado."
+      ]
+    }
+  ]
+}

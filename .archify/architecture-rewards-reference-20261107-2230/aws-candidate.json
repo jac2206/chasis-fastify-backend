@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lealtad — infraestructura AWS propuesta",
+    "locale": "es",
+    "output": "docs/architecture-reference/aws-infrastructure.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "channels",
+      "type": "external",
+      "label": "Canales y POS",
+      "sublabel": "SPA · móvil · compras",
+      "pos": [35, 360],
+      "size": [190, 85]
+    },
+    {
+      "id": "web-hosting",
+      "type": "cloud",
+      "label": "S3 + CloudFront",
+      "sublabel": "SPA estática · WAF opcional",
+      "pos": [320, 150],
+      "size": [220, 76]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "Cognito User Pool",
+      "sublabel": "Google federation opcional",
+      "pos": [320, 330],
+      "size": [220, 76]
+    },
+    {
+      "id": "gateway",
+      "type": "backend",
+      "label": "API Gateway HTTP API",
+      "sublabel": "JWT authorizer · rate limits",
+      "pos": [610, 350],
+      "size": [240, 82]
+    },
+    {
+      "id": "private-link",
+      "type": "cloud",
+      "label": "VPC Link + ALB",
+      "sublabel": "Integración privada propuesta",
+      "pos": [920, 350],
+      "size": [220, 76]
+    },
+    {
+      "id": "eks",
+      "type": "backend",
+      "label": "Amazon EKS",
+      "sublabel": "6 microservicios independientes",
+      "pos": [1210, 350],
+      "size": [220, 82]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "Amazon RDS PostgreSQL",
+      "sublabel": "6 DBs aisladas · una por servicio",
+      "pos": [1210, 540],
+      "size": [245, 80]
+    },
+    {
+      "id": "redis",
+      "type": "database",
+      "label": "ElastiCache Redis",
+      "sublabel": "Opcional por consumidor · cache only",
+      "pos": [920, 560],
+      "size": [225, 80]
+    },
+    {
+      "id": "bus",
+      "type": "messagebus",
+      "label": "EventBridge",
+      "sublabel": "Bus de eventos de dominio",
+      "pos": [610, 760],
+      "size": [220, 75]
+    },
+    {
+      "id": "queues",
+      "type": "messagebus",
+      "label": "SQS + DLQ",
+      "sublabel": "Cola aislada por consumidor",
+      "pos": [920, 760],
+      "size": [220, 75]
+    },
+    {
+      "id": "region",
+      "type": "cloud",
+      "label": "Cuenta y región TBD",
+      "sublabel": "AWS · PROPOSED · AZ/subnets TBD",
+      "pos": [590, 120],
+      "size": [360, 66]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "AWS account/region TBD — PROPOSED",
+      "wraps": [
+        "web-hosting",
+        "identity",
+        "gateway",
+        "private-link",
+        "eks",
+        "postgres",
+        "redis",
+        "bus",
+        "queues"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "VPC propuesta — placement/subnets TBD",
+      "wraps": ["private-link", "eks", "postgres", "redis"],
+      "pad": 18
+    }
+  ],
+  "connections": [
+    {
+      "id": "web-request",
+      "from": "channels",
+      "to": "web-hosting",
+      "label": "HTTPS SPA"
+    },
+    {
+      "id": "mobile-request",
+      "from": "channels",
+      "to": "gateway",
+      "label": "HTTPS API"
+    },
+    {
+      "id": "oidc",
+      "from": "identity",
+      "to": "channels",
+      "label": "OIDC / JWT",
+      "variant": "security"
+    },
+    {
+      "id": "gateway-auth",
+      "from": "gateway",
+      "to": "identity",
+      "label": "valida JWT issuer/scope",
+      "variant": "security"
+    },
+    { "id": "gateway-link", "from": "gateway", "to": "private-link" },
+    { "id": "link-eks", "from": "private-link", "to": "eks" },
+    { "id": "eks-dbs", "from": "eks", "to": "postgres", "label": "conexión por dueño" },
+    { "id": "eks-cache", "from": "eks", "to": "redis", "label": "opt-in, no saldo" },
+    {
+      "id": "eks-bus",
+      "from": "eks",
+      "to": "bus",
+      "label": "outbox / eventos",
+      "variant": "dashed"
+    },
+    { "id": "bus-sqs", "from": "bus", "to": "queues", "label": "reglas → colas" },
+    {
+      "id": "queues-eks",
+      "from": "queues",
+      "to": "eks",
+      "label": "consumo idempotente",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Autenticación AWS",
+      "items": [
+        "Cognito User Pool con authorizer JWT/Cognito nativo; Google puede federarse en Cognito.",
+        "Lambda authorizer solo si se requieren decisiones custom que el JWT authorizer no cubre."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Integridad",
+      "items": [
+        "RDS PostgreSQL aislado por servicio; Ledger posee el saldo.",
+        "EventBridge enruta a SQS por consumidor con DLQ; Redis no es fuente de verdad."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Despliegue propuesto",
+      "items": [
+        "CloudFormation es IaC para recursos AWS; no es un runtime.",
+        "Todos los límites son propuestos; región, cuenta, AZ y subnets quedan TBD."
+      ]
+    }
+  ]
+}

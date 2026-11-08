@@ -75,6 +75,42 @@ describe("Fastify HTTP server", () => {
     });
   });
 
+  it("returns 401 when a protected route receives an invalid token", async () => {
+    app = createServer();
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/chasis/v1/users/me",
+      headers: { authorization: "Bearer invalid-token" },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.json()).toEqual({
+      code: "INVALID_TOKEN",
+      message: "Token invalid or expired",
+    });
+  });
+
+  it("returns 403 when a valid token has no scopes", async () => {
+    app = createServer();
+    const token = new JwtAuthService().generateToken({
+      sub: "user-id",
+      type: "access",
+    });
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/chasis/v1/users/me",
+      headers: { authorization: `Bearer ${token}` },
+    });
+
+    expect(response.statusCode).toBe(403);
+    expect(response.json()).toEqual({
+      code: "FORBIDDEN",
+      message: "No scopes found",
+    });
+  });
+
   it("returns 403 when the access token has no required scope", async () => {
     app = createServer();
     const token = new JwtAuthService().generateToken({
@@ -106,6 +142,39 @@ describe("Fastify HTTP server", () => {
 
     expect(response.statusCode).toBe(409);
     expect(response.json()).toEqual({ code: "TEST_CODE", message: "Test message" });
+  });
+
+  it("formats malformed JSON as a client error", async () => {
+    app = createServer();
+
+    const response = await app.inject({
+      method: "POST",
+      url: "/chasis/v1/users/register",
+      headers: { "content-type": "application/json" },
+      payload: "{invalid-json",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.json()).toEqual({
+      code: "INVALID_JSON",
+      message: "Invalid JSON body",
+    });
+  });
+
+  it("hides unexpected error details from the HTTP response", async () => {
+    app = createServer();
+    app.get("/test/unexpected-error", async () => {
+      throw new Error("database password leaked");
+    });
+
+    const response = await app.inject({ method: "GET", url: "/test/unexpected-error" });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.json()).toEqual({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Internal Server Error",
+    });
+    expect(response.body).not.toContain("database password leaked");
   });
 
   it("exposes Fastify-generated OpenAPI documentation", async () => {
