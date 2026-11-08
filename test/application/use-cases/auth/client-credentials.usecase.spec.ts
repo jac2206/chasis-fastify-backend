@@ -62,4 +62,42 @@ describe("ClientCredentialsUseCase", () => {
       }),
     ).rejects.toMatchObject({ code: "INVALID_CLIENT_CREDENTIALS", statusCode: 401 });
   });
+
+  it("rejects an inactive client even when its secret matches", async () => {
+    const bcrypt = await import("bcrypt");
+    vi.mocked(bcrypt.default.compare).mockResolvedValue(true);
+    vi.mocked(repository.findByClientId).mockResolvedValue({
+      clientId: "billing-service",
+      clientSecretHash: "hash",
+      scopes: ["transactions:read"],
+      status: false,
+    });
+
+    await expect(
+      new ClientCredentialsUseCase(repository, authService).execute({
+        clientId: "billing-service",
+        clientSecret: "secret",
+      }),
+    ).rejects.toMatchObject({ code: "INVALID_CLIENT_CREDENTIALS", statusCode: 401 });
+    expect(authService.generateToken).not.toHaveBeenCalled();
+  });
+
+  it("rejects a wrong secret and does not issue a token", async () => {
+    const bcrypt = await import("bcrypt");
+    vi.mocked(bcrypt.default.compare).mockResolvedValue(false);
+    vi.mocked(repository.findByClientId).mockResolvedValue({
+      clientId: "billing-service",
+      clientSecretHash: "hash",
+      scopes: ["transactions:read"],
+      status: true,
+    });
+
+    await expect(
+      new ClientCredentialsUseCase(repository, authService).execute({
+        clientId: "billing-service",
+        clientSecret: "wrong-secret",
+      }),
+    ).rejects.toMatchObject({ code: "INVALID_CLIENT_CREDENTIALS", statusCode: 401 });
+    expect(authService.generateToken).not.toHaveBeenCalled();
+  });
 });

@@ -1,0 +1,202 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Lealtad — infraestructura Google Cloud propuesta",
+    "locale": "es",
+    "output": "docs/architecture-reference/google-cloud-infrastructure.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "channels",
+      "type": "external",
+      "label": "Canales y POS",
+      "sublabel": "SPA · móvil · compras",
+      "pos": [35, 360],
+      "size": [190, 85]
+    },
+    {
+      "id": "web-hosting",
+      "type": "cloud",
+      "label": "Cloud Storage + CDN",
+      "sublabel": "SPA estática · opción propuesta",
+      "pos": [320, 150],
+      "size": [220, 76]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "Identity Platform",
+      "sublabel": "Google / OIDC federation",
+      "pos": [320, 330],
+      "size": [220, 76]
+    },
+    {
+      "id": "gateway",
+      "type": "backend",
+      "label": "Google Cloud API Gateway",
+      "sublabel": "JWT issuer · JWKS · audience",
+      "pos": [610, 350],
+      "size": [250, 82]
+    },
+    {
+      "id": "private-link",
+      "type": "cloud",
+      "label": "Private ingress TBD",
+      "sublabel": "Pattern/red privada a definir",
+      "pos": [920, 350],
+      "size": [220, 76]
+    },
+    {
+      "id": "gke",
+      "type": "backend",
+      "label": "Google Kubernetes Engine",
+      "sublabel": "6 microservicios independientes",
+      "pos": [1210, 350],
+      "size": [240, 82]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "Cloud SQL for PostgreSQL",
+      "sublabel": "6 DBs aisladas · una por servicio",
+      "pos": [1210, 540],
+      "size": [245, 80]
+    },
+    {
+      "id": "redis",
+      "type": "database",
+      "label": "Memorystore for Redis",
+      "sublabel": "Opcional por consumidor · cache only",
+      "pos": [920, 560],
+      "size": [230, 80]
+    },
+    {
+      "id": "bus",
+      "type": "messagebus",
+      "label": "Pub/Sub",
+      "sublabel": "Topic(s) de dominio",
+      "pos": [610, 760],
+      "size": [220, 75]
+    },
+    {
+      "id": "queues",
+      "type": "messagebus",
+      "label": "Subscriptions + dead lettering",
+      "sublabel": "Suscripción aislada por consumidor",
+      "pos": [920, 760],
+      "size": [245, 75]
+    },
+    {
+      "id": "region",
+      "type": "cloud",
+      "label": "Project y región TBD",
+      "sublabel": "Google Cloud · PROPOSED · zones/subnets TBD",
+      "pos": [590, 120],
+      "size": [390, 66]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Google Cloud project/region TBD — PROPOSED",
+      "wraps": [
+        "web-hosting",
+        "identity",
+        "gateway",
+        "private-link",
+        "gke",
+        "postgres",
+        "redis",
+        "bus",
+        "queues"
+      ],
+      "pad": 24
+    },
+    {
+      "kind": "region",
+      "label": "VPC network propuesta — placement/subnets TBD",
+      "wraps": ["private-link", "gke", "postgres", "redis"],
+      "pad": 18
+    }
+  ],
+  "connections": [
+    {
+      "id": "web-request",
+      "from": "channels",
+      "to": "web-hosting",
+      "label": "HTTPS SPA"
+    },
+    {
+      "id": "mobile-request",
+      "from": "channels",
+      "to": "gateway",
+      "label": "HTTPS API"
+    },
+    {
+      "id": "oidc",
+      "from": "identity",
+      "to": "channels",
+      "label": "OIDC / JWT",
+      "variant": "security"
+    },
+    {
+      "id": "gateway-auth",
+      "from": "gateway",
+      "to": "identity",
+      "label": "valida issuer/JWKS/audience",
+      "variant": "security"
+    },
+    { "id": "gateway-link", "from": "gateway", "to": "private-link" },
+    { "id": "link-gke", "from": "private-link", "to": "gke" },
+    { "id": "gke-dbs", "from": "gke", "to": "postgres", "label": "conexión por dueño" },
+    { "id": "gke-cache", "from": "gke", "to": "redis", "label": "opt-in, no saldo" },
+    {
+      "id": "gke-bus",
+      "from": "gke",
+      "to": "bus",
+      "label": "outbox / eventos",
+      "variant": "dashed"
+    },
+    {
+      "id": "bus-subs",
+      "from": "bus",
+      "to": "queues",
+      "label": "suscripción por consumidor"
+    },
+    {
+      "id": "subs-gke",
+      "from": "queues",
+      "to": "gke",
+      "label": "consumo idempotente",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Autenticación Google Cloud",
+      "items": [
+        "Identity Platform/OIDC; API Gateway valida firma JWT por issuer/JWKS y audience configurados.",
+        "Definir claims/roles de negocio y service identity aparte de la validación del token."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Integridad",
+      "items": [
+        "Cloud SQL PostgreSQL aislado por servicio; Ledger es dueño del saldo.",
+        "Pub/Sub entrega a suscripciones independientes con dead lettering; Redis solo cache."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Despliegue propuesto",
+      "items": [
+        "Usar Terraform o Infrastructure Manager para nuevos despliegues; no iniciar con Deployment Manager.",
+        "El patrón de ingreso privado API Gateway↔GKE requiere una decisión de red/servicio adicional."
+      ]
+    }
+  ]
+}

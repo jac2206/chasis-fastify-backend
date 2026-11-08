@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const requestMock = vi.fn();
 const requestInterceptorUseMock = vi.fn();
 const responseInterceptorUseMock = vi.fn();
 
 vi.mock("axios", async () => {
-  const actual: any = await vi.importActual("axios");
+  const actual = await vi.importActual<typeof import("axios")>("axios");
 
   return {
     ...actual,
@@ -22,9 +22,10 @@ vi.mock("axios", async () => {
   };
 });
 
+import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
+import type { ILogger } from "../../../src/domain/interfaces/logger.interface";
 import { HttpClient } from "../../../src/infraestructure/http/http-client";
-import { ILogger } from "../../../src/domain/interfaces/logger.interface";
 
 describe("HttpClient", () => {
   let loggerMock: ILogger;
@@ -43,6 +44,58 @@ describe("HttpClient", () => {
 
   it("should initialize axios with timeout", () => {
     expect(axios.create).toHaveBeenCalled();
+  });
+
+  it("logs outgoing requests through the registered request interceptor", () => {
+    const onRequest = requestInterceptorUseMock.mock.calls[0][0] as (
+      config: InternalAxiosRequestConfig,
+    ) => InternalAxiosRequestConfig;
+    const config = {
+      method: "get",
+      url: "/health",
+      headers: {},
+    } as InternalAxiosRequestConfig;
+
+    expect(onRequest(config)).toBe(config);
+    expect(loggerMock.info).toHaveBeenCalledWith("HttpClient", "HTTP_REQUEST", {
+      method: "get",
+      url: "/health",
+      headers: config.headers,
+    });
+  });
+
+  it("logs successful responses through the registered response interceptor", () => {
+    const onResponse = responseInterceptorUseMock.mock.calls[0][0] as (
+      response: AxiosResponse,
+    ) => AxiosResponse;
+    const response = {
+      status: 200,
+      config: { url: "/health" },
+    } as AxiosResponse;
+
+    expect(onResponse(response)).toBe(response);
+    expect(loggerMock.info).toHaveBeenCalledWith("HttpClient", "HTTP_RESPONSE", {
+      status: 200,
+      url: "/health",
+    });
+  });
+
+  it("logs safe response metadata and rejects from the response error interceptor", async () => {
+    const onError = responseInterceptorUseMock.mock.calls[0][1] as (
+      error: AxiosError,
+    ) => Promise<never>;
+    const error = Object.assign(new Error("upstream unavailable"), {
+      config: { url: "/external", method: "get" },
+      response: { status: 503 },
+    }) as AxiosError;
+
+    await expect(onError(error)).rejects.toBe(error);
+    expect(loggerMock.error).toHaveBeenCalledWith("HttpClient", "HTTP_ERROR", {
+      url: "/external",
+      method: "get",
+      status: 503,
+      message: "upstream unavailable",
+    });
   });
 
   it("should call axios request with correct config", async () => {
@@ -124,5 +177,16 @@ describe("HttpClient", () => {
         path: "/test",
       }),
     ).rejects.toThrow("Unexpected HTTP client error");
+  });
+
+  it("rethrows Axios errors without replacing the original error", async () => {
+    const axiosError = Object.assign(new Error("Request timed out"), {
+      isAxiosError: true,
+    });
+    requestMock.mockRejectedValueOnce(axiosError);
+
+    await expect(httpClient.request({ method: "GET", path: "/timeout" })).rejects.toBe(
+      axiosError,
+    );
   });
 });

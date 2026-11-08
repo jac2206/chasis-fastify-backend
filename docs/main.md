@@ -41,6 +41,8 @@ Las etiquetas arquitectónicas de las guías del repositorio describen DDD/arqui
 
 El HTML interactivo `docs/arquitectura.html` y sus recibos son un artefacto arquitectónico previo a esta migración, no la fuente vigente para la estructura HTTP. Para el estado Fastify, usa este documento y el código en `src/`.
 
+Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para recompensas y lealtad](architecture-reference/architecture.md). Es una propuesta separada del backend implementado y contiene vistas de componentes y alternativas de infraestructura AWS, Azure y Google Cloud.
+
 ## Índice de casos de uso de la API
 
 ### Health

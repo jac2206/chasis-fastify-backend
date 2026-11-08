@@ -1,0 +1,33 @@
+flowchart LR
+    Web[SPA web] -->|HTTPS + OIDC token| Gateway[API Gateway]
+    Mobile[App móvil] -->|HTTPS + OIDC token| Gateway
+    POS[POS / canal digital] -->|Compra + idempotency key| Gateway
+    Identity[Proveedor OIDC<br/>Cognito / Entra / Google] -.->|emite JWT| Web
+    Identity -.->|emite JWT| Mobile
+    Gateway --> Customer[Customer Service]
+    Gateway --> Rules[Rules Service]
+    Gateway --> Accrual[Purchase & Accrual Service]
+    Gateway --> Ledger[Loyalty Ledger Service]
+    Gateway --> Redemption[Redemption Service]
+    Gateway --> Reporting[Reporting Service]
+
+    Customer --> CustomerDB[(PostgreSQL<br/>Customer DB)]
+    Rules --> RulesDB[(PostgreSQL<br/>Rules DB)]
+    Accrual --> AccrualDB[(PostgreSQL<br/>Accrual DB)]
+    Ledger --> LedgerDB[(PostgreSQL<br/>Ledger DB<br/>saldo autoritativo)]
+    Redemption --> RedemptionDB[(PostgreSQL<br/>Redemption DB)]
+    Reporting --> ReportingDB[(PostgreSQL<br/>Reporting read model)]
+
+    Accrual -->|consulta reglas| Rules
+    Accrual -->|registra puntos idempotentes| Ledger
+    Redemption -->|reserva / confirma puntos| Ledger
+    Accrual -.->|outbox| Bus{{Event bus}}
+    Ledger -.->|outbox| Bus
+    Redemption -.->|outbox| Bus
+    Bus --> Queue[Cola por consumidor + DLQ]
+    Queue -->|consumo al menos una vez| Reporting
+    Accrual -.-> Cache[(Redis opcional<br/>aislado por servicio)]
+    Rules -.-> Cache
+
+    classDef proposed stroke-dasharray: 5 5;
+    class Gateway,Customer,Rules,Accrual,Ledger,Redemption,Reporting,Bus,Queue proposed;
