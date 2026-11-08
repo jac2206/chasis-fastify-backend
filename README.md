@@ -101,7 +101,10 @@ Configurar las variables de entorno:
 
 ```env
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE"
+JWT_SECRET="<secreto-aleatorio-generado-para-el-entorno>"
 ```
+
+`DATABASE_URL` y `JWT_SECRET` son obligatorios. La aplicación informa los nombres faltantes y no inicia; nunca muestra sus valores.
 
 ---
 
@@ -505,7 +508,7 @@ CMD ["node", "dist/main.js"]
 
 Prisma genera el cliente en `src/generated/prisma/`. TypeScript lo compila junto con la aplicación a `dist/generated/prisma/`, que queda incluido al copiar `dist` a la imagen runtime. La imagen final copia `dist`; no necesita una segunda copia de `src/generated`.
 
-El archivo de build se llama `Dockerfile` y Compose usa `build: .`. El `JWT_SECRET` del Compose actual es un valor de desarrollo; cámbialo antes de exponer el servicio fuera de un entorno local.
+El archivo de build se llama `Dockerfile` y Compose usa `build: .`. `DATABASE_URL` y `JWT_SECRET` son obligatorios; la aplicación falla al iniciar si alguno falta o está vacío. El valor de `JWT_SECRET` definido en el Compose actual es solo para desarrollo; reemplázalo mediante configuración segura antes de exponer el servicio fuera de un entorno local.
 
 Compose inicia PostgreSQL, pero no ejecuta migraciones automáticamente. Aplica las migraciones con `npm run prisma:deploy` o el comando de desarrollo apropiado antes de usar una base vacía.
 
