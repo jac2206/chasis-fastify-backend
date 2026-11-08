@@ -27,6 +27,35 @@ describe("Fastify HTTP server", () => {
     });
   });
 
+  it("allows configured browser origins with credentials", async () => {
+    app = createServer();
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/chasis/health",
+      headers: { origin: "https://loyalty-web-mocha.vercel.app" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["access-control-allow-origin"]).toBe(
+      "https://loyalty-web-mocha.vercel.app",
+    );
+    expect(response.headers["access-control-allow-credentials"]).toBe("true");
+  });
+
+  it("rejects browser origins that are not configured", async () => {
+    app = createServer();
+
+    const response = await app.inject({
+      method: "GET",
+      url: "/chasis/health",
+      headers: { origin: "https://untrusted.example" },
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.headers["access-control-allow-origin"]).toBeUndefined();
+  });
+
   it("returns the shared validation error for invalid request bodies", async () => {
     app = createServer();
 
