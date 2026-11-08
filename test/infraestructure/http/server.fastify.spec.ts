@@ -1,3 +1,11 @@
+import { vi } from "vitest";
+
+vi.hoisted(() => {
+  process.env.JWT_SECRET = "test-only-secret";
+  process.env.JWT_ACCESS_EXPIRES_IN = "15m";
+  process.env.JWT_REFRESH_EXPIRES_IN = "7d";
+});
+
 import type { FastifyInstance } from "fastify";
 import { afterEach, describe, expect, it } from "vitest";
 import { DomainException } from "../../../src/domain/exceptions/domain.exception";
@@ -122,6 +130,7 @@ describe("Fastify HTTP server", () => {
 
   it("returns 403 when a valid token has no scopes", async () => {
     app = createServer();
+
     const token = new JwtAuthService().generateToken({
       sub: "user-id",
       type: "access",
@@ -142,6 +151,7 @@ describe("Fastify HTTP server", () => {
 
   it("returns 403 when the access token has no required scope", async () => {
     app = createServer();
+
     const token = new JwtAuthService().generateToken({
       sub: "user-id",
       type: "access",
@@ -163,14 +173,21 @@ describe("Fastify HTTP server", () => {
 
   it("formats domain exceptions without leaking internals", async () => {
     app = createServer();
+
     app.get("/test/domain-error", async () => {
       throw new DomainException("TEST_CODE", "Test message", 409);
     });
 
-    const response = await app.inject({ method: "GET", url: "/test/domain-error" });
+    const response = await app.inject({
+      method: "GET",
+      url: "/test/domain-error",
+    });
 
     expect(response.statusCode).toBe(409);
-    expect(response.json()).toEqual({ code: "TEST_CODE", message: "Test message" });
+    expect(response.json()).toEqual({
+      code: "TEST_CODE",
+      message: "Test message",
+    });
   });
 
   it("formats malformed JSON as a client error", async () => {
@@ -192,11 +209,15 @@ describe("Fastify HTTP server", () => {
 
   it("hides unexpected error details from the HTTP response", async () => {
     app = createServer();
+
     app.get("/test/unexpected-error", async () => {
       throw new Error("database password leaked");
     });
 
-    const response = await app.inject({ method: "GET", url: "/test/unexpected-error" });
+    const response = await app.inject({
+      method: "GET",
+      url: "/test/unexpected-error",
+    });
 
     expect(response.statusCode).toBe(500);
     expect(response.json()).toEqual({
