@@ -57,5 +57,5 @@ test/               Espejo de pruebas por capa
 
 - Las reglas del producto no forman parte del chasis: cada agregado nuevo debe tener una especificación antes de implementarse.
 - No asumir unidades, fórmulas, vigencias, idempotencia ni políticas de reverso sin especificación aprobada.
-- `JWT_SECRET` tiene fallback para desarrollo actual; en producción debe estar configurado de forma explícita y segura.
+- `JWT_SECRET` y `DATABASE_URL` son obligatorios: la aplicación falla al iniciar si falta alguno o está vacío; no hay fallback para `JWT_SECRET`.
 

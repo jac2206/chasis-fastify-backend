@@ -7,7 +7,7 @@ export class JwtAuthService implements IAuthService {
   constructor() {}
 
   generateToken(payload: JwtPayload): string {
-    const token = jwt.sign(payload, env.jwtSecret, {
+    const token = jwt.sign(payload, this.getJwtSecret(), {
       algorithm: "HS256",
       expiresIn: env.jwtAccessExpiresIn as SignOptions["expiresIn"],
     });
@@ -16,14 +16,14 @@ export class JwtAuthService implements IAuthService {
   }
 
   generateRefreshToken(payload: Omit<JwtPayload, "type">): string {
-    return jwt.sign({ ...payload, type: "refresh" }, env.jwtSecret, {
+    return jwt.sign({ ...payload, type: "refresh" }, this.getJwtSecret(), {
       algorithm: "HS256",
       expiresIn: env.jwtRefreshExpiresIn as SignOptions["expiresIn"],
     });
   }
 
   verifyToken(token: string): JwtPayload {
-    const decoded = jwt.verify(token, env.jwtSecret, {
+    const decoded = jwt.verify(token, this.getJwtSecret(), {
       algorithms: ["HS256"],
     }) as JwtPayload;
 
@@ -35,7 +35,7 @@ export class JwtAuthService implements IAuthService {
   }
 
   verifyRefreshToken(token: string): JwtPayload {
-    const decoded = jwt.verify(token, env.jwtSecret, {
+    const decoded = jwt.verify(token, this.getJwtSecret(), {
       algorithms: ["HS256"],
     }) as JwtPayload;
 
@@ -44,5 +44,13 @@ export class JwtAuthService implements IAuthService {
     }
 
     return decoded;
+  }
+
+  private getJwtSecret(): string {
+    if (!env.jwtSecret?.trim()) {
+      throw new Error("JWT_SECRET is required");
+    }
+
+    return env.jwtSecret;
   }
 }
