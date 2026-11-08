@@ -1,0 +1,235 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura de Chasis Express TS",
+    "locale": "es",
+    "output": "docs/arquitectura.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/jac2206/chasis-express-ts.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "509dcf27e82d49380231a6f071ea160b291541cb"
+    }
+  },
+  "components": [
+    {
+      "id": "consumers",
+      "type": "external",
+      "label": "Consumidores",
+      "sublabel": "Clientes HTTP / servicios",
+      "pos": [40, 165],
+      "size": [150, 72]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API Express",
+      "sublabel": "/chasis/v1 · /health · /docs",
+      "pos": [270, 165],
+      "size": [190, 78],
+      "sources": [
+        { "path": "src/server.ts", "line": 28, "end_line": 60 },
+        {
+          "path": "src/infraestructure/http/routes/v1/index.ts",
+          "line": 6,
+          "end_line": 10
+        },
+        { "path": "src/main.ts", "line": 7, "end_line": 25 }
+      ]
+    },
+    {
+      "id": "usecases",
+      "type": "backend",
+      "label": "Aplicación",
+      "sublabel": "Casos de uso de usuarios, auth y generic",
+      "pos": [270, 340],
+      "size": [220, 78],
+      "sources": [
+        {
+          "path": "src/application/use-cases/users/login-user.usecase.ts",
+          "line": 10,
+          "end_line": 49
+        },
+        {
+          "path": "src/application/use-cases/generic/get-pokemonxname.usecase.ts",
+          "line": 8,
+          "end_line": 19
+        }
+      ]
+    },
+    {
+      "id": "repositories",
+      "type": "backend",
+      "label": "Repositorios",
+      "sublabel": "Prisma para usuarios/clientes · pg para generic",
+      "pos": [270, 535],
+      "size": [220, 78],
+      "sources": [
+        {
+          "path": "src/infraestructure/database/repositories/user-prisma.repository.ts",
+          "line": 6,
+          "end_line": 37
+        },
+        {
+          "path": "src/infraestructure/database/repositories/service-client-prisma.repository.ts",
+          "line": 7,
+          "end_line": 50
+        },
+        {
+          "path": "src/infraestructure/database/repositories/generic.repository.ts",
+          "line": 5,
+          "end_line": 29
+        }
+      ]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Base de datos · volumen local en Compose",
+      "pos": [565, 535],
+      "size": [160, 78],
+      "sources": [
+        { "path": "docker-compose.yml", "line": 26, "end_line": 38 },
+        { "path": "src/infraestructure/database/prisma.ts", "line": 1, "end_line": 13 }
+      ]
+    },
+    {
+      "id": "jwt",
+      "type": "security",
+      "label": "Servicio JWT",
+      "sublabel": "Firma y verifica access / refresh",
+      "pos": [565, 165],
+      "size": [195, 78],
+      "sources": [
+        {
+          "path": "src/infraestructure/security/jwt-auth.service.ts",
+          "line": 6,
+          "end_line": 47
+        },
+        {
+          "path": "src/infraestructure/http/middlewares/auth.middleware.ts",
+          "line": 5,
+          "end_line": 35
+        }
+      ]
+    },
+    {
+      "id": "poke-adapter",
+      "type": "backend",
+      "label": "Adaptador PokeAPI",
+      "sublabel": "HTTP saliente mediante Axios",
+      "pos": [565, 340],
+      "size": [200, 78],
+      "sources": [
+        {
+          "path": "src/infraestructure/adapters/poke-api.adapter.ts",
+          "line": 10,
+          "end_line": 39
+        },
+        {
+          "path": "src/infraestructure/http/http-client.ts",
+          "line": 10,
+          "end_line": 19
+        }
+      ]
+    },
+    {
+      "id": "pokeapi",
+      "type": "external",
+      "label": "PokeAPI",
+      "sublabel": "pokeapi.co/api/v2",
+      "pos": [890, 340],
+      "size": [200, 78],
+      "sources": [
+        {
+          "path": "src/infraestructure/adapters/poke-api.adapter.ts",
+          "line": 16,
+          "end_line": 29
+        }
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "client-request",
+      "from": "consumers",
+      "to": "api",
+      "label": "HTTP / JSON",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-to-usecases",
+      "from": "api",
+      "to": "usecases",
+      "label": "invoca casos de uso"
+    },
+    {
+      "id": "usecases-to-repositories",
+      "from": "usecases",
+      "to": "repositories",
+      "label": "lectura / escritura"
+    },
+    {
+      "id": "repositories-to-postgres",
+      "from": "repositories",
+      "to": "postgres",
+      "label": "SQL"
+    },
+    {
+      "id": "api-jwt-verify",
+      "from": "api",
+      "to": "jwt",
+      "label": "verifica JWT",
+      "variant": "security"
+    },
+    {
+      "id": "usecase-jwt-sign",
+      "from": "usecases",
+      "to": "jwt",
+      "label": "firma tokens",
+      "variant": "security"
+    },
+    {
+      "id": "usecases-to-poke-adapter",
+      "from": "usecases",
+      "to": "poke-adapter",
+      "label": "Pokémon"
+    },
+    {
+      "id": "poke-outbound",
+      "from": "poke-adapter",
+      "to": "pokeapi",
+      "label": "HTTPS GET",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "violet",
+      "title": "Acceso y autenticación",
+      "items": [
+        "Las rutas protegidas validan JWT y, donde está configurado, también scopes.",
+        "Login de usuario emite access y refresh tokens; client credentials valida el secreto del cliente de servicio."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Datos e integración",
+      "items": [
+        "Usuarios y service clients usan repositorios Prisma; generic usa consultas SQL con pg Pool.",
+        "El caso de uso de Pokémon llama al adaptador, que obtiene nombre, altura y peso de PokeAPI."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Arranque y despliegue local",
+      "items": [
+        "El proceso conecta Prisma a PostgreSQL antes de escuchar en el puerto configurado.",
+        "Docker Compose declara la API y PostgreSQL. Floci y sqs-admin también aparecen en Compose; el código inspeccionado no muestra una integración de la API con SQS."
+      ]
+    }
+  ]
+}

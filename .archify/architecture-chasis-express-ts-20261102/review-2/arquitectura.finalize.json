@@ -1,0 +1,384 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-03T00:47:05.689Z",
+  "specification": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+    "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+    "bytes": 5563
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+    "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+    "bytes": 850063
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "D:\\Codigos\\expressTS\\chasis-express-ts",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+          "bytes": 5563
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 1340,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "D:\\Codigos\\expressTS\\chasis-express-ts",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "579f4f0f-2264-4e6a-bcab-e75218502f8b",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+        "output": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "specification": {
+          "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+          "bytes": 5563
+        },
+        "artifact": {
+          "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+          "bytes": 850063
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "evidence": {
+          "verified": true,
+          "repository": "https://github.com/jac2206/chasis-express-ts",
+          "revision": "509dcf27e82d49380231a6f071ea160b291541cb",
+          "references": 15
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 323,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "check",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "artifact": {
+          "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+          "bytes": 850063
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": ["found 1 <svg> block(s)"]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 0,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 10,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.3,
+            "maxBends": 1,
+            "routesOverSuggestedBends": 0,
+            "maxStretch": 1,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 75,
+            "minInteriorSegmentPx": null,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [],
+            "detours": []
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 165,
+            "emptyTopRatio": 0.242,
+            "occupiedTop": 165,
+            "viewBoxTop": 0,
+            "canvasHeight": 681,
+            "typicalNodeHeight": 78,
+            "reviewSuggested": true
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1130,
+            "actualBudgetPx": 1130,
+            "actualReaderWidth": 1160,
+            "desiredReaderWidth": 1160,
+            "viewportCap": 1376,
+            "limit": "source-size",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "postgres"
+            },
+            "minimumSourceTextPx": 6.3,
+            "minimumProjectedTextPx": 6.3,
+            "semanticTextCount": 24
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "579f4f0f-2264-4e6a-bcab-e75218502f8b"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 2096,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "browser-check",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+        "--json",
+        "--require-provenance",
+        "--out-dir",
+        "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "579f4f0f-2264-4e6a-bcab-e75218502f8b",
+        "artifact": {
+          "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+          "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+          "bytes": 850063
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/browser-check-runtime",
+            "severity": "error",
+            "message": "browser-check could not complete its Chrome inspection.",
+            "subject": {
+              "artifact": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html"
+            },
+            "evidence": {
+              "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome stderr:\n[28304:8644:1102/194708.862:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n[28304:15784:1102/194709.136:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:12296:1102/194709.136:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.201:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.232:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:19692:1102/194709.232:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:24412:1102/194709.265:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:124] Failed to create IAppCapability: Acceso denegado. (0x80070005)\r\n[28304:15784:1102/194709.414:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:8232:1102/194709.414:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.445:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:389] GPU process isn't usable. Goodbye.\nChrome transport: Node v24.20.0, libuv 1.52.1, win32; pid=28304, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=1328, messages=3, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=false, completedWrites=3, writtenBytes=255, bufferedBytes=0."
+            },
+            "supportedFixes": [
+              "resolve the reported Chrome inspection error, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "directory": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2",
+          "receipt": "arquitectura.browser-check.json",
+          "files": []
+        },
+        "error": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome stderr:\n[28304:8644:1102/194708.862:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n[28304:15784:1102/194709.136:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:12296:1102/194709.136:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.201:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.232:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:19692:1102/194709.232:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:24412:1102/194709.265:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:124] Failed to create IAppCapability: Acceso denegado. (0x80070005)\r\n[28304:15784:1102/194709.414:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:8232:1102/194709.414:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.445:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:389] GPU process isn't usable. Goodbye.\nChrome transport: Node v24.20.0, libuv 1.52.1, win32; pid=28304, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=1328, messages=3, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=false, completedWrites=3, writtenBytes=255, bufferedBytes=0."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome stderr:\n[28304:8644:1102/194708.862:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n[28304:15784:1102/194709.136:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:12296:1102/194709.136:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.201:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.232:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:19692:1102/194709.232:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:24412:1102/194709.265:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:124] Failed to create IAppCapability: Acceso denegado. (0x80070005)\r\n[28304:15784:1102/194709.414:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:8232:1102/194709.414:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.445:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:389] GPU process isn't usable. Goodbye.\nChrome transport: Node v24.20.0, libuv 1.52.1, win32; pid=28304, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=1328, messages=3, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=false, completedWrites=3, writtenBytes=255, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-03T00:47:10.018Z",
+  "durationMs": 4329,
+  "update": {
+    "status": "unavailable",
+    "installedVersion": null,
+    "availableVersion": null,
+    "releaseNotes": null,
+    "checkedAt": null,
+    "source": null,
+    "noticeRequired": false,
+    "noticeText": null,
+    "reason": "cache-unavailable"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "579f4f0f-2264-4e6a-bcab-e75218502f8b",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+  "output": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+  "specification": {
+    "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+    "bytes": 5563
+  },
+  "artifact": {
+    "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+    "bytes": 850063
+  }
+}

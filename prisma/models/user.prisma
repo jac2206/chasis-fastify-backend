@@ -1,0 +1,29 @@
+enum document_type {
+  CC
+  CE
+  NIT
+  PT
+
+  @@schema("test")
+}
+
+model users {
+  id              String       @id @default(uuid()) @db.Uuid
+  document_number String       @unique @db.VarChar(50)
+  document_type   document_type
+  full_name       String       @db.VarChar(150)
+  email           String       @unique @db.VarChar(150)
+  phone           String?      @db.VarChar(20)
+  password_hash   String
+  has_pin         Boolean      @default(false)
+  pin_hash        String?
+  status          Boolean      @default(true)
+  created_at      DateTime     @default(now()) @db.Timestamp(6)
+  updated_at      DateTime?
+  created_by      String?
+  updated_by      String?
+  
+  addresses      addresses[]
+
+  @@schema("test")
+}

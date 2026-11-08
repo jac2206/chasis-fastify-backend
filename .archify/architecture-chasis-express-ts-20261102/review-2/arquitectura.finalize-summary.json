@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+    "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+    "bytes": 5563
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+    "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+    "bytes": 850063
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html"
+      },
+      "evidence": {
+        "reason": "Chrome DevTools read pipe failed: stream ended\nChrome process: still running.\nChrome stderr:\n[28304:8644:1102/194708.862:ERROR:chrome\\installer\\util\\google_update_settings_win.cc:270] Failed opening key Software\\Google\\Update\\ClientStateMedium\\{8A69D345-D564-463c-AFF1-A69D9E530F96} to set usagestats; result: 5\r\n[28304:15784:1102/194709.136:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:12296:1102/194709.136:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.201:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.232:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:19692:1102/194709.232:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:24412:1102/194709.265:ERROR:services\\device\\public\\cpp\\geolocation\\system_geolocation_source_win.cc:124] Failed to create IAppCapability: Acceso denegado. (0x80070005)\r\n[28304:15784:1102/194709.414:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:8232:1102/194709.414:ERROR:components\\viz\\host\\persistent_cache_sandboxed_file_factory.cc:153] Failed to open persistent cache files in directory \"D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\tmp\\archify-visual-check-profile-f0AzUo\\GPUPersistentCache\\DawnGraphiteCache\\6ENT453JBM7P4HRBJFQZ6ZSIB2QSEPXH\", error: 0: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso. (0x20)\r\n[28304:15784:1102/194709.445:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:ERROR:content\\browser\\gpu\\gpu_process_host.cc:1044] GPU process exited unexpectedly: exit_code=-1073741790\r\n[28304:15784:1102/194709.465:FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:389] GPU process isn't usable. Goodbye.\nChrome transport: Node v24.20.0, libuv 1.52.1, win32; pid=28304, exitCode=null, signalCode=null.\nChrome read pipe: readable=false, ended=true, destroyed=false, receivedBytes=1328, messages=3, bufferedBytes=0.\nChrome write pipe: writable=false, ended=true, destroyed=false, completedWrites=3, writtenBytes=255, bufferedBytes=0."
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\review-2\\arquitectura.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4329,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

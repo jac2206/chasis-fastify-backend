@@ -1,0 +1,11 @@
+# Normaliza los finales de línea en el repositorio para Windows, macOS y Linux.
+* text=auto eol=lf
+
+# Archivos binarios: nunca convertir sus bytes.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary

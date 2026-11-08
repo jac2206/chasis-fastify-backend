@@ -1,0 +1,73 @@
+services:
+
+  app:
+    build: .
+    container_name: chasis-fastify-app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      JWT_SECRET: 5e7cf29e272449e73322d7f4b2b234d593b1f425f3a12450f3dfe618e90f1960
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/test_db
+      LOG_LEVEL: info
+      HTTP_TIME_OUT: 20000
+      AWS_ENDPOINT_URL: http://floci:4566
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+    depends_on:
+      - db
+    networks:
+      - chasis-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: chasis-fastify-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - chasis-network
+
+  floci:
+    image: floci/floci:latest-compat
+    container_name: chasis-fastify-floci
+    ports:
+      - "4566:4566"
+    environment:
+      FLOCI_HOSTNAME: floci
+      FLOCI_BASE_URL: http://floci:4566
+      FLOCI_DEFAULT_REGION: us-east-1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./scripts:/etc/floci/init/ready.d:ro
+    networks:
+      - chasis-network
+
+  sqs-admin:
+    image: pacovk/sqs-admin:latest
+    depends_on:
+      - floci
+    environment:
+      - SQS_ENDPOINT_URL=http://floci:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1
+      - SQS_AWS_REGION=us-east-1
+    ports:
+      - "3999:3999"
+    networks:
+      - chasis-network
+
+networks:
+  chasis-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

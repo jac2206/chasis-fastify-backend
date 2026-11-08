@@ -1,0 +1,120 @@
+trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  branches:
+    include:
+      - develop
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+
+  - stage: Test
+    displayName: '🧪 Unit Tests'
+    jobs:
+      - job: Test
+        steps:
+
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Setup Node.js'
+            inputs:
+              versionSpec: '24.x'
+
+          - script: npm ci
+            displayName: 'Install dependencies'
+
+          - script: npm run prisma:generate
+            displayName: 'Generate Prisma Client'
+
+          - script: npm run test:coverage
+            displayName: 'Run Unit Tests'
+
+
+  - stage: Build
+    displayName: '🏗 Build'
+    dependsOn: Test
+    condition: succeeded()
+
+    jobs:
+      - job: Build
+        steps:
+
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Setup Node.js'
+            inputs:
+              versionSpec: '24.x'
+
+          - script: npm ci
+            displayName: 'Install dependencies'
+
+          - script: npm run prisma:generate
+            displayName: 'Generate Prisma Client'
+
+          - script: npm run build
+            displayName: 'Build'
+
+
+  - stage: Sonar
+    displayName: '🔎 SonarCloud'
+    dependsOn: Build
+    condition: succeeded()
+
+    jobs:
+      - job: Sonar
+        steps:
+
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Setup Node.js'
+            inputs:
+              versionSpec: '24.x'
+
+          - script: npm ci
+            displayName: 'Install dependencies'
+
+          - script: npm run prisma:generate
+            displayName: 'Generate Prisma Client'
+
+          - script: npm run test:coverage
+            displayName: 'Generate coverage'
+
+          # SonarCloud se configura aquí
+
+
+  - stage: Deploy
+    displayName: '🚀 Deploy Railway'
+    dependsOn: Sonar
+    condition: and(
+      succeeded(),
+      eq(variables['Build.SourceBranch'], 'refs/heads/master'),
+      eq(variables['Build.Reason'], 'IndividualCI')
+    )
+
+    jobs:
+      - job: Deploy
+        steps:
+
+          - checkout: self
+
+          - task: NodeTool@0
+            displayName: 'Setup Node.js'
+            inputs:
+              versionSpec: '24.x'
+
+          - script: npm install -g @railway/cli
+            displayName: 'Install Railway CLI'
+
+          - script: railway up --service chasis-fastify-back --ci
+            displayName: 'Deploy to Railway'
+            env:
+              RAILWAY_TOKEN: $(RAILWAY_TOKEN)

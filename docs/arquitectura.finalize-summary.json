@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\.archify\\architecture-chasis-express-ts-20261102\\candidate.json",
+    "sha256": "cf98bf145717dc2260c7e235a6ca6cf6a557d3ef5284980e4cd085620c79ec39",
+    "bytes": 5563
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html",
+    "sha256": "88d0678b4cdeafa1a6100cd4bc17af1e438a6c5dc69bb09115d4fdf45cc6afa9",
+    "bytes": 850063
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.html"
+      },
+      "evidence": {
+        "reason": "Temporary directory ancestor identity is unavailable: C:\\Users\\arang\\AppData\\Local\\Temp"
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\expressTS\\chasis-express-ts\\docs\\arquitectura.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 3719,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}
