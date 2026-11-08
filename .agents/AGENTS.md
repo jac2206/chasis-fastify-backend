@@ -43,16 +43,17 @@ npm run prisma:validate
 npm run prisma:generate
 ```
 
-Para cambios normales ejecuta como mínimo `npm run build` y `npm run test:run`. Si cambia Prisma, ejecuta también `npm run prisma:validate` y `npm run prisma:generate`. Ejecuta cobertura o mutación cuando el cambio toque reglas críticas, seguridad o lógica de cálculo. No ejecutes `prisma:reset` salvo que el usuario lo solicite explícitamente.
+Para cambios normales, los comandos locales mínimos son `npm run build` y `npm run test:run`. Si cambia Prisma, valida y regenera el cliente según corresponda. `npm run test:coverage` es el comando usado por las pipelines. `npm run check` ejecuta Biome, pero no está incluido en las pipelines actuales. Revisa `.agents/ci-cd/pipelines.md` antes de describir los controles automatizados. No ejecutes migraciones, `prisma:reset` ni despliegues sin una solicitud explícita.
 
 ## Lectura dirigida
 
+Además de las skills locales enlazadas abajo, consulta y usa las skills instaladas en la plataforma cuando aporten procedimientos útiles para la tarea.
 - Contexto del repositorio: `.agents/context.md`
 - Diseño de capas: `.agents/architecture/backend.architecture.md`
 - Patrones concretos: `.agents/architecture/backend.patterns.md`
 - Reglas de implementación: `.agents/instructions/backend.instructions.md`
 - Contratos OpenAPI: `.agents/instructions/swagger.instructions.md`
 - Pruebas: `.agents/testing/strategy.md` y `.agents/testing/patterns.md`
-- Habilidades de trabajo: `.agents/skills/`
+- Skills locales: `.agents/skills/fastify-node/SKILL.md`, `.agents/skills/swagger-openapi/SKILL.md` y `.agents/skills/vitest-backend/SKILL.md`. Úsalas para cambios en esas áreas; siguen las instrucciones generales de este archivo.
 - Especificaciones de negocio: `.agents/specs/`
-
+- Integración y despliegue: `.agents/ci-cd/pipelines.md`.
