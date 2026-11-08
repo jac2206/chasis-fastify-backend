@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "running",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-08T03:44:18.099Z",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\component-candidate.json",
+    "sha256": "f5bc74ad1cd2709aa2e5e17f37e878694abb8d9008806d39c0e60bd6b37751d7",
+    "bytes": 5514
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram.html"
+  },
+  "stages": {},
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram.finalize-summary.json"
+  },
+  "visualReview": "not-requested"
+}

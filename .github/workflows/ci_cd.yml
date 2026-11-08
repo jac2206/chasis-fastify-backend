@@ -1,85 +1,85 @@
-# name: CI/CD
+name: CI/CD
 
-# on:
-#   push:
-#     branches:
-#       - master
-#   pull_request:
-#     branches:
-#       - develop
-#       - master
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
 
-# jobs:
-#   test:
-#     name: 🧪 Unit Tests
-#     runs-on: ubuntu-latest
+jobs:
+  test:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: 24
-#           cache: 'npm'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
 
-#       - run: npm ci
-#       - name: Generate Prisma Client
-#         run: npm run prisma:generate
-#       - run: npm run test:coverage
+      - run: npm ci
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+      - run: npm run test:coverage
 
-#   build:
-#     name: 🏗 Build Check
-#     runs-on: ubuntu-latest
-#     needs: test
+  build:
+    name: 🏗 Build Check
+    runs-on: ubuntu-latest
+    needs: test
 
-#     steps:
-#       - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: 24
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
-#       - run: npm ci
-#       - name: Generate Prisma Client
-#         run: npm run prisma:generate
-#       - run: npm run build
+      - run: npm ci
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+      - run: npm run build
 
-#   sonar:
-#     name: 🔎 Sonar Analysis
-#     runs-on: ubuntu-latest
-#     needs: build
+  sonar:
+    name: 🔎 Sonar Analysis
+    runs-on: ubuntu-latest
+    needs: build
 
-#     steps:
-#       - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: 24
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
-#       - run: npm ci
-#       - name: Generate Prisma Client
-#         run: npm run prisma:generate
-#       - run: npm run test:coverage
+      - run: npm ci
+      - name: Generate Prisma Client
+        run: npm run prisma:generate
+      - run: npm run test:coverage
 
-#       - name: SonarCloud Scan
-#         uses: SonarSource/sonarqube-scan-action@v6
-#         env:
-#           SONAR_TOKEN: ${{ secrets.TOKEN_SONAR }}
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.TOKEN_SONAR }}
 
-#   deploy:
-#     name: 🚀 Deploy Railway
-#     runs-on: ubuntu-latest
-#     needs: sonar
+  deploy:
+    name: 🚀 Deploy Railway
+    runs-on: ubuntu-latest
+    needs: sonar
 
-#     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
-#     steps:
-#       - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-#       - name: Install Railway CLI
-#         run: npm install -g @railway/cli
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
 
-#       - name: Deploy to Railway
-#         run: railway up --service chasis-fastify-back --ci
-#         env:
-#           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy to Railway
+        run: railway up --service chasis-fastify-backend --ci
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

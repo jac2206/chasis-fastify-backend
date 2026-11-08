@@ -24,6 +24,7 @@ export default defineConfig({
         "src/main.ts",
         "src/server.ts",
         "src/generate/**",
+        "src/generated/**",
       ],
     },
   },
