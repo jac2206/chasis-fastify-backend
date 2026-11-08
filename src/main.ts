@@ -1,8 +1,8 @@
 import { env } from "./config/env";
-import { logger } from "./infraestructure/logger/logger";
 import { prisma } from "./infraestructure/database/prisma";
-import { printEnvironmentVariables } from "./util/env-printer";
+import { logger } from "./infraestructure/logger/logger";
 import { createServer } from "./server";
+import { printEnvironmentVariables } from "./util/env-printer";
 
 async function bootstrap() {
   const app = createServer();
@@ -33,8 +33,12 @@ async function bootstrap() {
       }
     };
 
-    process.on("SIGINT", shutdown);
-    process.on("SIGTERM", shutdown);
+    const handleShutdown = () => {
+      void shutdown();
+    };
+
+    process.on("SIGINT", handleShutdown);
+    process.on("SIGTERM", handleShutdown);
   } catch (error) {
     logger.error("Application bootstrap failed", error);
     await prisma.$disconnect();
@@ -42,4 +46,7 @@ async function bootstrap() {
   }
 }
 
-bootstrap();
+void bootstrap().catch((error: unknown) => {
+  logger.error("Unhandled bootstrap failure", error);
+  process.exit(1);
+});
