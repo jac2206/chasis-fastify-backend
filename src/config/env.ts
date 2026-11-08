@@ -10,7 +10,7 @@ export const env = {
   port: process.env.PORT ? Number(process.env.PORT) : 3000,
   showEnv: process.env.SHOW_ENV === "true",
   logLevel: process.env.LOG_LEVEL || "info",
-  jwtSecret: process.env.JWT_SECRET || "secret",
+  jwtSecret: process.env.JWT_SECRET,
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m",
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "30d",
   dataBase: {
@@ -19,4 +19,22 @@ export const env = {
   httpConfig: {
     timeOut: process.env.HTTP_TIME_OUT ? Number(process.env.HTTP_TIME_OUT) : 20000,
   },
+};
+
+export const validateEnvironment = (): void => {
+  const missingVariables: string[] = [];
+
+  if (!env.jwtSecret?.trim()) {
+    missingVariables.push("JWT_SECRET");
+  }
+
+  if (!env.dataBase.dataBaseUrl?.trim()) {
+    missingVariables.push("DATABASE_URL");
+  }
+
+  if (missingVariables.length > 0) {
+    throw new Error(
+      `Missing required environment variables: ${missingVariables.join(", ")}`,
+    );
+  }
 };

@@ -62,5 +62,6 @@ public/uploads/
 # stryker temp files
 .stryker-tmp
 reports/
+security/**/
 
 /src/generated/prisma

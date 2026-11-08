@@ -1,10 +1,11 @@
-import { env } from "./config/env";
+import { env, validateEnvironment } from "./config/env";
 import { prisma } from "./infraestructure/database/prisma";
 import { logger } from "./infraestructure/logger/logger";
 import { createServer } from "./server";
 import { printEnvironmentVariables } from "./util/env-printer";
 
 async function bootstrap() {
+  validateEnvironment();
   const app = createServer();
 
   try {
