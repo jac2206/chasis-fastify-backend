@@ -5,7 +5,8 @@ import type { RegisterUserUseCase } from "../../../application/use-cases/users/r
 import { authenticateJWT, authorizeScopes } from "../../hooks/auth.hook";
 import { sharedErrorResponses } from "../../schemas/error.schema";
 import {
-  getUsersResponseSchema,
+  getUsersPageSchema,
+  getUsersQuerySchema,
   meUserResponseSchema,
   registerUserRequestSchema,
   registerUserResponseSchema,
@@ -15,17 +16,18 @@ const usersController: FastifyPluginAsyncZod = async (app) => {
   app.get(
     "/",
     {
-      preHandler: [authenticateJWT, authorizeScopes(["user"])],
+      preHandler: [authenticateJWT, authorizeScopes(["users:read"])],
       schema: {
         tags: ["Users"],
         security: [{ bearerAuth: [] }],
-        response: { ...sharedErrorResponses, 200: getUsersResponseSchema.array() },
+        querystring: getUsersQuerySchema,
+        response: { ...sharedErrorResponses, 200: getUsersPageSchema },
       },
     },
     async (request, reply) => {
       const useCase =
         request.scopedContainer.resolve<GetAllUsersUseCase>("getAllUsersUseCase");
-      const result = await useCase.execute();
+      const result = await useCase.execute(request.query.page, request.query.pageSize);
       return reply.status(200).send(result);
     },
   );

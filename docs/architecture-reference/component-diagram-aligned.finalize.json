@@ -1,0 +1,1347 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-10T20:21:05.096Z",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+    "sha256": "96f1df9296445665263f82c70d9aa5f07e6bb5fc610af9aba82534acc2dd5a20",
+    "bytes": 8586
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+    "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+    "bytes": 877367
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "96f1df9296445665263f82c70d9aa5f07e6bb5fc610af9aba82534acc2dd5a20",
+          "bytes": 8586
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 2519,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "614ddebc-7bdf-4b57-b02d-175080d2ab27",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+        "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "specification": {
+          "sha256": "96f1df9296445665263f82c70d9aa5f07e6bb5fc610af9aba82534acc2dd5a20",
+          "bytes": 8586
+        },
+        "artifact": {
+          "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+          "bytes": 877367
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 473,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "check",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "artifact": {
+          "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+          "bytes": 877367
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 13,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 5,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 6.298589743589743,
+            "maxBends": 6,
+            "routesOverSuggestedBends": 5,
+            "maxStretch": 1.218,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 12,
+            "minInteriorSegmentPx": 23,
+            "shortSegmentCount": 1,
+            "shortEndpointSegmentCount": 1,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [
+              {
+                "left": {
+                  "id": "gateway-rules",
+                  "from": "gateway",
+                  "to": "rules",
+                  "label": "",
+                  "collectionIndex": 3,
+                  "artifactIndex": 4
+                },
+                "right": {
+                  "id": "rules-db",
+                  "from": "rules",
+                  "to": "rulesdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 9,
+                  "artifactIndex": 10
+                },
+                "point": [
+                  582.25,
+                  324
+                ],
+                "sharedNode": "rules"
+              },
+              {
+                "left": {
+                  "id": "gateway-accrual",
+                  "from": "gateway",
+                  "to": "accrual",
+                  "label": "",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "right": {
+                  "id": "rules-db",
+                  "from": "rules",
+                  "to": "rulesdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 9,
+                  "artifactIndex": 10
+                },
+                "point": [
+                  582.25,
+                  338
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-ledger",
+                  "from": "gateway",
+                  "to": "ledger",
+                  "label": "",
+                  "collectionIndex": 5,
+                  "artifactIndex": 6
+                },
+                "right": {
+                  "id": "rules-db",
+                  "from": "rules",
+                  "to": "rulesdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 9,
+                  "artifactIndex": 10
+                },
+                "point": [
+                  582.25,
+                  354.32142857142856
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-ledger",
+                  "from": "gateway",
+                  "to": "ledger",
+                  "label": "",
+                  "collectionIndex": 5,
+                  "artifactIndex": 6
+                },
+                "right": {
+                  "id": "accrual-db",
+                  "from": "accrual",
+                  "to": "accrualdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "point": [
+                  584,
+                  400.64285714285717
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-reporting",
+                  "from": "gateway",
+                  "to": "reporting",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "id": "accrual-db",
+                  "from": "accrual",
+                  "to": "accrualdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "point": [
+                  582.5,
+                  602.0000000000001
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-reporting",
+                  "from": "gateway",
+                  "to": "reporting",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "id": "redemption-db",
+                  "from": "redemption",
+                  "to": "redemptiondb",
+                  "label": "solo su DB",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "point": [
+                  983.75,
+                  607.150000000062
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-reporting",
+                  "from": "gateway",
+                  "to": "reporting",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "id": "redemption-ledger",
+                  "from": "redemption",
+                  "to": "ledger",
+                  "label": "reserva / consume",
+                  "collectionIndex": 16,
+                  "artifactIndex": 17
+                },
+                "point": [
+                  772,
+                  602.0000000000001
+                ]
+              },
+              {
+                "left": {
+                  "id": "gateway-reporting",
+                  "from": "gateway",
+                  "to": "reporting",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "id": "redemption-bus",
+                  "from": "redemption",
+                  "to": "eventbus",
+                  "label": "outbox → eventos",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  955,
+                  602.0000000000002
+                ]
+              },
+              {
+                "left": {
+                  "id": "ledger-db",
+                  "from": "ledger",
+                  "to": "ledgerdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "ledger-bus",
+                  "from": "ledger",
+                  "to": "eventbus",
+                  "label": "outbox → eventos",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "point": [
+                  1006,
+                  452
+                ],
+                "sharedNode": "ledger"
+              },
+              {
+                "left": {
+                  "id": "ledger-db",
+                  "from": "ledger",
+                  "to": "ledgerdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "redemption-bus",
+                  "from": "redemption",
+                  "to": "eventbus",
+                  "label": "outbox → eventos",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  955,
+                  452
+                ]
+              },
+              {
+                "left": {
+                  "id": "ledger-db",
+                  "from": "ledger",
+                  "to": "ledgerdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "right": {
+                  "id": "bus-queue",
+                  "from": "eventbus",
+                  "to": "queues",
+                  "label": "ruta por consumidor",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "point": [
+                  1135,
+                  452
+                ]
+              },
+              {
+                "left": {
+                  "id": "redemption-db",
+                  "from": "redemption",
+                  "to": "redemptiondb",
+                  "label": "solo su DB",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "right": {
+                  "id": "queue-reporting",
+                  "from": "queues",
+                  "to": "reporting",
+                  "label": "entrega al menos una vez",
+                  "collectionIndex": 21,
+                  "artifactIndex": 22
+                },
+                "point": [
+                  1152,
+                  602.0000000000002
+                ]
+              },
+              {
+                "left": {
+                  "id": "ledger-bus",
+                  "from": "ledger",
+                  "to": "eventbus",
+                  "label": "outbox → eventos",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "right": {
+                  "id": "redemption-bus",
+                  "from": "redemption",
+                  "to": "eventbus",
+                  "label": "outbox → eventos",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  955,
+                  548
+                ],
+                "sharedNode": "eventbus"
+              }
+            ],
+            "crowdedSides": [
+              {
+                "node": "gateway",
+                "label": "API Gateway",
+                "side": "right",
+                "relationships": 5,
+                "sidePx": 82,
+                "neededPx": 88
+              }
+            ],
+            "detours": [
+              {
+                "relationship": {
+                  "id": "gateway-redemption",
+                  "from": "gateway",
+                  "to": "redemption",
+                  "label": "",
+                  "collectionIndex": 6,
+                  "artifactIndex": 7
+                },
+                "bends": 3,
+                "stretch": 1.12
+              },
+              {
+                "relationship": {
+                  "id": "gateway-reporting",
+                  "from": "gateway",
+                  "to": "reporting",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "bends": 6,
+                "stretch": 1.218
+              },
+              {
+                "relationship": {
+                  "id": "ledger-db",
+                  "from": "ledger",
+                  "to": "ledgerdb",
+                  "label": "solo su DB",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "bends": 3,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "id": "redemption-db",
+                  "from": "redemption",
+                  "to": "redemptiondb",
+                  "label": "solo su DB",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "bends": 4,
+                "stretch": 1.045
+              },
+              {
+                "relationship": {
+                  "id": "accrual-cache",
+                  "from": "accrual",
+                  "to": "cache",
+                  "label": "opcional",
+                  "collectionIndex": 22,
+                  "artifactIndex": 23
+                },
+                "bends": 4,
+                "stretch": 1
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 80,
+            "emptyTopRatio": 0.097,
+            "occupiedTop": 80,
+            "viewBoxTop": 0,
+            "canvasHeight": 824,
+            "typicalNodeHeight": 78,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1346,
+            "actualBudgetPx": 1346,
+            "actualReaderWidth": 1376,
+            "desiredReaderWidth": 1590,
+            "viewportCap": 1376,
+            "limit": "viewport-cap",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "node",
+              "id": "channels"
+            },
+            "minimumSourceTextPx": 7.3,
+            "minimumProjectedTextPx": 6.298589743589743,
+            "semanticTextCount": 55
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "614ddebc-7bdf-4b57-b02d-175080d2ab27"
+      }
+    },
+    "browser-check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 3140,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "browser-check",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "pass",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "614ddebc-7bdf-4b57-b02d-175080d2ab27",
+        "artifact": {
+          "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+          "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+          "bytes": 877367
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+        },
+        "diagnostics": [],
+        "containment": {
+          "status": "pass",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 900,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1376,
+              "diagramWidth": 1346,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 711,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 6.298589743589743,
+              "minimumProjectedNonEdgeTextPx": 6.298589743589743,
+              "minimumProjectedEdgeTextPx": 6.902564102564103,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1004,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1536,
+              "diagramWidth": 1506,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 795,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.047307692307692,
+              "minimumProjectedNonEdgeTextPx": 7.047307692307692,
+              "minimumProjectedEdgeTextPx": 7.723076923076923,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1658,
+              "diagramWidth": 1628,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1920,
+              "diagramWidth": 1870,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 988,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "themeStates": {
+          "status": "pass",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "requestedTheme": "light",
+              "resolvedTheme": "light",
+              "ok": true
+            },
+            {
+              "width": 1440,
+              "height": 900,
+              "requestedTheme": "dark",
+              "resolvedTheme": "dark",
+              "ok": true
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "requestedTheme": "dark",
+              "resolvedTheme": "dark",
+              "ok": true
+            }
+          ]
+        },
+        "readability": {
+          "status": "pass",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 900,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1376,
+              "diagramWidth": 1346,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 711,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 6.298589743589743,
+              "minimumProjectedNonEdgeTextPx": 6.298589743589743,
+              "minimumProjectedEdgeTextPx": 6.902564102564103,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1004,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1536,
+              "diagramWidth": 1506,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 795,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.047307692307692,
+              "minimumProjectedNonEdgeTextPx": 7.047307692307692,
+              "minimumProjectedEdgeTextPx": 7.723076923076923,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1658,
+              "diagramWidth": 1628,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1920,
+              "diagramWidth": 1870,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 988,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "viewerChrome": {
+          "status": "pass",
+          "viewports": [
+            {
+              "width": 1440,
+              "height": 900,
+              "theme": "light",
+              "innerWidth": 1440,
+              "innerHeight": 900,
+              "scrollWidth": 1440,
+              "scrollHeight": 900,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1376,
+              "diagramWidth": 1346,
+              "pageComposition": {
+                "bodyPaddingPx": 12,
+                "headerPx": 52,
+                "diagramChromePx": 78,
+                "svgPx": 711,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 6.298589743589743,
+              "minimumProjectedNonEdgeTextPx": 6.298589743589743,
+              "minimumProjectedEdgeTextPx": 6.902564102564103,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1600,
+              "height": 1000,
+              "theme": "light",
+              "innerWidth": 1600,
+              "innerHeight": 1000,
+              "scrollWidth": 1600,
+              "scrollHeight": 1004,
+              "overflowX": false,
+              "overflowY": true,
+              "verticalScrollAccepted": true,
+              "overflowDisposition": "readable-vertical-scroll",
+              "readerLayout": "adaptive",
+              "readerOverflow": "authored",
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1536,
+              "diagramWidth": 1506,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 795,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.047307692307692,
+              "minimumProjectedNonEdgeTextPx": 7.047307692307692,
+              "minimumProjectedEdgeTextPx": 7.723076923076923,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 1920,
+              "height": 1080,
+              "theme": "light",
+              "innerWidth": 1920,
+              "innerHeight": 1080,
+              "scrollWidth": 1920,
+              "scrollHeight": 1080,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1658,
+              "diagramWidth": 1628,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 60,
+                "diagramChromePx": 84,
+                "svgPx": 860,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 54,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            },
+            {
+              "width": 2048,
+              "height": 1320,
+              "theme": "light",
+              "innerWidth": 2048,
+              "innerHeight": 1320,
+              "scrollWidth": 2048,
+              "scrollHeight": 1320,
+              "overflowX": false,
+              "overflowY": false,
+              "verticalScrollAccepted": false,
+              "overflowDisposition": "contained",
+              "readerLayout": "adaptive",
+              "readerOverflow": null,
+              "readerFit": "intrinsic-height",
+              "ok": true,
+              "readerWidth": 1920,
+              "diagramWidth": 1870,
+              "pageComposition": {
+                "bodyPaddingPx": 64,
+                "headerPx": 68,
+                "diagramChromePx": 94,
+                "svgPx": 988,
+                "cardsPx": 0,
+                "viewBoxHeight": 824
+              },
+              "viewBoxWidth": 1560,
+              "minimumProjectedNodeTextPx": 7.3,
+              "minimumProjectedNonEdgeTextPx": 7.3,
+              "minimumProjectedEdgeTextPx": 8,
+              "minimumProjectedNodeText": "SPA web · app móvil · POS / canal digital",
+              "minimumProjectedNodeTextDetail": "context",
+              "minimumProjectedNodeTextOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumRequiredNodeTextPx": 6,
+              "readabilityOk": true,
+              "hasLegend": true,
+              "hasNavigationDock": true,
+              "legendDockIntersectionArea": 0,
+              "dockStageIntersectionArea": 0,
+              "dockStageGap": 10,
+              "requiredDockStageGap": 10,
+              "viewerChromeStageOk": true,
+              "viewerChromeReserve": 44,
+              "viewerChromeActive": true,
+              "viewerChromeOk": true,
+              "resolvedTheme": "light"
+            }
+          ]
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "component-diagram-aligned.browser-check.json",
+          "files": []
+        }
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "diagnostics": [],
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "finishedAt": "2026-11-10T20:21:12.093Z",
+  "durationMs": 6997,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

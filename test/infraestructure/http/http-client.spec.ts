@@ -53,14 +53,12 @@ describe("HttpClient", () => {
     const config = {
       method: "get",
       url: "/health",
-      headers: {},
+      headers: { Authorization: "Bearer secret", Cookie: "session=secret" },
     } as InternalAxiosRequestConfig;
 
     expect(onRequest(config)).toBe(config);
     expect(loggerMock.info).toHaveBeenCalledWith("HttpClient", "HTTP_REQUEST", {
       method: "get",
-      url: "/health",
-      headers: config.headers,
     });
   });
 
@@ -76,7 +74,6 @@ describe("HttpClient", () => {
     expect(onResponse(response)).toBe(response);
     expect(loggerMock.info).toHaveBeenCalledWith("HttpClient", "HTTP_RESPONSE", {
       status: 200,
-      url: "/health",
     });
   });
 
@@ -91,10 +88,8 @@ describe("HttpClient", () => {
 
     await expect(onError(error)).rejects.toBe(error);
     expect(loggerMock.error).toHaveBeenCalledWith("HttpClient", "HTTP_ERROR", {
-      url: "/external",
       method: "get",
       status: 503,
-      message: "upstream unavailable",
     });
   });
 

@@ -4,10 +4,13 @@ vi.hoisted(() => {
   process.env.JWT_SECRET = "test-only-secret";
   process.env.JWT_ACCESS_EXPIRES_IN = "15m";
   process.env.JWT_REFRESH_EXPIRES_IN = "7d";
+  process.env.CORS_ORIGINS = "https://frontend.example, http://localhost:3001";
 });
 
+import { asValue } from "awilix";
 import type { FastifyInstance } from "fastify";
 import { afterEach, describe, expect, it } from "vitest";
+import { container } from "../../../src/config/container";
 import { DomainException } from "../../../src/domain/exceptions/domain.exception";
 import { JwtAuthService } from "../../../src/infraestructure/security/jwt-auth.service";
 import { createServer } from "../../../src/server";
@@ -41,12 +44,12 @@ describe("Fastify HTTP server", () => {
     const response = await app.inject({
       method: "GET",
       url: "/chasis/health",
-      headers: { origin: "https://loyalty-web-mocha.vercel.app" },
+      headers: { origin: "https://frontend.example" },
     });
 
     expect(response.statusCode).toBe(200);
     expect(response.headers["access-control-allow-origin"]).toBe(
-      "https://loyalty-web-mocha.vercel.app",
+      "https://frontend.example",
     );
     expect(response.headers["access-control-allow-credentials"]).toBe("true");
   });
@@ -77,23 +80,6 @@ describe("Fastify HTTP server", () => {
     expect(response.json()).toMatchObject({
       code: "VALIDATION_ERROR",
       message: "Invalid request",
-    });
-  });
-
-  it("dispatches a valid generic request from its Fastify controller plugin", async () => {
-    app = createServer();
-
-    const response = await app.inject({
-      method: "POST",
-      url: "/chasis/v1/generic",
-      payload: { name: "Julian", lastName: "Arango", age: 32 },
-    });
-
-    expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual({
-      name: "Julian",
-      lastName: "Arango",
-      age: 32,
     });
   });
 
@@ -171,6 +157,59 @@ describe("Fastify HTTP server", () => {
     });
   });
 
+  it("does not allow an ordinary user to list all users", async () => {
+    app = createServer();
+    const token = new JwtAuthService().generateToken({
+      sub: "user-id",
+      type: "access",
+      scopes: ["user"],
+    });
+    const response = await app.inject({
+      method: "GET",
+      url: "/chasis/v1/users/",
+      headers: { authorization: `Bearer ${token}` },
+    });
+    expect(response.statusCode).toBe(403);
+  });
+
+  it("paginates the user list for an authorized client", async () => {
+    const original = container.registrations.getAllUsersUseCase;
+    const execute = vi
+      .fn()
+      .mockResolvedValue({ items: [], page: 2, pageSize: 5, total: 0 });
+    container.register({ getAllUsersUseCase: asValue({ execute }) });
+    try {
+      app = createServer();
+      const token = new JwtAuthService().generateToken({
+        sub: "client",
+        type: "access",
+        scopes: ["users:read"],
+      });
+      const response = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/users/?page=2&pageSize=5",
+        headers: { authorization: `Bearer ${token}` },
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual({ items: [], page: 2, pageSize: 5, total: 0 });
+      expect(execute).toHaveBeenCalledWith(2, 5);
+      const invalid = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/users/?page=0",
+        headers: { authorization: `Bearer ${token}` },
+      });
+      expect(invalid.statusCode).toBe(422);
+      const tooLarge = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/users/?pageSize=101",
+        headers: { authorization: `Bearer ${token}` },
+      });
+      expect(tooLarge.statusCode).toBe(422);
+    } finally {
+      container.register({ getAllUsersUseCase: original });
+    }
+  });
+
   it("formats domain exceptions without leaking internals", async () => {
     app = createServer();
 
@@ -241,6 +280,7 @@ describe("Fastify HTTP server", () => {
       paths: expect.objectContaining({
         "/chasis/health": expect.any(Object),
         "/chasis/v1/users/register": expect.any(Object),
+        "/chasis/v1/generic/pokemon/{name}": expect.any(Object),
       }),
       components: {
         securitySchemes: {
@@ -248,5 +288,25 @@ describe("Fastify HTTP server", () => {
         },
       },
     });
+  });
+
+  it("serves the Pokemon integration through the original public route", async () => {
+    const original = container.registrations.getPokemonXNameUseCase;
+    const execute = vi
+      .fn()
+      .mockResolvedValue({ name: "pikachu", height: 4, weight: 60 });
+    container.register({ getPokemonXNameUseCase: asValue({ execute }) });
+    try {
+      app = createServer();
+      const response = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/generic/pokemon/pikachu",
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual({ name: "pikachu", height: 4, weight: 60 });
+      expect(execute).toHaveBeenCalledWith("pikachu");
+    } finally {
+      container.register({ getPokemonXNameUseCase: original });
+    }
   });
 });

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\aws-candidate.json",
+    "sha256": "4960f087e67e7ac969021f87929bf62a059ae913863157a502650d50c6bc0d23",
+    "bytes": 4991
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\aws.html",
+    "sha256": "5d31b93d3d13df09c50b0c89d93acb549046f5a3de6a8ce2b47279c2b86d0467",
+    "bytes": 856726
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\aws.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\aws.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\aws.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4324,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 1,
+      "routesOverSuggestedBends": 3
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "eks-bus",
+            "from": "eks",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "right": {
+            "id": "queues-eks",
+            "from": "queues",
+            "to": "eks",
+            "label": "consumo idempotente",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [1186, 643],
+          "sharedNode": "eks"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "gateway-auth",
+            "from": "gateway",
+            "to": "identity",
+            "label": "valida JWT issuer/scope",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 3,
+          "stretch": 1.231
+        },
+        {
+          "relationship": {
+            "id": "eks-bus",
+            "from": "eks",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "bends": 3,
+          "stretch": 1.053
+        },
+        {
+          "relationship": {
+            "id": "queues-eks",
+            "from": "queues",
+            "to": "eks",
+            "label": "consumo idempotente",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "bends": 4,
+          "stretch": 1
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "eks → bus and queues → eks cross next to eks: move node bus or queues so the two reach eks from different sides (for example one level with it, one directly above or below it).",
+      "gateway → identity needs 3 bends: move node gateway or identity so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "eks → bus needs 3 bends: move node eks or bus so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "queues → eks needs 4 bends: move node queues or eks so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

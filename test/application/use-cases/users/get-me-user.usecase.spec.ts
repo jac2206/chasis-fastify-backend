@@ -9,6 +9,7 @@ describe("GetMeUseCase", () => {
     findByEmail: vi.fn(),
     findByDocument: vi.fn(),
     findAll: vi.fn(),
+    findPage: vi.fn(),
   };
 
   it("returns the public profile for the requested document", async () => {

@@ -34,10 +34,10 @@ Para una capacidad de negocio, sustituye los nombres de ejemplo por los del domi
 src/domain/
   entities/<aggregate>.entity.ts
   interfaces/repositories/<aggregate>.repository.interface.ts
-  interfaces/use-cases/<module>/<action>.usecase.interface.ts
   errors/<module>/<module>-errors.ts
 src/application/
   dto/<action>.dto.ts
+  interfaces/<module>/<action>.usecase.interface.ts
   use-cases/<module>/<action>.usecase.ts
 src/infraestructure/
   database/repositories/<aggregate>.repository.ts

@@ -12,7 +12,7 @@ Declara errores estables en `src/domain/errors/<context>/` con `code`, `message`
 
 ## Puertos y adaptadores
 
-El contrato describe la necesidad del dominio, por ejemplo `I<Aggregate>Repository`. La implementación debe vivir en `infraestructure/database/repositories` y mapear explícitamente entre persistencia y dominio. Para modelos Prisma, usa `src/infraestructure/database/prisma.ts` y el cliente generado en `src/generated/prisma/`. El repositorio `generic` legacy usa `pg` y debe emplear placeholders `$1`, `$2`, etc.
+El contrato describe la necesidad del dominio, por ejemplo `I<Aggregate>Repository`. La implementación debe vivir en `infraestructure/database/repositories` y mapear explícitamente entre persistencia y dominio. Para modelos Prisma, usa `src/infraestructure/database/prisma.ts` y el cliente generado en `src/generated/prisma/`. Las consultas SQL directas deben usar parámetros.
 
 ## Plugins y hooks
 

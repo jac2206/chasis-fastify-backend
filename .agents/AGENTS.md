@@ -29,7 +29,7 @@ No inventes reglas de negocio, estados, vigencias, cálculos, límites ni revers
 - Respeta `.gitattributes` y `.editorconfig`: usa UTF-8, finales de línea LF y no conviertas archivos a CRLF manualmente.
 - No uses `any` en código nuevo; tipa entradas, resultados, errores y `FastifyRequest` enriquecidos.
 - Los modelos Prisma viven en `prisma/models/`; `src/generated/prisma/` es generado y no se edita manualmente.
-- Los repositorios Prisma mapean explícitamente entre modelos Prisma y entidades de dominio. El repositorio `generic` legacy que usa `pg` debe parametrizar SQL con `$1`, `$2`, etc.
+- Los repositorios Prisma mapean explícitamente entre modelos Prisma y entidades de dominio. Las consultas SQL directas deben parametrizarse.
 - Nunca registres contraseñas, JWTs, secretos, PII innecesaria ni el contenido completo de errores externos.
 
 ## Comandos de verificación
@@ -43,7 +43,7 @@ npm run prisma:validate
 npm run prisma:generate
 ```
 
-Para cambios normales, los comandos locales mínimos son `npm run build` y `npm run test:run`. Si cambia Prisma, valida y regenera el cliente según corresponda. `npm run test:coverage` es el comando usado por las pipelines. `npm run check` ejecuta Biome, pero no está incluido en las pipelines actuales. Revisa `.agents/ci-cd/pipelines.md` antes de describir los controles automatizados. No ejecutes migraciones, `prisma:reset` ni despliegues sin una solicitud explícita.
+Para cambios normales, los comandos locales mínimos son `npm run build` y `npm run test:run`. Si cambia Prisma, valida y regenera el cliente según corresponda. `npm run test:coverage` es el comando usado por las pipelines. `npm run check` ejecuta Biome y forma parte de las pipelines. Revisa `.agents/ci-cd/pipelines.md` antes de describir los controles automatizados. No ejecutes migraciones, `prisma:reset` ni despliegues sin una solicitud explícita.
 
 ## Lectura dirigida
 

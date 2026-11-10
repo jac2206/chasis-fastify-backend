@@ -2,7 +2,7 @@
 
 ## Propósito
 
-API base reutilizable para distintos dominios de negocio. El código actual contiene módulos de ejemplo `generic`, usuarios/autenticación, health y un adaptador externo; los módulos del producto se agregan siguiendo las convenciones de este chasis.
+API base reutilizable para distintos dominios de negocio. Incluye usuarios, autenticacion y health.
 
 ## Stack real
 
@@ -11,7 +11,7 @@ API base reutilizable para distintos dominios de negocio. El código actual cont
 | Runtime | Node.js + TypeScript 5, modo estricto |
 | HTTP | Fastify 5; prefijo `/chasis`; versión `/v1` |
 | DI | Awilix, `InjectionMode.CLASSIC`, scope por petición |
-| Persistencia | Prisma 7.10.0 con `@prisma/adapter-pg` sobre PostgreSQL; el módulo `generic` conserva un repositorio legacy basado en `pg` |
+| Persistencia | Prisma 7 con PostgreSQL |
 | Validación y docs | Zod + `@fastify/type-provider-zod`; Swagger UI en `/docs` |
 | Seguridad | JWT y scopes mediante hooks Fastify |
 | Observabilidad | Winston |
@@ -45,9 +45,9 @@ test/               Espejo de pruebas por capa
 ## Convenciones vigentes
 
 - Nombres de archivos: `kebab-case`, con sufijos `.entity.ts`, `.usecase.ts`, `.interface.ts`, `.repository.ts`, `.controller.ts`, `.schema.ts` y `.spec.ts`.
-- Los casos de uso exponen `execute(...)` y sus contratos están en `src/domain/interfaces/use-cases/`.
+- Los casos de uso exponen `execute(...)` y sus contratos están en `src/application/interfaces/`.
 - Los repositorios reciben/devuelven entidades de dominio, no DTOs HTTP.
-- `UserPrismaRepository` es la implementación activa de usuarios y usa `src/infraestructure/database/prisma.ts`; `GenericRepository` es un ejemplo legacy basado en `pg`.
+- `UserPrismaRepository` es la implementación activa de usuarios y usa `src/infraestructure/database/prisma.ts`.
 - El esquema Prisma se compone desde `prisma/schema.prisma` y `prisma/models/*.prisma`, con migraciones en `prisma/migrations/` y configuración en `prisma.config.ts`.
 - El error handler global convierte `DomainException` a `{ code, message }`; la validación Zod responde 422 con `VALIDATION_ERROR`.
 - Las rutas Fastify registran schemas Zod para validación, serialización y OpenAPI.

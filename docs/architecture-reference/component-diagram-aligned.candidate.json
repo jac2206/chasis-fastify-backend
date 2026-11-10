@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Sistema de recompensas — componentes propuestos",
+    "locale": "es",
+    "output": "docs/architecture-reference/component-diagram.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "channels",
+      "type": "external",
+      "label": "Canales",
+      "sublabel": "SPA web · app móvil · POS / canal digital",
+      "pos": [
+        40,
+        310
+      ],
+      "size": [
+        190,
+        90
+      ]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "Proveedor OIDC",
+      "sublabel": "Cognito · Entra · Google (alternativas)",
+      "pos": [
+        40,
+        120
+      ],
+      "size": [
+        220,
+        80
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "backend",
+      "label": "API Gateway",
+      "sublabel": "JWT · scopes · rate limit · routing",
+      "pos": [
+        330,
+        290
+      ],
+      "size": [
+        230,
+        82
+      ]
+    },
+    {
+      "id": "customer",
+      "type": "backend",
+      "label": "Customer Service",
+      "sublabel": "Alta · perfil · estado",
+      "pos": [
+        650,
+        100
+      ],
+      "size": [
+        210,
+        75
+      ]
+    },
+    {
+      "id": "rules",
+      "type": "backend",
+      "label": "Rules Service",
+      "sublabel": "Equivalencias · reglas",
+      "pos": [
+        650,
+        220
+      ],
+      "size": [
+        210,
+        75
+      ]
+    },
+    {
+      "id": "accrual",
+      "type": "backend",
+      "label": "Purchase & Accrual",
+      "sublabel": "Compra · origen · idempotencia",
+      "pos": [
+        650,
+        350
+      ],
+      "size": [
+        230,
+        82
+      ]
+    },
+    {
+      "id": "ledger",
+      "type": "backend",
+      "label": "Loyalty Ledger",
+      "sublabel": "Movimientos · saldo autoritativo",
+      "pos": [
+        650,
+        500
+      ],
+      "size": [
+        230,
+        82
+      ]
+    },
+    {
+      "id": "redemption",
+      "type": "backend",
+      "label": "Redemption Service",
+      "sublabel": "Saga · reserva · redención",
+      "pos": [
+        650,
+        650
+      ],
+      "size": [
+        230,
+        82
+      ]
+    },
+    {
+      "id": "reporting",
+      "type": "backend",
+      "label": "Reporting Service",
+      "sublabel": "Historial · agregados · CSV/PDF",
+      "pos": [
+        1030,
+        650
+      ],
+      "size": [
+        230,
+        82
+      ]
+    },
+    {
+      "id": "eventbus",
+      "type": "messagebus",
+      "label": "Event bus",
+      "sublabel": "Outbox · reglas de enrutamiento",
+      "pos": [
+        1030,
+        350
+      ],
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "queues",
+      "type": "messagebus",
+      "label": "Colas por consumidor",
+      "sublabel": "Reintentos · DLQ · deduplicación",
+      "pos": [
+        1030,
+        500
+      ],
+      "size": [
+        230,
+        78
+      ]
+    },
+    {
+      "id": "customerdb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Customer DB",
+      "pos": [
+        350,
+        80
+      ],
+      "size": [
+        165,
+        65
+      ]
+    },
+    {
+      "id": "rulesdb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Rules DB",
+      "pos": [
+        350,
+        500
+      ],
+      "size": [
+        165,
+        65
+      ]
+    },
+    {
+      "id": "accrualdb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Accrual DB",
+      "pos": [
+        350,
+        650
+      ],
+      "size": [
+        165,
+        65
+      ]
+    },
+    {
+      "id": "ledgerdb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Ledger DB",
+      "tag": "saldo fuente de verdad",
+      "pos": [
+        1330,
+        100
+      ],
+      "size": [
+        185,
+        78
+      ]
+    },
+    {
+      "id": "redemptiondb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Redemption DB",
+      "pos": [
+        1330,
+        250
+      ],
+      "size": [
+        185,
+        68
+      ]
+    },
+    {
+      "id": "reportingdb",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Reporting read model",
+      "pos": [
+        1330,
+        650
+      ],
+      "size": [
+        190,
+        68
+      ]
+    },
+    {
+      "id": "cache",
+      "type": "database",
+      "label": "Redis opcional",
+      "sublabel": "Cache no autoritativo; aislado por servicio",
+      "pos": [
+        1030,
+        100
+      ],
+      "size": [
+        230,
+        75
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "channel-identity",
+      "from": "identity",
+      "to": "channels",
+      "label": "OIDC / JWT",
+      "variant": "security"
+    },
+    {
+      "id": "channels-gateway",
+      "from": "channels",
+      "to": "gateway",
+      "label": "HTTPS"
+    },
+    {
+      "id": "gateway-customer",
+      "from": "gateway",
+      "to": "customer"
+    },
+    {
+      "id": "gateway-rules",
+      "from": "gateway",
+      "to": "rules"
+    },
+    {
+      "id": "gateway-accrual",
+      "from": "gateway",
+      "to": "accrual"
+    },
+    {
+      "id": "gateway-ledger",
+      "from": "gateway",
+      "to": "ledger"
+    },
+    {
+      "id": "gateway-redemption",
+      "from": "gateway",
+      "to": "redemption"
+    },
+    {
+      "id": "gateway-reporting",
+      "from": "gateway",
+      "to": "reporting"
+    },
+    {
+      "id": "customer-db",
+      "from": "customer",
+      "to": "customerdb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "rules-db",
+      "from": "rules",
+      "to": "rulesdb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "accrual-db",
+      "from": "accrual",
+      "to": "accrualdb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "ledger-db",
+      "from": "ledger",
+      "to": "ledgerdb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "redemption-db",
+      "from": "redemption",
+      "to": "redemptiondb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "reporting-db",
+      "from": "reporting",
+      "to": "reportingdb",
+      "label": "solo su DB"
+    },
+    {
+      "id": "accrual-rules",
+      "from": "accrual",
+      "to": "rules",
+      "label": "lee reglas"
+    },
+    {
+      "id": "accrual-ledger",
+      "from": "accrual",
+      "to": "ledger",
+      "label": "acumula idempotente"
+    },
+    {
+      "id": "redemption-ledger",
+      "from": "redemption",
+      "to": "ledger",
+      "label": "reserva / consume"
+    },
+    {
+      "id": "producers-bus",
+      "from": "accrual",
+      "to": "eventbus",
+      "label": "outbox → eventos",
+      "variant": "dashed"
+    },
+    {
+      "id": "ledger-bus",
+      "from": "ledger",
+      "to": "eventbus",
+      "label": "outbox → eventos",
+      "variant": "dashed"
+    },
+    {
+      "id": "redemption-bus",
+      "from": "redemption",
+      "to": "eventbus",
+      "label": "outbox → eventos",
+      "variant": "dashed"
+    },
+    {
+      "id": "bus-queue",
+      "from": "eventbus",
+      "to": "queues",
+      "label": "ruta por consumidor"
+    },
+    {
+      "id": "queue-reporting",
+      "from": "queues",
+      "to": "reporting",
+      "label": "entrega al menos una vez",
+      "variant": "dashed"
+    },
+    {
+      "id": "accrual-cache",
+      "from": "accrual",
+      "to": "cache",
+      "label": "opcional",
+      "variant": "dashed"
+    },
+    {
+      "id": "rules-cache",
+      "from": "rules",
+      "to": "cache",
+      "label": "opcional",
+      "variant": "dashed"
+    },
+    {
+      "id": "identity-gateway",
+      "from": "identity",
+      "to": "gateway",
+      "label": "issuer / JWKS",
+      "variant": "security"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "Integridad del saldo",
+      "items": [
+        "Loyalty Ledger es el único dueño del saldo y del historial autoritativo.",
+        "El débito verifica saldo suficiente e idempotencia en una transacción local."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Datos y eventos",
+      "items": [
+        "Cada servicio tiene PostgreSQL propio; no hay lecturas/escrituras directas a DB ajena.",
+        "Outbox y consumidores idempotentes; reportes de consistencia eventual."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Diseño propuesto",
+      "items": [
+        "Redis es opcional y nunca almacena el saldo autoritativo.",
+        "Redemption coordina Ledger mediante saga; estados/compensaciones se deben especificar."
+      ]
+    }
+  ]
+}

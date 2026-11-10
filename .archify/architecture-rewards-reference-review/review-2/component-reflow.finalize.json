@@ -1,0 +1,487 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-10T20:22:18.956Z",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow-candidate.json",
+    "sha256": "c7f7f00710d14a8d802ba72de870fff05609d6f8f5f4bee87347bb9808f77300",
+    "bytes": 8591
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow.html"
+  },
+  "stages": {
+    "validate": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": null,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow-candidate.json",
+        "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow.html",
+        "--quality",
+        "showcase",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "deliver",
+        "receiptId": "52cfb1de-2ca4-441a-b5be-5db2941b65d9",
+        "stage": "check",
+        "type": "architecture",
+        "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow-candidate.json",
+        "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow.html",
+        "error": "Final artifact check failed; the previous artifact was preserved.",
+        "diagnostics": [
+          {
+            "code": "composition/desktop-readability",
+            "severity": "error",
+            "message": "Final artifact failed composition/desktop-readability.",
+            "subject": {
+              "check": "composition",
+              "nodeId": "channels"
+            },
+            "evidence": {
+              "owner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "viewportWidth": 1440,
+              "viewportHeight": 900,
+              "availableDiagramWidth": 1346,
+              "budgetBasis": "recognized-declared-wide",
+              "readerContract": "declared-wide-v1",
+              "requestedTargetPx": 7.5,
+              "requestedTargetMet": false,
+              "budgetLimit": "viewport-cap",
+              "viewBoxWidth": 1840,
+              "scale": 0.7315217391304348,
+              "text": "SPA web · app móvil · POS / canal digital",
+              "detail": "context",
+              "sourceFontPx": 7.3,
+              "projectedFontPx": 5.340108695652174,
+              "minimumProjectedFontPx": 6
+            },
+            "supportedFixes": [
+              "Preserve the semantic text and any supplied coordinates, routes, sides, channels, and labels. Compactly reflow automatic spacing and empty corridors so the complete viewBox width is at most 1637px (current 1840px; 7.3px source text at 1346px desktop budget). If supplied geometry fixes that width, use a renderer-supported semantic text-size setting or renderer-level fix instead. Position-only label controls cannot repair its projection. The declared Reader reports a viewport-cap limit and 1346px actual diagram budget; do not assume an uncapped viewport."
+            ]
+          }
+        ],
+        "provenance": "absent",
+        "checker": {
+          "ok": false,
+          "file": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow.html",
+          "artifact": {
+            "sha256": "0c85c5dc9a9451b5dfb4a16d2268b065a8a57dd66a0abdbfdffc577ab19f2198",
+            "bytes": 877140
+          },
+          "checks": [
+            {
+              "name": "single_svg",
+              "ok": true,
+              "details": ["found 1 <svg> block(s)"]
+            },
+            {
+              "name": "finite_svg",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "orthogonal_arrows",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "label_route_clearance",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "relationship_crossings",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "relationship_corridors",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "container_border_runs",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "route_rhythm",
+              "ok": true,
+              "details": []
+            },
+            {
+              "name": "legend_clearance",
+              "ok": true,
+              "details": []
+            }
+          ],
+          "composition": {
+            "schemaVersion": 1,
+            "profile": "showcase",
+            "status": "fail",
+            "summary": {
+              "errors": 1,
+              "warnings": 0
+            },
+            "metrics": {
+              "properCrossings": 0,
+              "resolvedCrossovers": 6,
+              "ambiguousCorridors": 0,
+              "arrowheadCollisions": 0,
+              "containerBorderRuns": 0,
+              "labelRouteClearanceIssues": 0,
+              "labelCanvasOverflowIssues": 0,
+              "minLabelRouteClearance": 5,
+              "desktopReadabilityIssues": 1,
+              "viewportHeightIssues": 0,
+              "minProjectedNodeTextPx": 5.340108695652174,
+              "maxBends": 4,
+              "routesOverSuggestedBends": 5,
+              "maxStretch": 1.094,
+              "routesOverSuggestedStretch": 0,
+              "minSegmentPx": 24,
+              "minInteriorSegmentPx": 30,
+              "shortSegmentCount": 0,
+              "shortEndpointSegmentCount": 0,
+              "shortInteriorSegmentCount": 0,
+              "microSegmentCount": 0
+            },
+            "suggestedLimits": {
+              "bendsPerRelationship": 2,
+              "stretch": 1.35,
+              "segmentPx": 16,
+              "microSegmentPx": 8
+            },
+            "routeReview": {
+              "crossings": [
+                {
+                  "left": {
+                    "id": "gateway-redemption",
+                    "from": "gateway",
+                    "to": "redemption",
+                    "label": "",
+                    "collectionIndex": 6,
+                    "artifactIndex": 7
+                  },
+                  "right": {
+                    "id": "gateway-reporting",
+                    "from": "gateway",
+                    "to": "reporting",
+                    "label": "",
+                    "collectionIndex": 7,
+                    "artifactIndex": 8
+                  },
+                  "point": [459, 691],
+                  "sharedNode": "gateway"
+                },
+                {
+                  "left": {
+                    "id": "rules-db",
+                    "from": "rules",
+                    "to": "rulesdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 9,
+                    "artifactIndex": 10
+                  },
+                  "right": {
+                    "id": "accrual-cache",
+                    "from": "accrual",
+                    "to": "cache",
+                    "label": "opcional",
+                    "collectionIndex": 22,
+                    "artifactIndex": 23
+                  },
+                  "point": [1006, 264.5]
+                },
+                {
+                  "left": {
+                    "id": "accrual-db",
+                    "from": "accrual",
+                    "to": "accrualdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 10,
+                    "artifactIndex": 11
+                  },
+                  "right": {
+                    "id": "accrual-cache",
+                    "from": "accrual",
+                    "to": "cache",
+                    "label": "opcional",
+                    "collectionIndex": 22,
+                    "artifactIndex": 23
+                  },
+                  "point": [904, 326],
+                  "sharedNode": "accrual"
+                },
+                {
+                  "left": {
+                    "id": "ledger-db",
+                    "from": "ledger",
+                    "to": "ledgerdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 11,
+                    "artifactIndex": 12
+                  },
+                  "right": {
+                    "id": "redemption-bus",
+                    "from": "redemption",
+                    "to": "eventbus",
+                    "label": "outbox → eventos",
+                    "collectionIndex": 19,
+                    "artifactIndex": 20
+                  },
+                  "point": [991.4000000000002, 580.9533333333582]
+                },
+                {
+                  "left": {
+                    "id": "ledger-db",
+                    "from": "ledger",
+                    "to": "ledgerdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 11,
+                    "artifactIndex": 12
+                  },
+                  "right": {
+                    "id": "queue-reporting",
+                    "from": "queues",
+                    "to": "reporting",
+                    "label": "entrega al menos una vez",
+                    "collectionIndex": 21,
+                    "artifactIndex": 22
+                  },
+                  "point": [1145, 581.0000000000001]
+                },
+                {
+                  "left": {
+                    "id": "redemption-db",
+                    "from": "redemption",
+                    "to": "redemptiondb",
+                    "label": "solo su DB",
+                    "collectionIndex": 12,
+                    "artifactIndex": 13
+                  },
+                  "right": {
+                    "id": "queue-reporting",
+                    "from": "queues",
+                    "to": "reporting",
+                    "label": "entrega al menos una vez",
+                    "collectionIndex": 21,
+                    "artifactIndex": 22
+                  },
+                  "point": [1145, 742.0000000000001]
+                }
+              ],
+              "detours": [
+                {
+                  "relationship": {
+                    "id": "customer-db",
+                    "from": "customer",
+                    "to": "customerdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 8,
+                    "artifactIndex": 9
+                  },
+                  "bends": 4,
+                  "stretch": 1.094
+                },
+                {
+                  "relationship": {
+                    "id": "accrual-db",
+                    "from": "accrual",
+                    "to": "accrualdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 10,
+                    "artifactIndex": 11
+                  },
+                  "bends": 3,
+                  "stretch": 1.056
+                },
+                {
+                  "relationship": {
+                    "id": "ledger-db",
+                    "from": "ledger",
+                    "to": "ledgerdb",
+                    "label": "solo su DB",
+                    "collectionIndex": 11,
+                    "artifactIndex": 12
+                  },
+                  "bends": 4,
+                  "stretch": 1.089
+                },
+                {
+                  "relationship": {
+                    "id": "redemption-db",
+                    "from": "redemption",
+                    "to": "redemptiondb",
+                    "label": "solo su DB",
+                    "collectionIndex": 12,
+                    "artifactIndex": 13
+                  },
+                  "bends": 3,
+                  "stretch": 1.057
+                },
+                {
+                  "relationship": {
+                    "id": "accrual-cache",
+                    "from": "accrual",
+                    "to": "cache",
+                    "label": "opcional",
+                    "collectionIndex": 22,
+                    "artifactIndex": 23
+                  },
+                  "bends": 4,
+                  "stretch": 1
+                }
+              ]
+            },
+            "leadingSpace": {
+              "measured": true,
+              "emptyTopPx": 97,
+              "emptyTopRatio": 0.102,
+              "occupiedTop": 97,
+              "viewBoxTop": 0,
+              "canvasHeight": 950,
+              "typicalNodeHeight": 78,
+              "reviewSuggested": false
+            },
+            "desktopReadability": {
+              "budgetBasis": "recognized-declared-wide",
+              "readerContract": "declared-wide-v1",
+              "availableDiagramWidth": 1346,
+              "actualBudgetPx": 1346,
+              "actualReaderWidth": 1376,
+              "desiredReaderWidth": 1870,
+              "viewportCap": 1376,
+              "limit": "viewport-cap",
+              "requestedTargetPx": 7.5,
+              "requestedTargetMet": false,
+              "hardFloorPx": 6,
+              "hardFloorMet": false,
+              "minimumOwner": {
+                "kind": "node",
+                "id": "channels"
+              },
+              "minimumSourceTextPx": 7.3,
+              "minimumProjectedTextPx": 5.340108695652174,
+              "semanticTextCount": 55
+            },
+            "issues": [
+              {
+                "severity": "error",
+                "code": "composition/desktop-readability",
+                "nodeId": "channels",
+                "owner": {
+                  "kind": "node",
+                  "id": "channels"
+                },
+                "viewportWidth": 1440,
+                "viewportHeight": 900,
+                "availableDiagramWidth": 1346,
+                "budgetBasis": "recognized-declared-wide",
+                "readerContract": "declared-wide-v1",
+                "requestedTargetPx": 7.5,
+                "requestedTargetMet": false,
+                "budgetLimit": "viewport-cap",
+                "viewBoxWidth": 1840,
+                "scale": 0.7315217391304348,
+                "text": "SPA web · app móvil · POS / canal digital",
+                "detail": "context",
+                "sourceFontPx": 7.3,
+                "projectedFontPx": 5.340108695652174,
+                "minimumProjectedFontPx": 6
+              }
+            ]
+          }
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      },
+      "execution": "embedded-in-deliver"
+    },
+    "deliver": {
+      "status": "not-run",
+      "execution": "blocked-by-validate"
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "composition/desktop-readability",
+      "severity": "error",
+      "message": "Final artifact failed composition/desktop-readability.",
+      "subject": {
+        "check": "composition",
+        "nodeId": "channels"
+      },
+      "evidence": {
+        "owner": {
+          "kind": "node",
+          "id": "channels"
+        },
+        "viewportWidth": 1440,
+        "viewportHeight": 900,
+        "availableDiagramWidth": 1346,
+        "budgetBasis": "recognized-declared-wide",
+        "readerContract": "declared-wide-v1",
+        "requestedTargetPx": 7.5,
+        "requestedTargetMet": false,
+        "budgetLimit": "viewport-cap",
+        "viewBoxWidth": 1840,
+        "scale": 0.7315217391304348,
+        "text": "SPA web · app móvil · POS / canal digital",
+        "detail": "context",
+        "sourceFontPx": 7.3,
+        "projectedFontPx": 5.340108695652174,
+        "minimumProjectedFontPx": 6
+      },
+      "supportedFixes": [
+        "Preserve the semantic text and any supplied coordinates, routes, sides, channels, and labels. Compactly reflow automatic spacing and empty corridors so the complete viewBox width is at most 1637px (current 1840px; 7.3px source text at 1346px desktop budget). If supplied geometry fixes that width, use a renderer-supported semantic text-size setting or renderer-level fix instead. Position-only label controls cannot repair its projection. The declared Reader reports a viewport-cap limit and 1346px actual diagram budget; do not assume an uncapped viewport."
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\review-2\\component-reflow.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\review-2\\component-reflow.finalize-summary.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "validate",
+  "finishedAt": "2026-11-10T20:22:20.272Z",
+  "durationMs": 1315,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

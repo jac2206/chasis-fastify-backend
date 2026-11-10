@@ -29,7 +29,6 @@ No recibe headers, parámetros de ruta, query ni body documentados.
 
 1. Fastify despacha `GET /health` al handler registrado por `healthController` bajo el prefijo `/chasis`.
 2. El handler devuelve una respuesta JSON literal.
-3. Aunque `HealthService` está registrado en el contenedor, este handler no lo resuelve ni lo invoca.
 
 ## Respuestas
 

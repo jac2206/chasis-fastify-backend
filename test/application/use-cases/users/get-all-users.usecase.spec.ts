@@ -9,36 +9,40 @@ describe("GetAllUsersUseCase", () => {
     findByEmail: vi.fn(),
     findByDocument: vi.fn(),
     findAll: vi.fn(),
+    findPage: vi.fn(),
   };
 
   it("maps users to public list items without password hashes", async () => {
-    vi.mocked(repository.findAll).mockResolvedValue([
-      new User(
-        "CC",
-        "1037630472",
-        "Test User",
-        "user@test.com",
-        "3001234567",
-        "private-hash",
-        true,
-        true,
-      ),
-      new User(
-        "CE",
-        "99887766",
-        "Inactive User",
-        "inactive@test.com",
-        null,
-        "other-hash",
-        false,
-        false,
-      ),
-    ]);
+    vi.mocked(repository.findPage).mockResolvedValue({
+      users: [
+        new User(
+          "CC",
+          "1037630472",
+          "Test User",
+          "user@test.com",
+          "3001234567",
+          "private-hash",
+          true,
+          true,
+        ),
+        new User(
+          "CE",
+          "99887766",
+          "Inactive User",
+          "inactive@test.com",
+          null,
+          "other-hash",
+          false,
+          false,
+        ),
+      ],
+      total: 2,
+    });
 
-    const result = await new GetAllUsersUseCase(repository).execute();
+    const result = await new GetAllUsersUseCase(repository).execute(1, 20);
 
-    expect(repository.findAll).toHaveBeenCalledOnce();
-    expect(result).toEqual([
+    expect(repository.findPage).toHaveBeenCalledWith(1, 20);
+    expect(result.items).toEqual([
       {
         documentType: "CC",
         documentNumber: "1037630472",
@@ -62,8 +66,13 @@ describe("GetAllUsersUseCase", () => {
   });
 
   it("returns an empty list when there are no users", async () => {
-    vi.mocked(repository.findAll).mockResolvedValue([]);
+    vi.mocked(repository.findPage).mockResolvedValue({ users: [], total: 0 });
 
-    await expect(new GetAllUsersUseCase(repository).execute()).resolves.toEqual([]);
+    await expect(new GetAllUsersUseCase(repository).execute(2, 20)).resolves.toEqual({
+      items: [],
+      page: 2,
+      pageSize: 20,
+      total: 0,
+    });
   });
 });

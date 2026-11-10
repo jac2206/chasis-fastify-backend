@@ -1,11 +1,15 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
-import {
-  IHttpClient,
+import axios, {
+  type AxiosError,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+} from "axios";
+import { env } from "../../config/env";
+import type {
   HttpRequestOptions,
   HttpResponse,
+  IHttpClient,
 } from "../../domain/interfaces/http/http-client.interface";
-import { ILogger } from "../../domain/interfaces/logger.interface";
-import { env } from "../../config/env";
+import type { ILogger } from "../../domain/interfaces/logger.interface";
 
 export class HttpClient implements IHttpClient {
   private readonly client: AxiosInstance;
@@ -22,8 +26,6 @@ export class HttpClient implements IHttpClient {
     this.client.interceptors.request.use((config) => {
       this.logger.info("HttpClient", "HTTP_REQUEST", {
         method: config.method,
-        url: config.url,
-        headers: config.headers,
       });
 
       return config;
@@ -33,17 +35,14 @@ export class HttpClient implements IHttpClient {
       (response) => {
         this.logger.info("HttpClient", "HTTP_RESPONSE", {
           status: response.status,
-          url: response.config.url,
         });
 
         return response;
       },
       (error: AxiosError) => {
         this.logger.error("HttpClient", "HTTP_ERROR", {
-          url: error.config?.url,
           method: error.config?.method,
           status: error.response?.status,
-          message: error.message,
         });
 
         return Promise.reject(error);
