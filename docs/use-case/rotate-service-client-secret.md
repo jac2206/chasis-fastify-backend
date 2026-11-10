@@ -39,8 +39,8 @@ Genera y almacena un nuevo secreto para un cliente técnico existente.
 
 ## Flujo principal
 
-1. Se autentica y autoriza la solicitud.
-2. Se valida `clientId`.
+1. Se valida `clientId`.
+2. Se autentica y autoriza la solicitud.
 3. Se comprueba la existencia del cliente.
 4. Se genera un nuevo secreto y se guarda su hash bcrypt de costo `12`.
 5. Se devuelve el nuevo secreto.
@@ -57,8 +57,8 @@ Genera y almacena un nuevo secreto para un cliente técnico existente.
 
 | HTTP | Código | Causa |
 | --- | --- | --- |
-| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta o es inválido/expiró el bearer token; si falta el scope requerido responde `401` con `UNAUTHORIZED ` (espacio final). |
-| 403 | `FORBIDDEN` | El token verificado no contiene el claim `scopes`. |
+| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta el bearer token o es inválido o expiró. |
+| 403 | `FORBIDDEN` | El token no contiene scopes o carece del scope requerido. |
 | 404 | `SERVICE_CLIENT_NOT_FOUND` | Cliente inexistente |
 | 422 | `VALIDATION_ERROR` | Parámetro inválido |
 
@@ -70,14 +70,14 @@ Genera y almacena un nuevo secreto para un cliente técnico existente.
 
 ```mermaid
 flowchart TD
-    A[Cliente autorizado] --> B[authenticateJWT]
+    A[Cliente HTTP] --> D{¿clientId válido según Zod?}
+    D -- No --> V[VALIDATION_ERROR 422]
+    D -- Sí --> B[authenticateJWT]
     B -->|Token faltante o inválido| X[401 UNAUTHORIZED / INVALID_TOKEN]
     B -->|Token válido| C[authorizeScopes: service-clients:manage]
     C -->|Sin claim scopes| Y[403 FORBIDDEN]
-    C -->|Scope ausente| Z[401 UNAUTHORIZED con espacio final]
-    C -->|Scope presente| D{¿clientId válido según Zod?}
-    D -- No --> V[VALIDATION_ERROR 422]
-    D -- Sí --> E[Buscar service client]
+    C -->|Scope ausente| Z[403 FORBIDDEN]
+    C -->|Scope presente| E[Buscar service client]
     E --> F{¿Cliente existe?}
     F -- No --> G[SERVICE_CLIENT_NOT_FOUND 404]
     F -- Sí --> H[Generar secreto y hash bcrypt]

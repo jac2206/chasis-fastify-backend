@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "04c7f50f-0874-4e7a-9378-a1819dd89330",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\azure-candidate.json",
+  "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\azure.html",
+  "specification": {
+    "sha256": "2e95ecd0b9c765fe282c45acc3b010dcae22d217639ba1858cb014789484afb0",
+    "bytes": 5099
+  },
+  "artifact": {
+    "sha256": "c3af5c345ba1e670e5de254e4820d01c9230237fec326964d6582ab290d2ae7b",
+    "bytes": 857064
+  }
+}

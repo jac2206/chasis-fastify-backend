@@ -5,7 +5,7 @@
 
 ## Descripción
 
-Consulta todos los usuarios y devuelve únicamente los campos públicos definidos por el caso de uso.
+Consulta usuarios paginados y devuelve únicamente los campos definidos por el caso de uso.
 
 ## Detalles del endpoint
 
@@ -15,13 +15,13 @@ Consulta todos los usuarios y devuelve únicamente los campos públicos definido
 
 ## Actores
 
-- **Usuario autenticado:** consume el listado con scope `user`.
+- **Cliente autorizado:** consume el listado con scope `users:read`.
 - **PostgreSQL/Prisma:** obtiene los usuarios.
 
 ## Precondiciones y prerrequisitos
 
 - Se requiere JWT de acceso válido.
-- El JWT debe incluir el scope `user`.
+- El JWT debe incluir el scope `users:read`.
 
 ## Parámetros de entrada
 
@@ -29,23 +29,25 @@ Consulta todos los usuarios y devuelve únicamente los campos públicos definido
 
 | Nombre | Tipo | Requerido | Descripción |
 | --- | --- | --- | --- |
-| `Authorization` | string | Sí | `Bearer <token>` con JWT de acceso y scope `user`. |
+| `Authorization` | string | Sí | `Bearer <token>` con JWT de acceso y scope `users:read`. |
 
-No recibe body, parámetros de ruta ni query.
+No recibe body ni parámetros de ruta. Acepta los parámetros de consulta `page` y `pageSize`, enteros positivos; sus valores predeterminados son `1` y `20`, y `pageSize` admite hasta 100 registros.
 
 ## Flujo principal
 
-1. Se autentica la solicitud y se verifica el scope.
-2. `GetAllUsersUseCase` llama a `UserPrismaRepository.findAll`.
+1. Se validan los parámetros de consulta; luego se autentica la solicitud y se verifica el scope.
+2. `GetAllUsersUseCase` consulta la página ordenada por número de documento y el total mediante `UserPrismaRepository.findPage`.
 3. Cada usuario se transforma a documento, nombre, email, teléfono, `hasPin` y `status`.
-4. El controlador devuelve el arreglo.
+4. El controlador devuelve `items`, `page`, `pageSize` y `total`. Una página fuera del rango devuelve `items` vacío.
+
+La página y el conteo se consultan por separado y en paralelo; el repositorio no los agrupa en una transacción, por lo que cambios concurrentes pueden hacer que `items` y `total` reflejen momentos distintos.
 
 ## Respuestas
 
 ### Éxito (`200`)
 
 ```json
-[
+{ "page": 1, "pageSize": 20, "total": 1, "items": [
   {
     "documentType": "CC",
     "documentNumber": "1037630472",
@@ -55,29 +57,27 @@ No recibe body, parámetros de ruta ni query.
     "hasPin": false,
     "status": true
   }
-]
+] }
 ```
 
 ### Errores
 
-La autenticación y autorización usan los errores compartidos. Un error inesperado del repositorio devuelve `500/INTERNAL_SERVER_ERROR`.
-
-## Inconsistencia conocida
-
-El schema OpenAPI registrado es un objeto, mientras que el controlador devuelve un arreglo. Esta documentación sigue el comportamiento del controlador.
+Una query inválida devuelve `422/VALIDATION_ERROR`. La autenticación y autorización usan los errores compartidos. Un error inesperado del repositorio devuelve `500/INTERNAL_SERVER_ERROR`.
 
 ## Diagrama de flujo
 
 ```mermaid
 flowchart TD
-    A[Cliente HTTP] --> B[authenticateJWT]
+    A[Cliente HTTP] --> Q{¿Query válida?}
+    Q -->|No| V[422 VALIDATION_ERROR]
+    Q -->|Sí| B[authenticateJWT]
     B -->|Token faltante o inválido| X[401 UNAUTHORIZED / INVALID_TOKEN]
-    B -->|Token válido| C[authorizeScopes: user]
+    B -->|Token válido| C[authorizeScopes: users:read]
     C -->|Sin claim scopes| Y[403 FORBIDDEN]
-    C -->|Scope user ausente| Z[401 UNAUTHORIZED con espacio final]
-    C -->|Scope user presente| D[GetAllUsersUseCase]
-    D --> E[UserPrismaRepository.findAll]
+    C -->|Scope users:read ausente| Z[403 FORBIDDEN]
+    C -->|Scope users:read presente| D[GetAllUsersUseCase]
+    D --> E[UserPrismaRepository.findPage]
     E --> F[(PostgreSQL: users)]
     F --> G[Mapear campos públicos]
-    G --> H[Respuesta 200 con arreglo]
+    G --> H[Respuesta 200 con página y total]
 ```

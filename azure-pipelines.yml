@@ -30,6 +30,9 @@ stages:
           - script: npm ci
             displayName: 'Install dependencies'
 
+          - script: npm run check
+            displayName: 'Check code style'
+
           - script: npm run prisma:generate
             displayName: 'Generate Prisma Client'
 

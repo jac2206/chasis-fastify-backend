@@ -1,16 +1,24 @@
 import { env } from "../../../config/env";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
+import type { IRefreshTokenRepository } from "../../../domain/interfaces/repositories/refresh-token.repository.interface";
+import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
+import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
 import type { JwtPayload } from "../../../domain/interfaces/security/jwt-payload.interface";
 import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
-import type { IRefreshTokenUseCase } from "../../../domain/interfaces/use-cases/users/refresh-token.usecase.interface";
 import type {
   RefreshTokenRequestDTO,
   RefreshTokenResponseDTO,
 } from "../../dto/refresh-token.dto";
+import type { IRefreshTokenUseCase } from "../../interfaces/users/refresh-token.usecase.interface";
 
 export class RefreshTokenUseCase implements IRefreshTokenUseCase {
-  constructor(private readonly authService: IAuthService) {}
+  constructor(
+    private readonly authService: IAuthService,
+    private readonly refreshTokenRepository: IRefreshTokenRepository,
+    private readonly userRepository: IUserRepository,
+    private readonly serviceClientRepository: IServiceClientRepository,
+  ) {}
 
   async execute(data: RefreshTokenRequestDTO): Promise<RefreshTokenResponseDTO> {
     let payload: JwtPayload;
@@ -18,6 +26,14 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     try {
       payload = this.authService.verifyRefreshToken(data.refreshToken);
     } catch {
+      const error = DomainErrors.USER_INVALID_REFRESH_TOKEN;
+      throw new DomainException(error.code, error.message, error.statusCode);
+    }
+
+    const identity = payload.client_id
+      ? await this.serviceClientRepository.findByClientId(payload.client_id)
+      : await this.userRepository.findByDocument(payload.sub);
+    if (!identity?.status) {
       const error = DomainErrors.USER_INVALID_REFRESH_TOKEN;
       throw new DomainException(error.code, error.message, error.statusCode);
     }
@@ -30,9 +46,20 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
       ...(payload.scopes && { scopes: payload.scopes }),
     };
 
+    const refreshToken = this.authService.generateRefreshToken(tokenPayload);
+    const rotated = await this.refreshTokenRepository.rotate(
+      data.refreshToken,
+      refreshToken,
+      new Date(Date.now() + durationInSeconds(env.jwtRefreshExpiresIn) * 1000),
+    );
+    if (!rotated) {
+      const error = DomainErrors.USER_INVALID_REFRESH_TOKEN;
+      throw new DomainException(error.code, error.message, error.statusCode);
+    }
+
     return {
       token: this.authService.generateToken({ ...tokenPayload, type: "access" }),
-      refreshToken: this.authService.generateRefreshToken(tokenPayload),
+      refreshToken,
       tokenType: "Bearer",
       expiresIn: durationInSeconds(env.jwtAccessExpiresIn),
       refreshExpiresIn: durationInSeconds(env.jwtRefreshExpiresIn),

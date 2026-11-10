@@ -1,8 +1,36 @@
-import { pool } from "../../database/postgres";
 import { User } from "../../../domain/entities/user.entity";
-import { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import { pool } from "../../database/postgres";
 
 export class UserRepository implements IUserRepository {
+  async findPage(
+    page: number,
+    pageSize: number,
+  ): Promise<{ users: User[]; total: number }> {
+    const [result, count] = await Promise.all([
+      pool.query(
+        "SELECT * FROM loyalty.users ORDER BY document_number ASC LIMIT $1 OFFSET $2",
+        [pageSize, (page - 1) * pageSize],
+      ),
+      pool.query("SELECT COUNT(*) AS total FROM loyalty.users"),
+    ]);
+    return {
+      users: result.rows.map(
+        (row) =>
+          new User(
+            row.document_type,
+            row.document_number,
+            row.full_name,
+            row.email,
+            row.phone,
+            row.password_hash,
+            row.has_pin,
+            row.status,
+          ),
+      ),
+      total: Number(count.rows[0].total),
+    };
+  }
   async save(entity: User): Promise<User> {
     const data = entity.toPersistence();
 

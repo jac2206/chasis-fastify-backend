@@ -39,8 +39,8 @@ Marca un cliente técnico existente como inactivo.
 
 ## Flujo principal
 
-1. Se autentica y autoriza la solicitud.
-2. Se valida `clientId`.
+1. Se valida `clientId`.
+2. Se autentica y autoriza la solicitud.
 3. Se comprueba que el cliente exista.
 4. Se actualiza `status` a `false`.
 5. Se devuelve el estado resultante.
@@ -57,27 +57,28 @@ Marca un cliente técnico existente como inactivo.
 
 | HTTP | Código | Causa |
 | --- | --- | --- |
-| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta o es inválido/expiró el bearer token; si falta el scope requerido responde `401` con `UNAUTHORIZED ` (espacio final). |
-| 403 | `FORBIDDEN` | El token verificado no contiene el claim `scopes`. |
+| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta el bearer token o es inválido o expiró. |
+| 403 | `FORBIDDEN` | El token no contiene scopes o carece del scope requerido. |
 | 404 | `SERVICE_CLIENT_NOT_FOUND` | Cliente inexistente |
 | 422 | `VALIDATION_ERROR` | Parámetro inválido |
 
 ## Reglas específicas
 
 - La operación actualiza el estado a `false`; no elimina el registro ni rota su secreto.
+- No se emiten nuevos tokens mediante client-credentials para un cliente inactivo. Los access tokens emitidos siguen válidos hasta su expiración.
 
 ## Diagrama de flujo
 
 ```mermaid
 flowchart TD
-    A[Cliente autorizado] --> B[authenticateJWT]
+    A[Cliente HTTP] --> D{¿clientId válido según Zod?}
+    D -- No --> V[VALIDATION_ERROR 422]
+    D -- Sí --> B[authenticateJWT]
     B -->|Token faltante o inválido| X[401 UNAUTHORIZED / INVALID_TOKEN]
     B -->|Token válido| C[authorizeScopes: service-clients:manage]
     C -->|Sin claim scopes| Y[403 FORBIDDEN]
-    C -->|Scope ausente| Z[401 UNAUTHORIZED con espacio final]
-    C -->|Scope presente| D{¿clientId válido según Zod?}
-    D -- No --> V[VALIDATION_ERROR 422]
-    D -- Sí --> E[Buscar service client]
+    C -->|Scope ausente| Z[403 FORBIDDEN]
+    C -->|Scope presente| E[Buscar service client]
     E --> F{¿Cliente existe?}
     F -- No --> G[SERVICE_CLIENT_NOT_FOUND 404]
     F -- Sí --> H[Actualizar status a false]

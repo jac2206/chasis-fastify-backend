@@ -53,11 +53,11 @@ No recibe body, path params ni query.
 
 | HTTP | Código | Causa |
 | --- | --- | --- |
-| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta o invalidez/expiración del JWT; también se usa `UNAUTHORIZED ` (espacio final) cuando el token carece del scope `user`. |
-| 403 | `FORBIDDEN` | El token verificado no contiene el claim `scopes`. |
+| 401 | `UNAUTHORIZED` / `INVALID_TOKEN` | Falta, invalidez o expiración del JWT; `UNAUTHORIZED` también se usa cuando falta `sub`. |
+| 403 | `FORBIDDEN` | El token no contiene el claim `scopes` o carece del scope `user`. |
 | 404 | `USER_NOT_FOUND` | No existe el usuario del claim `sub` |
 
-La entidad permite que `phone` sea `null`, pero el schema OpenAPI de esta respuesta lo declara como string; la implementación no valida la respuesta contra ese schema.
+`phone` puede ser `null`; el schema de respuesta Zod también lo permite.
 
 ## Detalles técnicos
 
@@ -72,8 +72,9 @@ flowchart TD
     B -->|Token faltante o inválido| X[401 UNAUTHORIZED / INVALID_TOKEN]
     B -->|Token válido| C[authorizeScopes: user]
     C -->|Sin claim scopes| Y[403 FORBIDDEN]
-    C -->|Scope user ausente| Z[401 UNAUTHORIZED con espacio final]
+    C -->|Scope user ausente| Z[403 FORBIDDEN]
     C -->|Scope user presente| D[Leer request.user.sub]
+    D -->|sub ausente| W[401 UNAUTHORIZED]
     D --> E[GetMeUseCase]
     E --> F[UserPrismaRepository.findByDocument]
     F --> G[(PostgreSQL: users)]

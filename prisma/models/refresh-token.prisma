@@ -1,0 +1,7 @@
+model refresh_tokens {
+  token_hash String   @id @db.Char(64)
+  expires_at DateTime @db.Timestamp(6)
+
+  @@index([expires_at])
+  @@schema("test")
+}

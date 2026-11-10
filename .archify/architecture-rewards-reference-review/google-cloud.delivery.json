@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "dbe0e9eb-6af4-47e9-a569-7669a22adea6",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\google-cloud-candidate.json",
+  "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\google-cloud.html",
+  "specification": {
+    "sha256": "68aae9d6b09f0124798764a3859b0c5fb6edb1fd462a73e348a97966833d6a75",
+    "bytes": 5229
+  },
+  "artifact": {
+    "sha256": "b0e18604d12a14de929e759579aab344be8ec3b5f1872cc43f35ad36161cf952",
+    "bytes": 857543
+  }
+}

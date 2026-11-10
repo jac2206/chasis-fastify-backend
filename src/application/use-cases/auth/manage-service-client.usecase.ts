@@ -1,15 +1,15 @@
-import bcrypt from "bcrypt";
 import { randomBytes } from "node:crypto";
+import bcrypt from "bcrypt";
+import { DomainErrors } from "../../../domain/errors/domain-errors";
+import { DomainException } from "../../../domain/exceptions/domain.exception";
+import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
 import type {
   CreateServiceClientRequestDTO,
   CreateServiceClientResponseDTO,
   RotateServiceClientResponseDTO,
   ServiceClientStatusResponseDTO,
 } from "../../dto/service-client.dto";
-import { DomainErrors } from "../../../domain/errors/domain-errors";
-import { DomainException } from "../../../domain/exceptions/domain.exception";
-import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
-import type { IManageServiceClientUseCase } from "../../../domain/interfaces/use-cases/auth/manage-service-client.usecase.interface";
+import type { IManageServiceClientUseCase } from "../../interfaces/auth/manage-service-client.usecase.interface";
 
 export class ManageServiceClientUseCase implements IManageServiceClientUseCase {
   constructor(private readonly serviceClientRepository: IServiceClientRepository) {}

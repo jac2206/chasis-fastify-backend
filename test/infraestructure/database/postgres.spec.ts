@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("pg", () => {
   const queryMock = vi.fn();
@@ -24,9 +24,9 @@ vi.mock("../../../src/infraestructure/logger/logger", () => {
 });
 
 import {
-  pool,
-  connectDatabase,
   closeDatabase,
+  connectDatabase,
+  pool,
 } from "../../../src/infraestructure/database/postgres";
 import { logger } from "../../../src/infraestructure/logger/logger";
 

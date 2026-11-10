@@ -1,7 +1,8 @@
-import jwt, { SignOptions } from "jsonwebtoken";
-import { IAuthService } from "../../domain/interfaces/services/auth.service.interface";
-import { JwtPayload } from "../../domain/interfaces/security/jwt-payload.interface";
+import { randomUUID } from "node:crypto";
+import jwt, { type SignOptions } from "jsonwebtoken";
 import { env } from "../../config/env";
+import type { JwtPayload } from "../../domain/interfaces/security/jwt-payload.interface";
+import type { IAuthService } from "../../domain/interfaces/services/auth.service.interface";
 
 export class JwtAuthService implements IAuthService {
   constructor() {}
@@ -18,6 +19,7 @@ export class JwtAuthService implements IAuthService {
   generateRefreshToken(payload: Omit<JwtPayload, "type">): string {
     return jwt.sign({ ...payload, type: "refresh" }, this.getJwtSecret(), {
       algorithm: "HS256",
+      jwtid: randomUUID(),
       expiresIn: env.jwtRefreshExpiresIn as SignOptions["expiresIn"],
     });
   }

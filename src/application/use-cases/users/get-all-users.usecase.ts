@@ -1,12 +1,20 @@
-import { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
-import { IGetAllUsersUseCase } from "../../../domain/interfaces/use-cases/users/get-all-users.usecase.interface";
-import { GetUsersResponseDTO } from "../../dto/get-users.dto";
+import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type { GetUsersResponseDTO } from "../../dto/get-users.dto";
+import type { IGetAllUsersUseCase } from "../../interfaces/users/get-all-users.usecase.interface";
 
 export class GetAllUsersUseCase implements IGetAllUsersUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
-  async execute(): Promise<GetUsersResponseDTO[]> {
-    const users = await this.userRepository.findAll();
+  async execute(
+    page: number,
+    pageSize: number,
+  ): Promise<{
+    items: GetUsersResponseDTO[];
+    page: number;
+    pageSize: number;
+    total: number;
+  }> {
+    const { users, total } = await this.userRepository.findPage(page, pageSize);
     const result = users.map((u) => ({
       documentType: u.documentType,
       documentNumber: u.documentNumber,
@@ -17,6 +25,6 @@ export class GetAllUsersUseCase implements IGetAllUsersUseCase {
       status: u.status,
     }));
 
-    return result;
+    return { items: result, page, pageSize, total };
   }
 }

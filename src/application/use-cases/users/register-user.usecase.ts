@@ -1,13 +1,13 @@
 import bcrypt from "bcrypt";
-import {
+import { User } from "../../../domain/entities/user.entity";
+import { DomainErrors } from "../../../domain/errors/domain-errors";
+import { DomainException } from "../../../domain/exceptions/domain.exception";
+import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type {
   RegisterUserRequestDTO,
   RegisterUserResponseDTO,
 } from "../../dto/register-user.dto";
-import { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
-import { IRegisterUserUseCase } from "../../../domain/interfaces/use-cases/users/register-user.usecase.interface";
-import { DomainErrors } from "../../../domain/errors/domain-errors";
-import { DomainException } from "../../../domain/exceptions/domain.exception";
-import { User } from "../../../domain/entities/user.entity";
+import type { IRegisterUserUseCase } from "../../interfaces/users/register-user.usecase.interface";
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}

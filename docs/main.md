@@ -2,7 +2,7 @@
 
 ## Alcance
 
-Este documento describe el comportamiento evidenciado por la implementación actual en TypeScript. El repositorio es un chasis reutilizable para backends Fastify e incluye flujos de ejemplo de `generic`, usuarios/autenticación, health e integración con Pokémon.
+Este documento describe el comportamiento evidenciado por la implementación actual en TypeScript. El repositorio es un chasis reutilizable para backends Fastify con usuarios, autenticación, health y un ejemplo de integración con PokeAPI.
 
 ## Ejecución y puntos de entrada
 
@@ -10,7 +10,7 @@ Este documento describe el comportamiento evidenciado por la implementación act
 - `src/server.ts` crea la aplicación Fastify, registra el scope Awilix por solicitud, Zod para validación/serialización, Swagger UI en `/docs` y los plugins `/chasis/health` y `/chasis/v1`.
 - Las rutas desconocidas devuelven `{ "message": "Route not found", "code": 404 }`.
 
-OpenAPI define el servidor como `http://localhost:3000`; las rutas publicadas incluyen el prefijo `/chasis`. La interfaz se sirve en `/docs` y el JSON en `/docs/json`.
+OpenAPI usa el origen desde el que se sirve; las rutas publicadas incluyen el prefijo `/chasis`. La interfaz se sirve en `/docs` y el JSON en `/docs/json`.
 
 ## Arquitectura observada
 
@@ -28,10 +28,10 @@ flowchart LR
   U --> P[Puertos, entidades y errores de dominio]
   U --> PRISMA[UserPrismaRepository / ServiceClientPrismaRepository]
   PRISMA --> PG[(PostgreSQL)]
-  U --> RAW[GenericRepository: pg Pool]
-  RAW --> PG
-  U --> EXT[Adaptador PokeApiAdapter + HttpClient]
-  EXT --> POKEAPI[PokeAPI externa]
+  U --> RT[RefreshTokenRepository]
+  RT --> PG
+  U --> POKE[PokeApiAdapter / HttpClient]
+  POKE --> API[PokeAPI externa]
   AUTH --> JWT[JwtAuthService]
   U --> JWT
   APP --> DOCS[Swagger UI / OpenAPI]
@@ -49,13 +49,9 @@ Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para rec
 
 - [Verificar salud](use-case/health-check.md) — `GET /chasis/health`
 
-### Ejemplos genéricos
+### Integración de ejemplo
 
-- [Consultar generic](use-case/get-generic.md) — `GET /chasis/v1/generic`
-- [Crear generic](use-case/create-generic.md) — `POST /chasis/v1/generic`
-- [Consultar generic por ID](use-case/get-generic-by-id.md) — `GET /chasis/v1/generic/:id`
 - [Consultar Pokémon por nombre](use-case/get-pokemon-by-name.md) — `GET /chasis/v1/generic/pokemon/:name`
-- [Actualizar generic](use-case/update-generic.md) — `PATCH /chasis/v1/generic/:id`
 
 ### Usuarios
 
@@ -74,9 +70,9 @@ Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para rec
 
 ## Autenticación y autorización
 
-Los JWT se firman con HS256 usando `JWT_SECRET`, con valores predeterminados de `15m` para tokens de acceso y `30d` para tokens de renovación. `authenticateJWT` requiere `Authorization: Bearer <token>`, verifica el tipo de token y adjunta sus claims a la solicitud. `authorizeScopes` permite la solicitud cuando está presente cualquiera de los scopes requeridos. Las rutas de listado/usuario actual requieren `user`, la consulta genérica requiere `generic` y la administración de clientes requiere `service-clients:manage`.
+Los JWT se firman con HS256 usando `JWT_SECRET`, con valores predeterminados de `15m` para tokens de acceso y `30d` para tokens de renovación. El listado paginado requiere `users:read`, el perfil actual requiere `user` y la administración de clientes requiere `service-clients:manage`. Los refresh tokens son de un solo uso; su hash se reemplaza en una transacción. Los access tokens emitidos continúan válidos hasta expirar aunque se deshabilite la identidad.
 
-Si no existe la variable de entorno, `JWT_SECRET` usa literalmente `secret`. La implementación no evidencia una validación obligatoria del secreto para producción.
+La aplicación exige `JWT_SECRET` y `DATABASE_URL` al iniciar.
 
 ## Validación y errores
 
@@ -86,13 +82,11 @@ Las rutas registran schemas Zod directamente en Fastify. Esto alimenta la valida
 
 ## Persistencia
 
-Prisma 7 con `@prisma/adapter-pg` se conecta a PostgreSQL mediante `DATABASE_URL`. Los repositorios activos de usuarios y clientes de servicio usan modelos Prisma en el schema `test`. Los usuarios almacenan un hash bcrypt de la contraseña; los clientes de servicio almacenan un hash bcrypt del secreto, scopes y estado. `GenericRepository` usa un pool separado de `pg` y SQL parametrizado para `generics`, pero los casos de uso expuestos para crear/actualizar generic no lo llaman; solo la consulta por ID está conectada a ese repositorio.
+Prisma 7 con `@prisma/adapter-pg` se conecta a PostgreSQL mediante `DATABASE_URL`. Los repositorios activos de usuarios y clientes de servicio usan modelos Prisma en el schema `test`. Los usuarios almacenan un hash bcrypt de la contraseña; los clientes de servicio almacenan un hash bcrypt del secreto, scopes y estado. Los refresh tokens se guardan como hashes en `test.refresh_tokens`.
 
 El schema también define `addresses`, pero ninguna ruta o caso de uso actual lo utiliza. Las migraciones están en `prisma/migrations/`.
 
 ## Integración externa y logging
-
-`GET /chasis/v1/generic/pokemon/:name` llama a `https://pokeapi.co/api/v2/pokemon/:name` mediante Axios, con timeout de 4 segundos, y transforma la respuesta a `name`, `height` y `weight`. Cualquier error del adaptador se convierte actualmente en `POKEMON_NOT_FOUND` con estado `404`.
 
 Winston emite logs JSON en consola. Un hook Fastify registra método, ruta, código de respuesta y duración sin incluir query strings ni cuerpos; el cliente HTTP registra metadatos de solicitudes/respuestas y errores.
 
@@ -100,12 +94,11 @@ Winston emite logs JSON en consola. Un hook Fastify registra método, ruta, cód
 
 El Dockerfile construye con Node 24, genera el cliente Prisma, compila TypeScript y ejecuta `dist/main.js` en el puerto `3000`. Docker Compose define los contenedores de la aplicación, PostgreSQL, Floci y SQS admin; no aplica migraciones automáticamente, que se ejecutan con `npm run prisma:deploy` cuando corresponda. El código actual no contiene clientes del AWS SDK ni consumidores de eventos/colas; por eso esos servicios de Compose son soporte de infraestructura y no integraciones de aplicación evidenciadas.
 
-Las pruebas usan Vitest y `app.inject()` para HTTP; cubren rutas Fastify, validación, autenticación, scopes, errores, casos de uso, repositorios, JWT, cliente HTTP y adaptador de Pokémon. Los scripts incluyen `npm run build`, `npm run test:run` y comandos Prisma.
+Las pruebas usan Vitest y `app.inject()` para HTTP; cubren rutas Fastify, validación, autenticación, scopes, errores, casos de uso, repositorios, JWT y cliente HTTP. Los scripts incluyen `npm run build`, `npm run test:run` y comandos Prisma.
 
 ## Vacíos e inconsistencias de evidencia
 
-- El controller de health devuelve una respuesta literal. `HealthService` está registrado en el contenedor, pero el controller no lo resuelve ni lo invoca.
-- `GET /chasis/v1/users` devuelve un arreglo y OpenAPI documenta ese arreglo.
+- El controller de health devuelve una respuesta literal y no comprueba la disponibilidad actual de la base de datos.
+- `GET /chasis/v1/users` devuelve un objeto paginado y OpenAPI documenta ese objeto.
 - `GET /chasis/v1/users/me` puede devolver `phone: null`; Zod refleja esa nulabilidad.
-- Los flujos de creación y actualización de generic solo validan el nombre en la capa de aplicación y no persisten cambios. La consulta por ID puede devolver `200` con campos derivados de `null` cuando no existe un registro.
 - Las respuestas de error de los endpoints se describen en OpenAPI con schemas compartidos.

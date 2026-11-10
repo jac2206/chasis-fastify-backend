@@ -8,7 +8,7 @@ Una plataforma de lealtad para retail que permite identificar clientes, registra
 
 Este paquete contiene una vista lógica de componentes y tres alternativas de infraestructura: AWS, Azure y Google Cloud. Son opciones independientes con equivalencias funcionales aproximadas, no un diseño multi-cloud activo. Las cuentas/proyectos/suscripciones, regiones, redes, capacidad, objetivos de servicio y costes quedan **TBD**. Todos los límites de despliegue llevan marca **PROPOSED**.
 
-La propuesta reutiliza ideas del chasis Fastify (TypeScript, DDD/hexagonal, Zod/OpenAPI, PostgreSQL/Prisma, pruebas y logging) como orientación para implementar cada servicio, pero no afirma que el chasis actual ya contenga servicios de lealtad ni Kubernetes. El workspace no tiene un commit Git ni `origin` verificables; por tanto, esta propuesta no usa citas de código del chasis como evidencia de un estado versionado.
+La propuesta reutiliza ideas del chasis Fastify (TypeScript, DDD/hexagonal, Zod/OpenAPI, PostgreSQL/Prisma, pruebas y logging) como orientación para implementar cada servicio, pero no afirma que el chasis actual ya contenga servicios de lealtad ni Kubernetes. En la revisión del 10 de noviembre de 2026 se observó el commit local `f0004af25decc95e9879514ededfcf1081e93e4a` y cambios sin confirmar; esta revisión no verificó un repositorio remoto ni atribuye los cambios locales a ese commit. El contexto del chasis implementado se documenta en [docs/main.md](../main.md).
 
 ## Requisitos de negocio recibidos
 
@@ -48,7 +48,7 @@ El enunciado no especifica fórmula exacta, redondeo, moneda, vigencia/caducidad
 
 ## Vista de componentes
 
-Los formatos Mermaid, Draw.io editable y Archify HTML describen el mismo flujo lógico. Los servicios no acceden a bases de otros servicios: comparten datos mediante APIs/eventos. La arquitectura no presupone una transacción ACID distribuida.
+Mermaid, Draw.io y el nuevo HTML Archify representan el flujo lógico propuesto con canales, proveedor de identidad y caché opcional; el HTML agrupa los canales en un único nodo. El HTML Archify anterior se conserva como artefacto histórico: no representa la relación entre el proveedor OIDC y el gateway y muestra la caché para Customer en lugar de Purchase & Accrual. Ninguna de estas vistas demuestra una implementación. Los servicios propuestos no acceden a bases de otros servicios: comparten datos mediante APIs/eventos. La arquitectura no presupone una transacción ACID distribuida.
 
 - Compra: POS/canal → Gateway → Purchase & Accrual → Rules y Ledger → evento de dominio → Reporting.
 - Redención: cliente → Gateway → Redemption → Ledger para reservar/consumir puntos; la coordinación entre almacenes se trata como saga con estado e idempotencia.
@@ -116,6 +116,8 @@ Los iconos verificados están colocados junto al nodo de infraestructura corresp
 
 La comprobación estructural reconoce el markup y las relaciones, pero no confirma visualmente el servicio representado por cada icono. No se abrieron los Draw.io en diagrams.net; por tanto, no se afirma revisión visual independiente. Ver [inventario de fuentes y decisiones](#fuentes-y-decisiones-de-proveedor).
 
+En la revisión del 10 de noviembre de 2026, `check_drawio.py` no encontró errores en los cuatro Draw.io. AWS y componentes no produjeron advertencias; Azure y Google Cloud advirtieron que la detección de SVG embebidos no verifica por sí sola el proveedor ni la correspondencia del icono con el servicio. Se conserva el inventario anterior como referencia, sin afirmar una nueva inspección visual de esos SVG.
+
 ## Decisiones y preguntas abiertas
 
 1. Precisar moneda, cálculo, redondeo, topes y versión/vigencia de reglas.
@@ -132,7 +134,7 @@ La comprobación estructural reconoce el markup y las relaciones, pero no confir
 ## Fuentes y decisiones de proveedor
 
 - Requisitos funcionales: enunciado de sistema de recompensas aportado por el usuario en la conversación (fuente de requisitos, no evidencia de implementación).
-- Arquitectura base Fastify: `.agents/context.md`, `.agents/architecture/backend.architecture.md`, `README.md` (contexto del chasis local; workspace sin commit Git verificable).
+- Arquitectura base Fastify: `.agents/context.md`, `.agents/architecture/backend.architecture.md`, `README.md` y `docs/main.md` (contexto del chasis local; HEAD `f0004af25decc95e9879514ededfcf1081e93e4a` y árbol de trabajo con cambios sin confirmar).
 - AWS Cognito authorizer y API Gateway JWT: [Cognito authorizer para API Gateway REST](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-integrate-with-cognito.html), [JWT authorizer para HTTP API](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-jwt-authorizer.html), [integraciones privadas/VPC Link](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-private.html).
 - Azure JWT en API Management: [validar tokens Entra](https://learn.microsoft.com/en-us/azure/api-management/validate-azure-ad-token-policy) y [visión de autenticación/autorización APIM](https://learn.microsoft.com/en-us/azure/api-management/authentication-authorization-overview).
 - Google Cloud API Gateway valida JWT Google/OIDC: [JWT de usuarios](https://docs.cloud.google.com/api-gateway/docs/authenticating-users-jwt) y [Google ID tokens](https://docs.cloud.google.com/api-gateway/docs/authenticating-users-googleid).
@@ -147,6 +149,6 @@ La comprobación estructural reconoce el markup y las relaciones, pero no confir
 - [Infraestructura AWS propuesta](aws-infrastructure.drawio)
 - [Infraestructura Azure propuesta](azure-infrastructure.drawio)
 - [Infraestructura Google Cloud propuesta](google-cloud-infrastructure.drawio)
-- Archify: [componentes](component-diagram.html), [AWS](aws-infrastructure.html), [Azure](azure-infrastructure.html) y [Google Cloud](google-cloud-infrastructure.html); candidatos en `../../.archify/architecture-rewards-reference-20261107-2230/`.
-- Los cuatro HTML se generaron con el renderer nativo Archify y la validación directa de layout pasó. `finalize` devolvió `spawnSync ... node.exe EPERM`, por lo que no produjo un recibo final completo. Para componentes sí existen sidecars `delivery` y `browser-check` en estado actual/pasado que coinciden con el hash del HTML; aun así, el resumen `finalize` quedó incompleto. AWS, Azure y Google Cloud no tienen recibos de browser-check. No se realizó inspección visual manual del HTML ni de Draw.io.
-- Diagrama previo del chasis: `../arquitectura.html` sigue siendo una fotografía histórica de Express y no se actualiza con evidencia pinneada hasta contar con checkout Git y commit verificable.
+- Archify: [componentes alineados](component-diagram-aligned.html), [candidato de componentes](component-diagram-aligned.candidate.json), [AWS](aws-infrastructure.html), [Azure](azure-infrastructure.html) y [Google Cloud](google-cloud-infrastructure.html). La [vista anterior de componentes](component-diagram.html) se conserva como referencia histórica; los candidatos originales están en `../../.archify/architecture-rewards-reference-20261107-2230/` cuando esa carpeta está disponible.
+- El resumen de `finalize` original para componentes quedó en estado `running`, por lo que ese recibo no demuestra una finalización completa. El 10 de noviembre de 2026 se ejecutó `finalize` para los cuatro candidatos originales en una carpeta local de revisión: las etapas `validate`, `deliver`, `check` y `browser-check` pasaron y los HTML resultantes tienen los mismos hashes SHA-256 que los HTML anteriores publicados aquí. También se creó y validó la vista de componentes alineada, con [resumen de validación](component-diagram-aligned.finalize-summary.json). La herramienta señaló cruces y desvíos en las cuatro vistas; esas advertencias requieren revisión visual. No se inspeccionaron visualmente los diagramas. Los recibos originales se conservan sin cambios; los de la revisión temporal están en `.archify/architecture-rewards-reference-review/` en el workspace revisado y esa carpeta puede no estar versionada.
+- Diagrama previo del chasis: `../arquitectura.html` es una fotografía histórica de Express y no representa el servidor Fastify actual; consulta `../main.md` para el contexto vigente.

@@ -1,22 +1,27 @@
 import bcrypt from "bcrypt";
-import { LoginUserRequestDTO, LoginUserResponseDTO } from "../../dto/login-user.dto";
-import { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
-import { ILoginUserUseCase } from "../../../domain/interfaces/use-cases/users/login-user.usecase.interface";
-import { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
+import { env } from "../../../config/env";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
-import { env } from "../../../config/env";
+import type { IRefreshTokenRepository } from "../../../domain/interfaces/repositories/refresh-token.repository.interface";
+import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
+import type {
+  LoginUserRequestDTO,
+  LoginUserResponseDTO,
+} from "../../dto/login-user.dto";
+import type { ILoginUserUseCase } from "../../interfaces/users/login-user.usecase.interface";
 
 export class LoginUserUseCase implements ILoginUserUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly authService: IAuthService,
+    private readonly refreshTokenRepository: IRefreshTokenRepository,
   ) {}
 
   async execute(data: LoginUserRequestDTO): Promise<LoginUserResponseDTO> {
     const user = await this.userRepository.findByEmail(data.email);
 
-    if (!user) {
+    if (!user?.status) {
       const error = DomainErrors.USER_INVALID_CREDENTIALS;
       throw new DomainException(error.code, error.message, error.statusCode);
     }
@@ -36,6 +41,10 @@ export class LoginUserUseCase implements ILoginUserUseCase {
 
     const token = this.authService.generateToken({ ...tokenPayload, type: "access" });
     const refreshToken = this.authService.generateRefreshToken(tokenPayload);
+    await this.refreshTokenRepository.create(
+      refreshToken,
+      new Date(Date.now() + durationInSeconds(env.jwtRefreshExpiresIn) * 1000),
+    );
 
     const response: LoginUserResponseDTO = {
       token,
