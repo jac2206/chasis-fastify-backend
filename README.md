@@ -106,6 +106,14 @@ JWT_SECRET="<secreto-aleatorio-generado-para-el-entorno>"
 
 `DATABASE_URL` y `JWT_SECRET` son obligatorios. La aplicación informa los nombres faltantes y no inicia; nunca muestra sus valores.
 
+`CORS_ORIGINS` es opcional y contiene los orígenes web autorizados, separados por
+comas (por ejemplo, `https://app.example.com,https://admin.example.com`). Si se
+omite, se permiten únicamente los orígenes de desarrollo local configurados en
+`src/config/env.ts`. Define la lista para cada entorno antes de publicar la API.
+Las solicitudes sin cabecera `Origin`, como las realizadas entre servidores, no
+se restringen mediante CORS. La documentación OpenAPI usa la ubicación desde la
+que se sirve en lugar de fijar una dirección `localhost`.
+
 ---
 
 # 🗄️ Prisma + PostgreSQL
@@ -540,7 +548,7 @@ Prisma
 
 Esto permite reemplazar implementaciones fácilmente y facilita las pruebas.
 
-La implementación activa de usuarios es `UserPrismaRepository`, que usa `src/infraestructure/database/prisma.ts`. El módulo `generic` conserva `GenericRepository` basado en `pg` como ejemplo legacy; los nuevos módulos deben usar Prisma salvo que exista una decisión documentada.
+La implementación activa de usuarios es `UserPrismaRepository`, que usa `src/infraestructure/database/prisma.ts`. Los nuevos módulos deben usar Prisma salvo que exista una decisión documentada.
 
 ---
 
@@ -590,6 +598,17 @@ Los secretos de clientes técnicos se almacenan como hash en
 incluyen en el access token. Las operaciones administrativas requieren el
 scope `service-clients:manage`; no se usa un scope genérico `ADM`.
 
+El listado de usuarios requiere `users:read`; el scope `user` solo permite
+consultar el perfil propio. El listado acepta `page` y `pageSize` (por defecto
+1 y 20; tamaño máximo 100) y devuelve `items`, `page`, `pageSize` y `total`. Los access tokens ya
+emitidos siguen vigentes hasta expirar aunque se deshabilite la identidad.
+Una identidad deshabilitada no puede iniciar sesión ni renovar tokens.
+Los refresh tokens se almacenan como hash y son de
+un solo uso. Un intercambio exitoso reemplaza el token anterior atómicamente;
+reutilizarlo responde `401 INVALID_REFRESH_TOKEN` sin invalidar su sucesor. La
+migración de `refresh_tokens` debe aplicarse antes de desplegar esta versión.
+Las sesiones emitidas antes de esta migración requieren un nuevo login.
+
 Variables opcionales para la vigencia de tokens:
 
 ```env
@@ -614,6 +633,11 @@ Authorization: Bearer <token>
 ---
 
 # ✅ Validación
+
+El chasis conserva `GET /chasis/v1/generic/pokemon/:name` como ejemplo público
+de integración saliente con PokeAPI. Devuelve `name`, `height` y `weight`.
+Un fallo del servicio externo se traduce al error `404 POKEMON_NOT_FOUND`,
+conforme al contrato de este ejemplo.
 
 Los datos de entrada se validan utilizando **Zod**.
 
@@ -673,6 +697,10 @@ La implementación se encuentra en:
 src/infraestructure/logger/
 ```
 
+El cliente HTTP saliente registra únicamente el método y el estado cuando está
+disponible. No registra cabeceras, URL ni mensajes de errores externos, que
+podrían contener credenciales o datos personales.
+
 ---
 
 # 📖 Swagger / OpenAPI
@@ -720,6 +748,9 @@ Validar:
 ```bash
 npm run check
 ```
+
+La verificación de Biome forma parte de las dos pipelines. Excluye los HTML y
+JSON generados bajo `docs/`; el código fuente y las pruebas siguen incluidos.
 
 ---
 

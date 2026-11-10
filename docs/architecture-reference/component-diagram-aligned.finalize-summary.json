@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+    "sha256": "96f1df9296445665263f82c70d9aa5f07e6bb5fc610af9aba82534acc2dd5a20",
+    "bytes": 8586
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+    "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+    "bytes": 877367
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 6997,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 13,
+      "routesOverSuggestedBends": 5
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "gateway-rules",
+            "from": "gateway",
+            "to": "rules",
+            "label": "",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "right": {
+            "id": "rules-db",
+            "from": "rules",
+            "to": "rulesdb",
+            "label": "solo su DB",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            582.25,
+            324
+          ],
+          "sharedNode": "rules"
+        },
+        {
+          "left": {
+            "id": "gateway-accrual",
+            "from": "gateway",
+            "to": "accrual",
+            "label": "",
+            "collectionIndex": 4,
+            "artifactIndex": 5
+          },
+          "right": {
+            "id": "rules-db",
+            "from": "rules",
+            "to": "rulesdb",
+            "label": "solo su DB",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            582.25,
+            338
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-ledger",
+            "from": "gateway",
+            "to": "ledger",
+            "label": "",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "right": {
+            "id": "rules-db",
+            "from": "rules",
+            "to": "rulesdb",
+            "label": "solo su DB",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "point": [
+            582.25,
+            354.32142857142856
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-ledger",
+            "from": "gateway",
+            "to": "ledger",
+            "label": "",
+            "collectionIndex": 5,
+            "artifactIndex": 6
+          },
+          "right": {
+            "id": "accrual-db",
+            "from": "accrual",
+            "to": "accrualdb",
+            "label": "solo su DB",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [
+            584,
+            400.64285714285717
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-reporting",
+            "from": "gateway",
+            "to": "reporting",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "accrual-db",
+            "from": "accrual",
+            "to": "accrualdb",
+            "label": "solo su DB",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [
+            582.5,
+            602.0000000000001
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-reporting",
+            "from": "gateway",
+            "to": "reporting",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "redemption-db",
+            "from": "redemption",
+            "to": "redemptiondb",
+            "label": "solo su DB",
+            "collectionIndex": 12,
+            "artifactIndex": 13
+          },
+          "point": [
+            983.75,
+            607.150000000062
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-reporting",
+            "from": "gateway",
+            "to": "reporting",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "redemption-ledger",
+            "from": "redemption",
+            "to": "ledger",
+            "label": "reserva / consume",
+            "collectionIndex": 16,
+            "artifactIndex": 17
+          },
+          "point": [
+            772,
+            602.0000000000001
+          ]
+        },
+        {
+          "left": {
+            "id": "gateway-reporting",
+            "from": "gateway",
+            "to": "reporting",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "redemption-bus",
+            "from": "redemption",
+            "to": "eventbus",
+            "label": "outbox → eventos",
+            "collectionIndex": 19,
+            "artifactIndex": 20
+          },
+          "point": [
+            955,
+            602.0000000000002
+          ]
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "gateway-redemption",
+            "from": "gateway",
+            "to": "redemption",
+            "label": "",
+            "collectionIndex": 6,
+            "artifactIndex": 7
+          },
+          "bends": 3,
+          "stretch": 1.12
+        },
+        {
+          "relationship": {
+            "id": "gateway-reporting",
+            "from": "gateway",
+            "to": "reporting",
+            "label": "",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "bends": 6,
+          "stretch": 1.218
+        },
+        {
+          "relationship": {
+            "id": "ledger-db",
+            "from": "ledger",
+            "to": "ledgerdb",
+            "label": "solo su DB",
+            "collectionIndex": 11,
+            "artifactIndex": 12
+          },
+          "bends": 3,
+          "stretch": 1
+        },
+        {
+          "relationship": {
+            "id": "redemption-db",
+            "from": "redemption",
+            "to": "redemptiondb",
+            "label": "solo su DB",
+            "collectionIndex": 12,
+            "artifactIndex": 13
+          },
+          "bends": 4,
+          "stretch": 1.045
+        },
+        {
+          "relationship": {
+            "id": "accrual-cache",
+            "from": "accrual",
+            "to": "cache",
+            "label": "opcional",
+            "collectionIndex": 22,
+            "artifactIndex": 23
+          },
+          "bends": 4,
+          "stretch": 1
+        }
+      ],
+      "truncated": true
+    },
+    "hints": [
+      "gateway has 5 relationships facing its right side, which fits 4 ports: make that side at least 88px, or move some of those neighbours so they face another side of gateway.",
+      "gateway → rules and rules → rulesdb cross next to rules: move node gateway or rulesdb so the two reach rules from different sides (for example one level with it, one directly above or below it).",
+      "gateway → accrual crosses rules → rulesdb: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "gateway → ledger crosses rules → rulesdb: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "gateway → ledger crosses accrual → accrualdb: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "gateway → reporting crosses accrual → accrualdb: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "gateway → reporting crosses redemption → redemptiondb: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor.",
+      "gateway → reporting crosses redemption → ledger: move the node of whichever is a branch, return, or second entrance to the other side of the main path, so that relationship runs through an empty corridor."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

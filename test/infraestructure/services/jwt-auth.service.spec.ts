@@ -101,6 +101,7 @@ describe("JwtAuthService", () => {
       {
         algorithm: "HS256",
         expiresIn: "30d",
+        jwtid: expect.any(String),
       },
     );
   });

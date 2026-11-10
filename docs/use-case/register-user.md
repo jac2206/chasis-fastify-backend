@@ -35,11 +35,11 @@ Registra un usuario nuevo, protege su contraseña con bcrypt y lo guarda mediant
 
 | Campo | Tipo | Requerido | Validación |
 | --- | --- | --- | --- |
-| `documentType` | string | Sí | Mínimo 2 caracteres en Zod. El tipo TypeScript de la entidad enumera `CC`, `CE`, `NIT`, `PT`, pero el schema de entrada no restringe esos valores en runtime. |
+| `documentType` | string | Sí | Uno de `CC`, `CE`, `NIT` o `PT`. |
 | `documentNumber` | string | Sí | Mínimo 5 caracteres. |
 | `fullName` | string | Sí | Mínimo 3 caracteres. |
 | `email` | string | Sí | Formato email. |
-| `phone` | string | Sí en el schema | Mínimo 7 caracteres. |
+| `phone` | string | No | Si se envía, mínimo 7 caracteres. Si se omite, se guarda como `null`. |
 | `password` | string | Sí | Además, el caso de uso exige mínimo 8 caracteres, mayúscula y número. |
 
 ## Flujo principal
@@ -71,6 +71,7 @@ Registra un usuario nuevo, protege su contraseña con bcrypt y lo guarda mediant
 
 - Repositorio: `src/infraestructure/database/repositories/user-prisma.repository.ts`.
 - El `id` de respuesta es el número de documento, no el UUID interno de Prisma.
+- El número de documento tiene una restricción única en la base de datos. El caso de uso no comprueba ese duplicado antes de guardar ni traduce expresamente ese error a una excepción de dominio.
 
 ## Diagrama de flujo
 

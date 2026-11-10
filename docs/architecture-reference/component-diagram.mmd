@@ -4,6 +4,7 @@ flowchart LR
     POS[POS / canal digital] -->|Compra + idempotency key| Gateway
     Identity[Proveedor OIDC<br/>Cognito / Entra / Google] -.->|emite JWT| Web
     Identity -.->|emite JWT| Mobile
+    Identity -.->|issuer / JWKS| Gateway
     Gateway --> Customer[Customer Service]
     Gateway --> Rules[Rules Service]
     Gateway --> Accrual[Purchase & Accrual Service]

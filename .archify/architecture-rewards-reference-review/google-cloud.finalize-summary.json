@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\google-cloud-candidate.json",
+    "sha256": "68aae9d6b09f0124798764a3859b0c5fb6edb1fd462a73e348a97966833d6a75",
+    "bytes": 5229
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\google-cloud.html",
+    "sha256": "b0e18604d12a14de929e759579aab344be8ec3b5f1872cc43f35ad36161cf952",
+    "bytes": 857543
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\google-cloud.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\google-cloud.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\google-cloud.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4078,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 2,
+      "routesOverSuggestedBends": 2
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "gke-cache",
+            "from": "gke",
+            "to": "redis",
+            "label": "opt-in, no saldo",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "gke-bus",
+            "from": "gke",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "point": [1180, 474],
+          "sharedNode": "gke"
+        },
+        {
+          "left": {
+            "id": "gke-bus",
+            "from": "gke",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "right": {
+            "id": "subs-gke",
+            "from": "queues",
+            "to": "gke",
+            "label": "consumo idempotente",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [1187.5, 474],
+          "sharedNode": "gke"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "gateway-auth",
+            "from": "gateway",
+            "to": "identity",
+            "label": "valida issuer/JWKS/audience",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 3,
+          "stretch": 1.225
+        },
+        {
+          "relationship": {
+            "id": "bus-subs",
+            "from": "bus",
+            "to": "queues",
+            "label": "suscripción por consumidor",
+            "collectionIndex": 9,
+            "artifactIndex": 10
+          },
+          "bends": 3,
+          "stretch": 1.215
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "gke → redis and gke → bus cross next to gke: move node redis or bus so the two reach gke from different sides (for example one level with it, one directly above or below it).",
+      "gke → bus and queues → gke cross next to gke: move node bus or queues so the two reach gke from different sides (for example one level with it, one directly above or below it).",
+      "gateway → identity needs 3 bends: move node gateway or identity so they share a row or column with matching centers, or sit diagonally with a clear corner.",
+      "bus → queues needs 3 bends: move node bus or queues so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

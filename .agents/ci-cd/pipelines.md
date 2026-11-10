@@ -9,7 +9,7 @@ La pipeline principal del repositorio es GitHub Actions, definida en `.github/wo
 - Cliente de base de datos: `npm run prisma:generate` genera Prisma Client antes de compilar o probar.
 - Pruebas: `npm run test:coverage` ejecuta Vitest con cobertura V8.
 - Compilación: `npm run build` ejecuta TypeScript (`tsc`).
-- El repositorio también ofrece `npm run check` para Biome y `npm run prisma:validate` para validar el esquema. Ninguno de los dos aparece en las pipelines revisadas.
+- Biome: `npm run check` se ejecuta en ambas pipelines. La validacion de Prisma (`npm run prisma:validate`) sigue disponible localmente.
 - Las pipelines no aplican migraciones de base de datos.
 
 ## Flujo principal: GitHub Actions
@@ -18,7 +18,7 @@ Archivo: `.github/workflows/ci_cd.yml`.
 
 - Se activa con push a `master` y pull request hacia `develop` o `master`.
 - Los trabajos se ejecutan en Ubuntu y siguen la secuencia `test` → `build` → `sonar`.
-- `test` instala dependencias, genera Prisma Client y ejecuta cobertura.
+- `test` instala dependencias, ejecuta Biome, genera Prisma Client y ejecuta cobertura.
 - `build` vuelve a instalar dependencias, genera Prisma Client y compila.
 - `sonar` vuelve a instalar dependencias, genera Prisma Client, ejecuta cobertura y llama a SonarQube Scan. Usa el secreto `TOKEN_SONAR` como `SONAR_TOKEN`.
 - `deploy` depende de `sonar` y solo corre en push a `master`; instala Railway CLI y ejecuta `railway up --service chasis-fastify-backend --ci` con el secreto `RAILWAY_TOKEN`.
@@ -29,7 +29,7 @@ Archivo: `azure-pipelines.yml`.
 
 - Se activa con push a `master` y pull request hacia `develop` o `master`.
 - Usa Ubuntu y Node.js 24. Las etapas declaradas son `Test` → `Build` → `Sonar` → `Deploy`.
-- `Test` instala dependencias, genera Prisma Client y ejecuta cobertura.
+- `Test` instala dependencias, ejecuta Biome, genera Prisma Client y ejecuta cobertura.
 - `Build` instala dependencias, genera Prisma Client y compila.
 - `Sonar` instala dependencias, genera Prisma Client y cobertura. El YAML contiene un comentario que indica que SonarCloud debe configurarse allí; no declara un paso de análisis.
 - `Deploy` está condicionado a una ejecución CI exitosa en `master`; instala Railway CLI y ejecuta `railway up --service chasis-fast-back --ci` con `RAILWAY_TOKEN`.
@@ -38,7 +38,7 @@ Archivo: `azure-pipelines.yml`.
 
 - Los nombres de servicio de Railway difieren: GitHub Actions usa `chasis-fastify-backend` y Azure usa `chasis-fast-back`. El nombre del paquete en `package.json` es `chasis-fastify-back`. Confirma cuál servicio existe antes de depender de una pipeline de despliegue; este documento no cambia esa configuración.
 - La etapa `Sonar` de Azure no tiene configurado un análisis en el YAML actual, mientras que GitHub Actions sí invoca una acción de escaneo.
-- Biome (`npm run check`) y la validación de esquema Prisma (`npm run prisma:validate`) no son controles configurados en ninguna de estas dos pipelines.
+- La validacion de esquema Prisma (`npm run prisma:validate`) no es un control configurado en las pipelines.
 
 ## Límites operativos
 

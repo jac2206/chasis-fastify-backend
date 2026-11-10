@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "614ddebc-7bdf-4b57-b02d-175080d2ab27",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.candidate.json",
+  "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\docs\\architecture-reference\\component-diagram-aligned.html",
+  "specification": {
+    "sha256": "96f1df9296445665263f82c70d9aa5f07e6bb5fc610af9aba82534acc2dd5a20",
+    "bytes": 8586
+  },
+  "artifact": {
+    "sha256": "b9f875d1bdae375bf8701f72cc6b88d13033b06d0f69baf13dfa0985cde6c045",
+    "bytes": 877367
+  }
+}

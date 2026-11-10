@@ -9,6 +9,7 @@ vi.mock("bcrypt", () => ({
 }));
 
 describe("LoginUserUseCase", () => {
+  const refreshTokenRepository = { create: vi.fn(), rotate: vi.fn() };
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -22,6 +23,7 @@ describe("LoginUserUseCase", () => {
         ),
       findByDocument: vi.fn(),
       findAll: vi.fn(),
+      findPage: vi.fn(),
       save: vi.fn(),
     };
     const authService: IAuthService = {
@@ -31,7 +33,11 @@ describe("LoginUserUseCase", () => {
       generateRefreshToken: vi.fn().mockReturnValue("refresh-token"),
     };
 
-    const result = await new LoginUserUseCase(userRepository, authService).execute({
+    const result = await new LoginUserUseCase(
+      userRepository,
+      authService,
+      refreshTokenRepository,
+    ).execute({
       email: "user@test.com",
       password: "Password1",
     });
@@ -53,6 +59,7 @@ describe("LoginUserUseCase", () => {
       findByEmail: vi.fn().mockResolvedValue(null),
       findByDocument: vi.fn(),
       findAll: vi.fn(),
+      findPage: vi.fn(),
       save: vi.fn(),
     };
     const authService: IAuthService = {
@@ -63,10 +70,12 @@ describe("LoginUserUseCase", () => {
     };
 
     await expect(
-      new LoginUserUseCase(userRepository, authService).execute({
-        email: "missing@test.com",
-        password: "Password1",
-      }),
+      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
+        {
+          email: "missing@test.com",
+          password: "Password1",
+        },
+      ),
     ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
 
     const bcrypt = await import("bcrypt");
@@ -85,6 +94,7 @@ describe("LoginUserUseCase", () => {
         ),
       findByDocument: vi.fn(),
       findAll: vi.fn(),
+      findPage: vi.fn(),
       save: vi.fn(),
     };
     const authService: IAuthService = {
@@ -95,12 +105,40 @@ describe("LoginUserUseCase", () => {
     };
 
     await expect(
-      new LoginUserUseCase(userRepository, authService).execute({
-        email: "user@test.com",
-        password: "WrongPassword1",
-      }),
+      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
+        {
+          email: "user@test.com",
+          password: "WrongPassword1",
+        },
+      ),
     ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
     expect(authService.generateToken).not.toHaveBeenCalled();
     expect(authService.generateRefreshToken).not.toHaveBeenCalled();
+  });
+
+  it("rejects a disabled user without issuing tokens", async () => {
+    const userRepository: IUserRepository = {
+      findByEmail: vi
+        .fn()
+        .mockResolvedValue(
+          new User("CC", "12345", "User", "user@test.com", null, "hash", false, false),
+        ),
+      findByDocument: vi.fn(),
+      findAll: vi.fn(),
+      findPage: vi.fn(),
+      save: vi.fn(),
+    };
+    const authService: IAuthService = {
+      verifyToken: vi.fn(),
+      verifyRefreshToken: vi.fn(),
+      generateToken: vi.fn(),
+      generateRefreshToken: vi.fn(),
+    };
+    await expect(
+      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
+        { email: "user@test.com", password: "Password1" },
+      ),
+    ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
+    expect(authService.generateToken).not.toHaveBeenCalled();
   });
 });

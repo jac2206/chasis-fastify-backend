@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-20261107-2230\\azure-candidate.json",
+    "sha256": "2e95ecd0b9c765fe282c45acc3b010dcae22d217639ba1858cb014789484afb0",
+    "bytes": 5099
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\azure.html",
+    "sha256": "c3af5c345ba1e670e5de254e4820d01c9230237fec326964d6582ab290d2ae7b",
+    "bytes": 857064
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\azure.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\azure.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\azure.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-10T20:16:52.010Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 4329,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  },
+  "visualReviewRecommendation": {
+    "action": "inspect-route-readability",
+    "signals": {
+      "resolvedCrossovers": 2,
+      "routesOverSuggestedBends": 1
+    },
+    "reason": "Automated gates passed, but crossings or detours still need perceptual review before claiming visual quality.",
+    "affectedRoutes": {
+      "crossings": [
+        {
+          "left": {
+            "id": "aks-cache",
+            "from": "aks",
+            "to": "redis",
+            "label": "opt-in, no saldo",
+            "collectionIndex": 7,
+            "artifactIndex": 8
+          },
+          "right": {
+            "id": "aks-bus",
+            "from": "aks",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "point": [1177.5, 474],
+          "sharedNode": "aks"
+        },
+        {
+          "left": {
+            "id": "aks-bus",
+            "from": "aks",
+            "to": "bus",
+            "label": "outbox / eventos",
+            "collectionIndex": 8,
+            "artifactIndex": 9
+          },
+          "right": {
+            "id": "queues-aks",
+            "from": "queues",
+            "to": "aks",
+            "label": "consumo idempotente",
+            "collectionIndex": 10,
+            "artifactIndex": 11
+          },
+          "point": [1185, 474],
+          "sharedNode": "aks"
+        }
+      ],
+      "detours": [
+        {
+          "relationship": {
+            "id": "gateway-auth",
+            "from": "gateway",
+            "to": "identity",
+            "label": "valida issuer/audience",
+            "collectionIndex": 3,
+            "artifactIndex": 4
+          },
+          "bends": 3,
+          "stretch": 1.231
+        }
+      ],
+      "truncated": false
+    },
+    "hints": [
+      "aks → redis and aks → bus cross next to aks: move node redis or bus so the two reach aks from different sides (for example one level with it, one directly above or below it).",
+      "aks → bus and queues → aks cross next to aks: move node bus or queues so the two reach aks from different sides (for example one level with it, one directly above or below it).",
+      "gateway → identity needs 3 bends: move node gateway or identity so they share a row or column with matching centers, or sit diagonally with a clear corner."
+    ],
+    "repair": "Trace these relationships at the desktop viewport. For Architecture, use references/architecture-layout-repair.md: reflow a blocked main path or tangled connected scene, and repair an isolated defect locally only when the surrounding composition is accepted. Preserve all semantic content and user-fixed geometry. Rerun finalize once after the edit."
+  }
+}

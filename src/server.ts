@@ -8,6 +8,7 @@ import {
   validatorCompiler,
 } from "@fastify/type-provider-zod";
 import fastify from "fastify";
+import { env } from "./config/env";
 import healthController from "./infraestructure/controllers/health.controller";
 import v1Controllers from "./infraestructure/controllers/v1";
 import { registerErrorHandler } from "./infraestructure/hooks/error.hook";
@@ -16,12 +17,6 @@ import { requestScopePlugin } from "./infraestructure/plugins/request-scope.plug
 
 const API_PREFIX = "/chasis";
 const API_V1_PREFIX = `${API_PREFIX}/v1`;
-const ALLOWED_ORIGINS = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://localhost:4002",
-  "https://loyalty-web-mocha.vercel.app",
-];
 
 export const createServer = () => {
   const app = fastify({ logger: false });
@@ -31,7 +26,7 @@ export const createServer = () => {
 
   app.register(fastifyCors, {
     origin: (origin, callback) => {
-      if (!origin || ALLOWED_ORIGINS.includes(origin)) {
+      if (!origin || env.corsOrigins.includes(origin)) {
         callback(null, true);
         return;
       }
@@ -44,7 +39,6 @@ export const createServer = () => {
   app.register(fastifySwagger, {
     openapi: {
       info: { title: "Chasis Fastify API", version: "1.0.0" },
-      servers: [{ url: "http://localhost:3000" }],
       components: {
         securitySchemes: {
           bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },

@@ -52,3 +52,15 @@ export const getUsersResponseSchema = z.object({
   hasPin: z.boolean(),
   status: z.boolean(),
 });
+
+export const getUsersQuerySchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(20),
+});
+
+export const getUsersPageSchema = z.object({
+  items: z.array(getUsersResponseSchema),
+  page: z.number().int().positive(),
+  pageSize: z.number().int().positive(),
+  total: z.number().int().nonnegative(),
+});

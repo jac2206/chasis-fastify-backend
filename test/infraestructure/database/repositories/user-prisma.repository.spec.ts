@@ -3,7 +3,7 @@ import { User } from "../../../../src/domain/entities/user.entity";
 
 vi.mock("../../../../src/infraestructure/database/prisma", () => ({
   prisma: {
-    users: { create: vi.fn(), findUnique: vi.fn(), findMany: vi.fn() },
+    users: { create: vi.fn(), findUnique: vi.fn(), findMany: vi.fn(), count: vi.fn() },
   },
 }));
 
@@ -127,5 +127,18 @@ describe("UserPrismaRepository", () => {
     expect(result).toHaveLength(2);
     expect(result[0]).toBeInstanceOf(User);
     expect(result[1].documentNumber).toBe("99887766");
+  });
+
+  it("queries a stable page and counts all users", async () => {
+    vi.mocked(prisma.users.findMany).mockResolvedValue([makeRow()] as never);
+    vi.mocked(prisma.users.count).mockResolvedValue(21 as never);
+    const result = await repository.findPage(2, 20);
+    expect(prisma.users.findMany).toHaveBeenCalledWith({
+      orderBy: { document_number: "asc" },
+      skip: 20,
+      take: 20,
+    });
+    expect(result.total).toBe(21);
+    expect(result.users).toHaveLength(1);
   });
 });

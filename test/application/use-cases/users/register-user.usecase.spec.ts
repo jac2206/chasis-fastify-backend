@@ -12,6 +12,7 @@ describe("RegisterUserUseCase", () => {
     findByEmail: vi.fn(),
     findByDocument: vi.fn(),
     findAll: vi.fn(),
+    findPage: vi.fn(),
   };
 
   const input = {

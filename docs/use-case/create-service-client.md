@@ -41,8 +41,8 @@ Crea un cliente técnico, almacena su secreto como hash y devuelve el secreto en
 
 ## Flujo principal
 
-1. Se autentica y autoriza la solicitud.
-2. Se valida el body.
+1. Se valida el body.
+2. Se autentica y autoriza la solicitud.
 3. Se comprueba que no exista el `clientId`.
 4. Se genera un secreto aleatorio base64url.
 5. Se guarda el hash bcrypt de costo `12`, junto con los scopes.
@@ -53,7 +53,7 @@ Crea un cliente técnico, almacena su secreto como hash y devuelve el secreto en
 ### Éxito (`201`)
 
 ```json
-{ "clientId": "billing-service", "clientSecret": "<secret>", "scopes": ["generic"] }
+{ "clientId": "billing-service", "clientSecret": "<secret>", "scopes": ["users:read"] }
 ```
 
 ### Errores
@@ -74,14 +74,14 @@ Crea un cliente técnico, almacena su secreto como hash y devuelve el secreto en
 
 ```mermaid
 flowchart TD
-    A[Cliente autorizado] --> B[authenticateJWT]
+    A[Cliente HTTP] --> D{¿Body válido según Zod?}
+    D -- No --> V[VALIDATION_ERROR 422]
+    D -- Sí --> B[authenticateJWT]
     B -->|Token faltante o inválido| X[401 UNAUTHORIZED / INVALID_TOKEN]
     B -->|Token válido| C[authorizeScopes: service-clients:manage]
     C -->|Sin claim scopes| Y[403 FORBIDDEN]
-    C -->|Scope ausente| Z[401 UNAUTHORIZED con espacio final]
-    C -->|Scope presente| D{¿Body válido según Zod?}
-    D -- No --> V[VALIDATION_ERROR 422]
-    D -- Sí --> E{¿clientId existente?}
+    C -->|Scope ausente| Z[403 FORBIDDEN]
+    C -->|Scope presente| E{¿clientId existente?}
     E -- Sí --> F[SERVICE_CLIENT_ALREADY_EXISTS 409]
     E -- No --> G[Generar secreto y hash bcrypt]
     G --> H[(PostgreSQL: service_clients)]

@@ -4,11 +4,11 @@ import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
 import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
-import type { IClientCredentialsUseCase } from "../../../domain/interfaces/use-cases/auth/client-credentials.usecase.interface";
 import type {
   ClientCredentialsRequestDTO,
   ClientCredentialsResponseDTO,
 } from "../../dto/client-credentials.dto";
+import type { IClientCredentialsUseCase } from "../../interfaces/auth/client-credentials.usecase.interface";
 
 export class ClientCredentialsUseCase implements IClientCredentialsUseCase {
   constructor(

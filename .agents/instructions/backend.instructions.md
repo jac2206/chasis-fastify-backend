@@ -9,11 +9,11 @@
 ## Lista de cambios para una capacidad nueva
 
 1. Entidad o value object e invariantes en `domain`.
-2. Puerto de repositorio/adaptador y contrato del caso de uso en `domain/interfaces`.
+2. Puerto de repositorio/adaptador en `domain/interfaces`; contrato del caso de uso en `application/interfaces`.
 3. `DomainErrors` y `DomainException` para fallos previstos.
 4. DTOs y caso de uso en `application`.
 5. Tests unitarios del caso de uso con dobles tipados.
-6. Adaptador/repository y su prueba. Para persistencia Prisma, modifica `prisma/models/`, valida, migra y regenera el cliente; no edites `src/generated/prisma/` a mano. Para el repositorio `generic` legacy, conserva SQL parametrizado con `pg`.
+6. Adaptador/repository y su prueba. Para persistencia Prisma, modifica `prisma/models/`, valida, migra y regenera el cliente; no edites `src/generated/prisma/` a mano. Parametriza cualquier consulta SQL directa.
 7. Schema Zod, controlador y ruta registrada en un plugin Fastify.
 8. Registro Awilix, plugin/ruta Fastify y prueba HTTP con `app.inject()`.
 9. Documentación OpenAPI/Swagger y comandos de verificación.

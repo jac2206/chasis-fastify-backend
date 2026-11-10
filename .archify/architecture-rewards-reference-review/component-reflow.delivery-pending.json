@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "command": "deliver",
+  "status": "pending",
+  "receiptId": "52cfb1de-2ca4-441a-b5be-5db2941b65d9",
+  "input": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow-candidate.json",
+  "output": "D:\\Codigos\\Fastify\\chasis-fastify-ts\\.archify\\architecture-rewards-reference-review\\component-reflow.html"
+}
