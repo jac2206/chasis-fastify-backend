@@ -58,6 +58,7 @@ Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para rec
 - [Registrar usuario](use-case/register-user.md) — `POST /chasis/v1/users/register`
 - [Iniciar sesión](use-case/login-user.md) — `POST /chasis/v1/auth/login`
 - [Renovar tokens](use-case/refresh-tokens.md) — `POST /chasis/v1/auth/refresh`
+- [Cerrar sesión](use-case/logout.md) — `POST /chasis/v1/auth/logout`
 - [Consultar usuario actual](use-case/get-current-user.md) — `GET /chasis/v1/users/me`
 - [Listar usuarios](use-case/list-users.md) — `GET /chasis/v1/users`
 
@@ -70,7 +71,7 @@ Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para rec
 
 ## Autenticación y autorización
 
-Los JWT se firman con HS256 usando `JWT_SECRET`, con valores predeterminados de `15m` para tokens de acceso y `30d` para tokens de renovación. El listado paginado requiere `users:read`, el perfil actual requiere `user` y la administración de clientes requiere `service-clients:manage`. Los refresh tokens son de un solo uso; su hash se reemplaza en una transacción. Los access tokens emitidos continúan válidos hasta expirar aunque se deshabilite la identidad.
+Los JWT se firman con HS256 usando `JWT_SECRET`, con valores predeterminados de `15m` para tokens de acceso y `30d` para tokens de renovación. El listado paginado requiere `users:read`, el perfil actual requiere `user` y la administración de clientes requiere `service-clients:manage`. Los refresh tokens son de un solo uso; su hash se reemplaza en una transacción. Logout elimina el hash del refresh presentado; los access tokens emitidos continúan válidos hasta expirar aunque se cierre sesión o se deshabilite la identidad.
 
 La aplicación exige `JWT_SECRET` y `DATABASE_URL` al iniciar.
 

@@ -37,6 +37,13 @@ describe("RefreshTokenRepository", () => {
     expect(database.execute).toHaveBeenCalledTimes(1);
   });
 
+  it("revokes only the supplied token hash", async () => {
+    await new RefreshTokenRepository().revoke("refresh-to-revoke");
+    const values = database.execute.mock.calls[0].slice(1);
+    expect(values[0]).toMatch(/^[a-f0-9]{64}$/);
+    expect(values).not.toContain("refresh-to-revoke");
+  });
+
   it("inserts the replacement in the same transaction after consuming the token", async () => {
     database.execute.mockResolvedValueOnce(1).mockResolvedValueOnce(1);
     expect(await new RefreshTokenRepository().rotate("old", "new", new Date())).toBe(

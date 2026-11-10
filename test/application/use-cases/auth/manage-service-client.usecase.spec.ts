@@ -1,9 +1,15 @@
+import bcrypt from "bcrypt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ManageServiceClientUseCase } from "../../../../src/application/use-cases/auth/manage-service-client.usecase";
 import type { DomainException } from "../../../../src/domain/exceptions/domain.exception";
 import type { IServiceClientRepository } from "../../../../src/domain/interfaces/repositories/service-client.repository.interface";
 
 vi.mock("bcrypt", () => ({ default: { hash: vi.fn() } }));
+
+const passwordHasher = {
+  hash: async (value: string, cost: number) => bcrypt.hash(value, cost),
+  compare: async (value: string, hash: string) => bcrypt.compare(value, hash),
+};
 
 describe("ManageServiceClientUseCase", () => {
   const repository: IServiceClientRepository = {
@@ -28,7 +34,10 @@ describe("ManageServiceClientUseCase", () => {
       status: true,
     });
 
-    const result = await new ManageServiceClientUseCase(repository).create({
+    const result = await new ManageServiceClientUseCase(
+      repository,
+      passwordHasher,
+    ).create({
       clientId: "billing-service",
       scopes: ["transactions:read"],
     });
@@ -54,7 +63,7 @@ describe("ManageServiceClientUseCase", () => {
     });
 
     await expect(
-      new ManageServiceClientUseCase(repository).create({
+      new ManageServiceClientUseCase(repository, passwordHasher).create({
         clientId: "billing-service",
         scopes: [],
       }),
@@ -73,9 +82,10 @@ describe("ManageServiceClientUseCase", () => {
       status: true,
     });
 
-    const result = await new ManageServiceClientUseCase(repository).rotateSecret(
-      "billing-service",
-    );
+    const result = await new ManageServiceClientUseCase(
+      repository,
+      passwordHasher,
+    ).rotateSecret("billing-service");
 
     const bcrypt = await import("bcrypt");
     expect(result.clientId).toBe("billing-service");
@@ -91,7 +101,9 @@ describe("ManageServiceClientUseCase", () => {
     vi.mocked(repository.findByClientId).mockResolvedValue(null);
 
     await expect(
-      new ManageServiceClientUseCase(repository).rotateSecret("unknown"),
+      new ManageServiceClientUseCase(repository, passwordHasher).rotateSecret(
+        "unknown",
+      ),
     ).rejects.toMatchObject({ code: "SERVICE_CLIENT_NOT_FOUND", statusCode: 404 });
     expect(repository.updateSecret).not.toHaveBeenCalled();
   });
@@ -105,7 +117,9 @@ describe("ManageServiceClientUseCase", () => {
     });
 
     await expect(
-      new ManageServiceClientUseCase(repository).disable("billing-service"),
+      new ManageServiceClientUseCase(repository, passwordHasher).disable(
+        "billing-service",
+      ),
     ).resolves.toEqual({ clientId: "billing-service", status: false });
     expect(repository.updateStatus).toHaveBeenCalledWith("billing-service", false);
   });
@@ -114,7 +128,7 @@ describe("ManageServiceClientUseCase", () => {
     vi.mocked(repository.findByClientId).mockResolvedValue(null);
 
     await expect(
-      new ManageServiceClientUseCase(repository).disable("unknown"),
+      new ManageServiceClientUseCase(repository, passwordHasher).disable("unknown"),
     ).rejects.toMatchObject({ code: "SERVICE_CLIENT_NOT_FOUND", statusCode: 404 });
     expect(repository.updateStatus).not.toHaveBeenCalled();
   });

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ClientCredentialsUseCase } from "../../../../src/application/use-cases/auth/client-credentials.usecase";
 import type { IServiceClientRepository } from "../../../../src/domain/interfaces/repositories/service-client.repository.interface";
@@ -6,6 +7,12 @@ import type { IAuthService } from "../../../../src/domain/interfaces/services/au
 vi.mock("bcrypt", () => ({
   default: { compare: vi.fn() },
 }));
+
+const passwordHasher = {
+  hash: async (value: string, cost: number) => bcrypt.hash(value, cost),
+  compare: async (value: string, hash: string) => bcrypt.compare(value, hash),
+};
+const tokenDurations = { accessSeconds: 900, refreshSeconds: 2592000 };
 
 describe("ClientCredentialsUseCase", () => {
   const repository: IServiceClientRepository = {
@@ -35,7 +42,12 @@ describe("ClientCredentialsUseCase", () => {
       status: true,
     });
 
-    const result = await new ClientCredentialsUseCase(repository, authService).execute({
+    const result = await new ClientCredentialsUseCase(
+      repository,
+      authService,
+      passwordHasher,
+      tokenDurations,
+    ).execute({
       clientId: "billing-service",
       clientSecret: "secret",
     });
@@ -56,7 +68,12 @@ describe("ClientCredentialsUseCase", () => {
     vi.mocked(repository.findByClientId).mockResolvedValue(null);
 
     await expect(
-      new ClientCredentialsUseCase(repository, authService).execute({
+      new ClientCredentialsUseCase(
+        repository,
+        authService,
+        passwordHasher,
+        tokenDurations,
+      ).execute({
         clientId: "unknown",
         clientSecret: "secret",
       }),
@@ -74,7 +91,12 @@ describe("ClientCredentialsUseCase", () => {
     });
 
     await expect(
-      new ClientCredentialsUseCase(repository, authService).execute({
+      new ClientCredentialsUseCase(
+        repository,
+        authService,
+        passwordHasher,
+        tokenDurations,
+      ).execute({
         clientId: "billing-service",
         clientSecret: "secret",
       }),
@@ -93,7 +115,12 @@ describe("ClientCredentialsUseCase", () => {
     });
 
     await expect(
-      new ClientCredentialsUseCase(repository, authService).execute({
+      new ClientCredentialsUseCase(
+        repository,
+        authService,
+        passwordHasher,
+        tokenDurations,
+      ).execute({
         clientId: "billing-service",
         clientSecret: "wrong-secret",
       }),

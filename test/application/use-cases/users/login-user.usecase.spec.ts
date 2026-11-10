@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { LoginUserUseCase } from "../../../../src/application/use-cases/users/login-user.usecase";
 import { User } from "../../../../src/domain/entities/user.entity";
@@ -8,8 +9,14 @@ vi.mock("bcrypt", () => ({
   default: { compare: vi.fn().mockResolvedValue(true) },
 }));
 
+const passwordHasher = {
+  hash: async (value: string, cost: number) => bcrypt.hash(value, cost),
+  compare: async (value: string, hash: string) => bcrypt.compare(value, hash),
+};
+const tokenDurations = { accessSeconds: 900, refreshSeconds: 2592000 };
+
 describe("LoginUserUseCase", () => {
-  const refreshTokenRepository = { create: vi.fn(), rotate: vi.fn() };
+  const refreshTokenRepository = { create: vi.fn(), rotate: vi.fn(), revoke: vi.fn() };
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -37,6 +44,8 @@ describe("LoginUserUseCase", () => {
       userRepository,
       authService,
       refreshTokenRepository,
+      passwordHasher,
+      tokenDurations,
     ).execute({
       email: "user@test.com",
       password: "Password1",
@@ -70,12 +79,16 @@ describe("LoginUserUseCase", () => {
     };
 
     await expect(
-      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
-        {
-          email: "missing@test.com",
-          password: "Password1",
-        },
-      ),
+      new LoginUserUseCase(
+        userRepository,
+        authService,
+        refreshTokenRepository,
+        passwordHasher,
+        tokenDurations,
+      ).execute({
+        email: "missing@test.com",
+        password: "Password1",
+      }),
     ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
 
     const bcrypt = await import("bcrypt");
@@ -105,12 +118,16 @@ describe("LoginUserUseCase", () => {
     };
 
     await expect(
-      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
-        {
-          email: "user@test.com",
-          password: "WrongPassword1",
-        },
-      ),
+      new LoginUserUseCase(
+        userRepository,
+        authService,
+        refreshTokenRepository,
+        passwordHasher,
+        tokenDurations,
+      ).execute({
+        email: "user@test.com",
+        password: "WrongPassword1",
+      }),
     ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
     expect(authService.generateToken).not.toHaveBeenCalled();
     expect(authService.generateRefreshToken).not.toHaveBeenCalled();
@@ -135,9 +152,13 @@ describe("LoginUserUseCase", () => {
       generateRefreshToken: vi.fn(),
     };
     await expect(
-      new LoginUserUseCase(userRepository, authService, refreshTokenRepository).execute(
-        { email: "user@test.com", password: "Password1" },
-      ),
+      new LoginUserUseCase(
+        userRepository,
+        authService,
+        refreshTokenRepository,
+        passwordHasher,
+        tokenDurations,
+      ).execute({ email: "user@test.com", password: "Password1" }),
     ).rejects.toMatchObject({ code: "USER_INVALID_CREDENTIALS", statusCode: 401 });
     expect(authService.generateToken).not.toHaveBeenCalled();
   });

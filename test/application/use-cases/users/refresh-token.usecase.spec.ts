@@ -7,6 +7,7 @@ describe("RefreshTokenUseCase", () => {
   const refreshTokenRepository = {
     create: vi.fn(),
     rotate: vi.fn().mockResolvedValue(true),
+    revoke: vi.fn(),
   };
   const userRepository = {
     findByDocument: vi.fn().mockResolvedValue({ status: true }),
@@ -20,6 +21,7 @@ describe("RefreshTokenUseCase", () => {
       refreshTokenRepository,
       userRepository as never,
       serviceClientRepository as never,
+      { accessSeconds: 900, refreshSeconds: 2592000 },
     );
   const authService: IAuthService = {
     verifyToken: vi.fn(),
