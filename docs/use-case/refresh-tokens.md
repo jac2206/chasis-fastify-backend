@@ -65,6 +65,7 @@ Devuelve `{ token, refreshToken, tokenType: "Bearer", expiresIn, refreshExpiresI
 - Caso de uso: `src/application/use-cases/users/refresh-token.usecase.ts`.
 - La ruta no requiere bearer token; la credencial es el refresh token del body.
 - La reutilización rechaza únicamente el token consumido; no invalida el sucesor ni otras sesiones.
+- Un refresh revocado mediante [logout](logout.md) no puede renovar. Si la renovación compite con logout y gana primero, debe cerrarse la sesión con el nuevo refresh token.
 - Una identidad deshabilitada no puede renovar; los access tokens existentes siguen vigentes hasta su vencimiento.
 - Tras aplicar la migración, los tokens emitidos antes de este cambio requieren un nuevo login.
 - El flujo `client-credentials` emite solo access token; no crea un refresh para clientes técnicos.

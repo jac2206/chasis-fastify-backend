@@ -1,8 +1,8 @@
 import { randomBytes } from "node:crypto";
-import bcrypt from "bcrypt";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
+import type { IPasswordHasher } from "../../../domain/interfaces/security/password-hasher.interface";
 import type {
   CreateServiceClientRequestDTO,
   CreateServiceClientResponseDTO,
@@ -12,7 +12,10 @@ import type {
 import type { IManageServiceClientUseCase } from "../../interfaces/auth/manage-service-client.usecase.interface";
 
 export class ManageServiceClientUseCase implements IManageServiceClientUseCase {
-  constructor(private readonly serviceClientRepository: IServiceClientRepository) {}
+  constructor(
+    private readonly serviceClientRepository: IServiceClientRepository,
+    private readonly passwordHasher: IPasswordHasher,
+  ) {}
 
   async create(
     data: CreateServiceClientRequestDTO,
@@ -26,7 +29,7 @@ export class ManageServiceClientUseCase implements IManageServiceClientUseCase {
     const clientSecret = generateSecret();
     await this.serviceClientRepository.create({
       clientId: data.clientId,
-      clientSecretHash: await bcrypt.hash(clientSecret, 12),
+      clientSecretHash: await this.passwordHasher.hash(clientSecret, 12),
       scopes: data.scopes,
     });
 
@@ -38,7 +41,7 @@ export class ManageServiceClientUseCase implements IManageServiceClientUseCase {
     const clientSecret = generateSecret();
     await this.serviceClientRepository.updateSecret(
       clientId,
-      await bcrypt.hash(clientSecret, 12),
+      await this.passwordHasher.hash(clientSecret, 12),
     );
     return { clientId, clientSecret };
   }

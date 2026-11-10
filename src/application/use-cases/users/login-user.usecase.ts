@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import { env } from "../../../config/env";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IRefreshTokenRepository } from "../../../domain/interfaces/repositories/refresh-token.repository.interface";
 import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type { IPasswordHasher } from "../../../domain/interfaces/security/password-hasher.interface";
+import type { ITokenDurations } from "../../../domain/interfaces/security/token-durations.interface";
 import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
 import type {
   LoginUserRequestDTO,
@@ -16,6 +16,8 @@ export class LoginUserUseCase implements ILoginUserUseCase {
     private readonly userRepository: IUserRepository,
     private readonly authService: IAuthService,
     private readonly refreshTokenRepository: IRefreshTokenRepository,
+    private readonly passwordHasher: IPasswordHasher,
+    private readonly tokenDurations: ITokenDurations,
   ) {}
 
   async execute(data: LoginUserRequestDTO): Promise<LoginUserResponseDTO> {
@@ -26,7 +28,10 @@ export class LoginUserUseCase implements ILoginUserUseCase {
       throw new DomainException(error.code, error.message, error.statusCode);
     }
 
-    const validPassword = await bcrypt.compare(data.password, user.passwordHash);
+    const validPassword = await this.passwordHasher.compare(
+      data.password,
+      user.passwordHash,
+    );
 
     if (!validPassword) {
       const error = DomainErrors.USER_INVALID_CREDENTIALS;
@@ -43,29 +48,17 @@ export class LoginUserUseCase implements ILoginUserUseCase {
     const refreshToken = this.authService.generateRefreshToken(tokenPayload);
     await this.refreshTokenRepository.create(
       refreshToken,
-      new Date(Date.now() + durationInSeconds(env.jwtRefreshExpiresIn) * 1000),
+      new Date(Date.now() + this.tokenDurations.refreshSeconds * 1000),
     );
 
     const response: LoginUserResponseDTO = {
       token,
       refreshToken,
       tokenType: "Bearer",
-      expiresIn: durationInSeconds(env.jwtAccessExpiresIn),
-      refreshExpiresIn: durationInSeconds(env.jwtRefreshExpiresIn),
+      expiresIn: this.tokenDurations.accessSeconds,
+      refreshExpiresIn: this.tokenDurations.refreshSeconds,
     };
 
     return response;
   }
 }
-
-const durationInSeconds = (duration: string): number => {
-  const match = /^(\d+)([smhd])$/.exec(duration);
-
-  if (!match) {
-    return 0;
-  }
-
-  const value = Number(match[1]);
-  const multipliers: Record<string, number> = { s: 1, m: 60, h: 3600, d: 86400 };
-  return value * multipliers[match[2]];
-};

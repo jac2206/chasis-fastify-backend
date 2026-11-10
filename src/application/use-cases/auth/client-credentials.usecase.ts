@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
-import { env } from "../../../config/env";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
+import type { IPasswordHasher } from "../../../domain/interfaces/security/password-hasher.interface";
+import type { ITokenDurations } from "../../../domain/interfaces/security/token-durations.interface";
 import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
 import type {
   ClientCredentialsRequestDTO,
@@ -14,6 +14,8 @@ export class ClientCredentialsUseCase implements IClientCredentialsUseCase {
   constructor(
     private readonly serviceClientRepository: IServiceClientRepository,
     private readonly authService: IAuthService,
+    private readonly passwordHasher: IPasswordHasher,
+    private readonly tokenDurations: ITokenDurations,
   ) {}
 
   async execute(
@@ -21,7 +23,7 @@ export class ClientCredentialsUseCase implements IClientCredentialsUseCase {
   ): Promise<ClientCredentialsResponseDTO> {
     const client = await this.serviceClientRepository.findByClientId(data.clientId);
     const validSecret = client
-      ? await bcrypt.compare(data.clientSecret, client.clientSecretHash)
+      ? await this.passwordHasher.compare(data.clientSecret, client.clientSecretHash)
       : false;
 
     if (!client?.status || !validSecret) {
@@ -37,16 +39,7 @@ export class ClientCredentialsUseCase implements IClientCredentialsUseCase {
         type: "access",
       }),
       tokenType: "Bearer",
-      expiresIn: durationInSeconds(env.jwtAccessExpiresIn),
+      expiresIn: this.tokenDurations.accessSeconds,
     };
   }
 }
-
-const durationInSeconds = (duration: string): number => {
-  const match = /^(\d+)([smhd])$/.exec(duration);
-
-  if (!match) return 0;
-
-  const multipliers: Record<string, number> = { s: 1, m: 60, h: 3600, d: 86400 };
-  return Number(match[1]) * multipliers[match[2]];
-};

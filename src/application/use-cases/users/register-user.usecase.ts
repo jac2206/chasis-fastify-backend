@@ -1,8 +1,8 @@
-import bcrypt from "bcrypt";
 import { User } from "../../../domain/entities/user.entity";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
+import type { IPasswordHasher } from "../../../domain/interfaces/security/password-hasher.interface";
 import type {
   RegisterUserRequestDTO,
   RegisterUserResponseDTO,
@@ -10,7 +10,10 @@ import type {
 import type { IRegisterUserUseCase } from "../../interfaces/users/register-user.usecase.interface";
 
 export class RegisterUserUseCase implements IRegisterUserUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    private readonly userRepository: IUserRepository,
+    private readonly passwordHasher: IPasswordHasher,
+  ) {}
 
   async execute(data: RegisterUserRequestDTO): Promise<RegisterUserResponseDTO> {
     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9]).{8,}$/;
@@ -27,7 +30,7 @@ export class RegisterUserUseCase implements IRegisterUserUseCase {
       throw new DomainException(error.code, error.message, error.statusCode);
     }
 
-    const passwordHash = await bcrypt.hash(data.password, 10);
+    const passwordHash = await this.passwordHasher.hash(data.password, 10);
 
     const user = new User(
       data.documentType,

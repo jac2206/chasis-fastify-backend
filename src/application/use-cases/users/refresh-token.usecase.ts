@@ -1,10 +1,10 @@
-import { env } from "../../../config/env";
 import { DomainErrors } from "../../../domain/errors/domain-errors";
 import { DomainException } from "../../../domain/exceptions/domain.exception";
 import type { IRefreshTokenRepository } from "../../../domain/interfaces/repositories/refresh-token.repository.interface";
 import type { IServiceClientRepository } from "../../../domain/interfaces/repositories/service-client.repository.interface";
 import type { IUserRepository } from "../../../domain/interfaces/repositories/user.repository.interface";
 import type { JwtPayload } from "../../../domain/interfaces/security/jwt-payload.interface";
+import type { ITokenDurations } from "../../../domain/interfaces/security/token-durations.interface";
 import type { IAuthService } from "../../../domain/interfaces/services/auth.service.interface";
 import type {
   RefreshTokenRequestDTO,
@@ -18,6 +18,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     private readonly refreshTokenRepository: IRefreshTokenRepository,
     private readonly userRepository: IUserRepository,
     private readonly serviceClientRepository: IServiceClientRepository,
+    private readonly tokenDurations: ITokenDurations,
   ) {}
 
   async execute(data: RefreshTokenRequestDTO): Promise<RefreshTokenResponseDTO> {
@@ -50,7 +51,7 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
     const rotated = await this.refreshTokenRepository.rotate(
       data.refreshToken,
       refreshToken,
-      new Date(Date.now() + durationInSeconds(env.jwtRefreshExpiresIn) * 1000),
+      new Date(Date.now() + this.tokenDurations.refreshSeconds * 1000),
     );
     if (!rotated) {
       const error = DomainErrors.USER_INVALID_REFRESH_TOKEN;
@@ -61,19 +62,8 @@ export class RefreshTokenUseCase implements IRefreshTokenUseCase {
       token: this.authService.generateToken({ ...tokenPayload, type: "access" }),
       refreshToken,
       tokenType: "Bearer",
-      expiresIn: durationInSeconds(env.jwtAccessExpiresIn),
-      refreshExpiresIn: durationInSeconds(env.jwtRefreshExpiresIn),
+      expiresIn: this.tokenDurations.accessSeconds,
+      refreshExpiresIn: this.tokenDurations.refreshSeconds,
     };
   }
 }
-
-const durationInSeconds = (duration: string): number => {
-  const match = /^(\d+)([smhd])$/.exec(duration);
-
-  if (!match) {
-    return 0;
-  }
-
-  const multipliers: Record<string, number> = { s: 1, m: 60, h: 3600, d: 86400 };
-  return Number(match[1]) * multipliers[match[2]];
-};

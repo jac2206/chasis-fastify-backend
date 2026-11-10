@@ -8,6 +8,7 @@
   nuevo par de tokens.
 - `POST /chasis/v1/auth/client-credentials`: autentica un cliente técnico y
   devuelve únicamente un access token.
+- `POST /chasis/v1/auth/logout`: revoca el refresh token presentado y responde 204 sin body; el access token sigue vigente hasta expirar.
 - Las operaciones de usuarios permanecen bajo `/chasis/v1/users`.
 
 ## Clientes técnicos

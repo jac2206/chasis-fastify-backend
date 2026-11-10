@@ -1,5 +1,7 @@
 import type { FastifyPluginAsyncZod } from "@fastify/type-provider-zod";
+import { z } from "zod";
 import type { ClientCredentialsUseCase } from "../../../application/use-cases/auth/client-credentials.usecase";
+import type { LogoutUseCase } from "../../../application/use-cases/auth/logout.usecase";
 import type { ManageServiceClientUseCase } from "../../../application/use-cases/auth/manage-service-client.usecase";
 import type { LoginUserUseCase } from "../../../application/use-cases/users/login-user.usecase";
 import type { RefreshTokenUseCase } from "../../../application/use-cases/users/refresh-token.usecase";
@@ -22,6 +24,21 @@ import {
 } from "../../schemas/user.schema";
 
 const authController: FastifyPluginAsyncZod = async (app) => {
+  app.post(
+    "/logout",
+    {
+      schema: {
+        tags: ["Auth"],
+        body: refreshTokenRequestSchema,
+        response: { ...sharedErrorResponses, 204: z.null() },
+      },
+    },
+    async (request, reply) => {
+      const useCase = request.scopedContainer.resolve<LogoutUseCase>("logoutUseCase");
+      await useCase.execute(request.body.refreshToken);
+      return reply.status(204).send(null);
+    },
+  );
   app.post(
     "/login",
     {
