@@ -280,6 +280,7 @@ describe("Fastify HTTP server", () => {
       paths: expect.objectContaining({
         "/chasis/health": expect.any(Object),
         "/chasis/v1/users/register": expect.any(Object),
+        "/chasis/v1/auth/logout": expect.objectContaining({ post: expect.any(Object) }),
         "/chasis/v1/generic/pokemon/{name}": expect.any(Object),
       }),
       components: {
@@ -288,6 +289,91 @@ describe("Fastify HTTP server", () => {
         },
       },
     });
+  });
+
+  it("accepts a refresh token for logout and documents validation errors", async () => {
+    const original = container.registrations.logoutUseCase;
+    const execute = vi.fn().mockResolvedValue(undefined);
+    container.register({ logoutUseCase: asValue({ execute }) });
+    try {
+      app = createServer();
+      const response = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/logout",
+        payload: { refreshToken: "sample-refresh" },
+      });
+      expect(response.statusCode).toBe(204);
+      expect(response.body).toBe("");
+      expect(execute).toHaveBeenCalledWith("sample-refresh");
+      const invalid = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/logout",
+        payload: {},
+      });
+      expect(invalid.statusCode).toBe(422);
+    } finally {
+      container.register({ logoutUseCase: original });
+    }
+  });
+
+  it("rejects refresh after logout without revoking the prior access token", async () => {
+    const originalRepository = container.registrations.refreshTokenRepository;
+    const originalUsers = container.registrations.userRepository;
+    let active = true;
+    container.register({
+      refreshTokenRepository: asValue({
+        create: vi.fn(),
+        revoke: vi.fn().mockImplementation(async () => {
+          active = false;
+        }),
+        rotate: vi.fn().mockImplementation(async () => active),
+      }),
+      userRepository: asValue({
+        findByDocument: vi.fn().mockResolvedValue({ status: true }),
+      }),
+    });
+    try {
+      app = createServer();
+      const auth = new JwtAuthService();
+      const refreshToken = auth.generateRefreshToken({ sub: "user", scopes: ["user"] });
+      const accessToken = auth.generateToken({
+        sub: "user",
+        scopes: ["user"],
+        type: "access",
+      });
+      const logout = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/logout",
+        payload: { refreshToken },
+      });
+      expect(logout.statusCode).toBe(204);
+      const refresh = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/refresh",
+        payload: { refreshToken },
+      });
+      expect(refresh.statusCode).toBe(401);
+      expect(refresh.json()).toMatchObject({ code: "INVALID_REFRESH_TOKEN" });
+      expect(auth.verifyToken(accessToken).sub).toBe("user");
+      const repeated = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/logout",
+        payload: { refreshToken },
+      });
+      expect(repeated.statusCode).toBe(204);
+      const wrongType = await app.inject({
+        method: "POST",
+        url: "/chasis/v1/auth/logout",
+        payload: { refreshToken: accessToken },
+      });
+      expect(wrongType.statusCode).toBe(401);
+      expect(wrongType.json()).toMatchObject({ code: "INVALID_REFRESH_TOKEN" });
+    } finally {
+      container.register({
+        refreshTokenRepository: originalRepository,
+        userRepository: originalUsers,
+      });
+    }
   });
 
   it("serves the Pokemon integration through the original public route", async () => {

@@ -6,6 +6,10 @@ const digest = (token: string): string =>
   createHash("sha256").update(token).digest("hex");
 
 export class RefreshTokenRepository implements IRefreshTokenRepository {
+  async revoke(token: string): Promise<void> {
+    const hash = digest(token);
+    await prisma.$executeRaw`DELETE FROM test.refresh_tokens WHERE token_hash = ${hash}`;
+  }
   async create(token: string, expiresAt: Date): Promise<void> {
     const hash = digest(token);
     await prisma.$executeRaw`INSERT INTO test.refresh_tokens (token_hash, expires_at) VALUES (${hash}, ${expiresAt})`;

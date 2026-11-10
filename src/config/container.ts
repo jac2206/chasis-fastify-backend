@@ -1,5 +1,6 @@
-import { asClass, createContainer, InjectionMode } from "awilix";
+import { asClass, asValue, createContainer, InjectionMode } from "awilix";
 import { ClientCredentialsUseCase } from "../application/use-cases/auth/client-credentials.usecase";
+import { LogoutUseCase } from "../application/use-cases/auth/logout.usecase";
 import { ManageServiceClientUseCase } from "../application/use-cases/auth/manage-service-client.usecase";
 import { GetPokemonXNameUseCase } from "../application/use-cases/generic/get-pokemonxname.usecase";
 import { GetAllUsersUseCase } from "../application/use-cases/users/get-all-users.usecase";
@@ -13,7 +14,9 @@ import { ServiceClientPrismaRepository } from "../infraestructure/database/repos
 import { UserPrismaRepository } from "../infraestructure/database/repositories/user-prisma.repository";
 import { HttpClient } from "../infraestructure/http/http-client";
 import { WinstonLogger } from "../infraestructure/logger/wiston.logger";
+import { BcryptPasswordHasher } from "../infraestructure/security/bcrypt-password-hasher";
 import { JwtAuthService } from "../infraestructure/security/jwt-auth.service";
+import { tokenDurations } from "./token-durations";
 
 export const container = createContainer({
   injectionMode: InjectionMode.CLASSIC,
@@ -28,10 +31,13 @@ container.register({
   refreshTokenUseCase: asClass(RefreshTokenUseCase).scoped(),
   clientCredentialsUseCase: asClass(ClientCredentialsUseCase).scoped(),
   manageServiceClientUseCase: asClass(ManageServiceClientUseCase).scoped(),
+  logoutUseCase: asClass(LogoutUseCase).scoped(),
   getPokemonXNameUseCase: asClass(GetPokemonXNameUseCase).scoped(),
 
   // Services
   authService: asClass(JwtAuthService).singleton(),
+  passwordHasher: asClass(BcryptPasswordHasher).singleton(),
+  tokenDurations: asValue(tokenDurations),
 
   // Adapter
   pokeApiAdapter: asClass(PokeApiAdapter).singleton(),

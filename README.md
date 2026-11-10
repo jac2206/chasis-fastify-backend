@@ -562,6 +562,7 @@ El módulo `auth` expone tres flujos:
 | --- | --- | --- |
 | `POST /chasis/v1/auth/login` | Login de usuario | Access token + refresh token |
 | `POST /chasis/v1/auth/refresh` | Renovar sesión móvil | Nuevo access token + refresh token |
+| `POST /chasis/v1/auth/logout` | Cerrar una sesión | Revoca el refresh token presentado; HTTP 204 |
 | `POST /chasis/v1/auth/client-credentials` | Server-to-server | Access token |
 | `POST /chasis/v1/auth/service-clients` | Crear cliente técnico | Client ID + secreto (una vez) |
 | `POST /chasis/v1/auth/service-clients/:clientId/rotate-secret` | Rotar secreto | Nuevo secreto (una vez) |
@@ -608,6 +609,14 @@ un solo uso. Un intercambio exitoso reemplaza el token anterior atómicamente;
 reutilizarlo responde `401 INVALID_REFRESH_TOKEN` sin invalidar su sucesor. La
 migración de `refresh_tokens` debe aplicarse antes de desplegar esta versión.
 Las sesiones emitidas antes de esta migración requieren un nuevo login.
+
+Para cerrar una sesión, envía `POST /chasis/v1/auth/logout` con el body
+`{ "refreshToken": "<refresh-token>" }`. El token debe estar firmado, vigente
+y ser de tipo refresh. La operación devuelve `204` sin contenido aunque ese
+refresh vigente ya se haya revocado; tokens inválidos o expirados reciben
+`401`. Solo se revoca el token presentado y los access tokens permanecen
+válidos hasta su vencimiento. Si logout compite con una renovación que gana
+primero, debe revocarse también el refresh sucesor para cerrar esa sesión.
 
 Variables opcionales para la vigencia de tokens:
 

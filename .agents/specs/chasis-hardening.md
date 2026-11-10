@@ -18,3 +18,11 @@ El listado usa query `page` y `pageSize`, enteros positivos, ambos opcionales, c
 
 Un usuario inactivo no puede iniciar sesion ni renovar tokens. Un cliente inactivo no puede obtener nuevos tokens mediante client-credentials o refresh. La comprobacion de estado no revoca access tokens existentes.
 El tamano de pagina no puede superar 100 registros; solicitudes fuera de rango responden 422.
+
+## Cierre de sesión individual
+
+- `POST /chasis/v1/auth/logout` recibe `{ refreshToken }` no vacío; el refresh es la credencial y no requiere access token.
+- Verifica firma, expiración y tipo refresh. Si son inválidos responde `401 INVALID_REFRESH_TOKEN`; un body inválido responde `422 VALIDATION_ERROR`.
+- Elimina el hash del token presentado de forma parametrizada y responde `204` sin body. Repetir con un token firmado y vigente ya revocado también responde `204`; no modifica otras sesiones ni revela si el token estaba registrado.
+- El refresh revocado no puede volver a renovar; los access tokens emitidos siguen válidos hasta su vencimiento. No cambia el modelo Prisma ni requiere migración.
+- La revocación y una renovación concurrentes compiten por el mismo registro: si la renovación gana, el cliente debe cerrar la sesión con el refresh sucesor; no se revoca automáticamente una familia de tokens.

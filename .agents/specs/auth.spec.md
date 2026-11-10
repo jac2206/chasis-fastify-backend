@@ -14,8 +14,10 @@ Módulo de referencia implementado. Los contratos detallados se mantienen en [au
 - Una identidad inactiva no puede iniciar sesión ni renovar; sus access tokens emitidos continúan válidos hasta su vencimiento.
 - Clientes técnicos: `client-credentials` emite únicamente access token; crear, rotar secretos y deshabilitar exige `service-clients:manage`.
 
+- Cierre de sesión: `POST /chasis/v1/auth/logout` recibe el refresh token y revoca únicamente ese token; el access token continúa vigente hasta expirar. Consulta [chasis-hardening.md](chasis-hardening.md) para el contrato y la concurrencia.
+
 ## Pendiente de decidir antes de ampliar
 
 - Recuperación de contraseña, bloqueo por intentos y políticas de protección ante abuso.
 - Fuente y administración de scopes para usuarios y política de mínimo privilegio.
-- Retención y limpieza de hashes de refresh tokens expirados y política de cierre de sesión o revocación adicional.
+- Retención y limpieza de hashes de refresh tokens expirados y política de revocación adicional por sesión o usuario.

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { RegisterUserUseCase } from "../../../../src/application/use-cases/users/register-user.usecase";
 import { User } from "../../../../src/domain/entities/user.entity";
@@ -5,6 +6,11 @@ import type { DomainException } from "../../../../src/domain/exceptions/domain.e
 import type { IUserRepository } from "../../../../src/domain/interfaces/repositories/user.repository.interface";
 
 vi.mock("bcrypt", () => ({ default: { hash: vi.fn() } }));
+
+const passwordHasher = {
+  hash: async (value: string, cost: number) => bcrypt.hash(value, cost),
+  compare: async (value: string, hash: string) => bcrypt.compare(value, hash),
+};
 
 describe("RegisterUserUseCase", () => {
   const repository: IUserRepository = {
@@ -32,7 +38,10 @@ describe("RegisterUserUseCase", () => {
 
   it("rejects a weak password before accessing the repository", async () => {
     await expect(
-      new RegisterUserUseCase(repository).execute({ ...input, password: "weak" }),
+      new RegisterUserUseCase(repository, passwordHasher).execute({
+        ...input,
+        password: "weak",
+      }),
     ).rejects.toMatchObject<Partial<DomainException>>({
       code: "USER_WEAK_PASSWORD",
       statusCode: 422,
@@ -48,7 +57,7 @@ describe("RegisterUserUseCase", () => {
     );
 
     await expect(
-      new RegisterUserUseCase(repository).execute(input),
+      new RegisterUserUseCase(repository, passwordHasher).execute(input),
     ).rejects.toMatchObject({
       code: "USER_EMAIL_ALREADY_EXISTS",
       statusCode: 409,
@@ -63,7 +72,9 @@ describe("RegisterUserUseCase", () => {
     vi.mocked(repository.findByEmail).mockResolvedValue(null);
     vi.mocked(repository.save).mockImplementation(async (user) => user);
 
-    const result = await new RegisterUserUseCase(repository).execute(input);
+    const result = await new RegisterUserUseCase(repository, passwordHasher).execute(
+      input,
+    );
 
     const bcrypt = await import("bcrypt");
     expect(bcrypt.default.hash).toHaveBeenCalledWith(input.password, 10);
@@ -91,7 +102,7 @@ describe("RegisterUserUseCase", () => {
     vi.mocked(repository.findByEmail).mockResolvedValue(null);
     vi.mocked(repository.save).mockImplementation(async (user) => user);
 
-    await new RegisterUserUseCase(repository).execute({
+    await new RegisterUserUseCase(repository, passwordHasher).execute({
       ...input,
       phone: undefined,
     });
