@@ -2,6 +2,7 @@ import { asClass, asValue, createContainer, InjectionMode } from "awilix";
 import { ClientCredentialsUseCase } from "../application/use-cases/auth/client-credentials.usecase";
 import { LogoutUseCase } from "../application/use-cases/auth/logout.usecase";
 import { ManageServiceClientUseCase } from "../application/use-cases/auth/manage-service-client.usecase";
+import { GetPokemonSpeciesUseCase } from "../application/use-cases/generic/get-pokemon-species.usecase";
 import { GetPokemonXNameUseCase } from "../application/use-cases/generic/get-pokemonxname.usecase";
 import { GetAllUsersUseCase } from "../application/use-cases/users/get-all-users.usecase";
 import { GetMeUseCase } from "../application/use-cases/users/get-me-user.usecase";
@@ -9,6 +10,7 @@ import { LoginUserUseCase } from "../application/use-cases/users/login-user.usec
 import { RefreshTokenUseCase } from "../application/use-cases/users/refresh-token.usecase";
 import { RegisterUserUseCase } from "../application/use-cases/users/register-user.usecase";
 import { PokeApiAdapter } from "../infraestructure/adapters/poke-api.adapter";
+import { PokemonSpeciesAdapter } from "../infraestructure/adapters/pokemon-species.adapter";
 import { RefreshTokenRepository } from "../infraestructure/database/repositories/refresh-token.repository";
 import { ServiceClientPrismaRepository } from "../infraestructure/database/repositories/service-client-prisma.repository";
 import { UserPrismaRepository } from "../infraestructure/database/repositories/user-prisma.repository";
@@ -33,6 +35,8 @@ container.register({
   manageServiceClientUseCase: asClass(ManageServiceClientUseCase).scoped(),
   logoutUseCase: asClass(LogoutUseCase).scoped(),
   getPokemonXNameUseCase: asClass(GetPokemonXNameUseCase).scoped(),
+  getPokemonSpeciesUseCase: asClass(GetPokemonSpeciesUseCase).scoped(),
+  pokemonSpeciesAdapter: asClass(PokemonSpeciesAdapter).singleton(),
 
   // Services
   authService: asClass(JwtAuthService).singleton(),

@@ -376,6 +376,49 @@ describe("Fastify HTTP server", () => {
     }
   });
 
+  it("serves and documents the species endpoint", async () => {
+    const original = container.registrations.getPokemonSpeciesUseCase;
+    const execute = vi.fn().mockResolvedValue({ id: 25, name: "pikachu" });
+    container.register({ getPokemonSpeciesUseCase: asValue({ execute }) });
+    try {
+      app = createServer();
+      const response = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/generic/pokemon-species/pikachu",
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.json()).toEqual({ id: 25, name: "pikachu" });
+      expect(execute).toHaveBeenCalledWith("pikachu");
+      const docs = await app.inject({ method: "GET", url: "/docs/json" });
+      expect(docs.json().paths).toHaveProperty(
+        "/chasis/v1/generic/pokemon-species/{name}",
+      );
+    } finally {
+      container.register({ getPokemonSpeciesUseCase: original });
+    }
+  });
+  it.each([
+    [404, "POKEMON_SPECIES_NOT_FOUND"],
+    [502, "EXTERNAL_SERVICE_ERROR"],
+  ])("returns species integration error %s", async (statusCode, code) => {
+    const original = container.registrations.getPokemonSpeciesUseCase;
+    const execute = vi
+      .fn()
+      .mockRejectedValue(new DomainException(code, "Unavailable", statusCode));
+    container.register({ getPokemonSpeciesUseCase: asValue({ execute }) });
+    try {
+      app = createServer();
+      const response = await app.inject({
+        method: "GET",
+        url: "/chasis/v1/generic/pokemon-species/unknown",
+      });
+      expect(response.statusCode).toBe(statusCode);
+      expect(response.json()).toMatchObject({ code });
+    } finally {
+      container.register({ getPokemonSpeciesUseCase: original });
+    }
+  });
+
   it("serves the Pokemon integration through the original public route", async () => {
     const original = container.registrations.getPokemonXNameUseCase;
     const execute = vi
