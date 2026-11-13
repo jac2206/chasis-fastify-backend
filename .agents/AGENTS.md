@@ -43,11 +43,12 @@ npm run prisma:validate
 npm run prisma:generate
 ```
 
-Para cambios normales, los comandos locales mínimos son `npm run build` y `npm run test:run`. Si cambia Prisma, valida y regenera el cliente según corresponda. `npm run test:coverage` es el comando usado por las pipelines. `npm run check` ejecuta Biome y forma parte de las pipelines. Revisa `.agents/ci-cd/pipelines.md` antes de describir los controles automatizados. No ejecutes migraciones, `prisma:reset` ni despliegues sin una solicitud explícita.
+Para cambios normales, los comandos locales mínimos son `npm run build` y `npm run test:run`. Si cambia Prisma, valida y regenera el cliente según corresponda. `npm run test:coverage` es el comando usado por las pipelines. `npm run check` ejecuta Biome; la pipeline Azure lo incluye y GitHub Actions no. Revisa `.agents/ci-cd/pipelines.md` antes de describir los controles automatizados. No ejecutes migraciones, `prisma:reset` ni despliegues sin una solicitud explícita.
 
 ## Lectura dirigida
 
 Además de las skills locales enlazadas abajo, consulta y usa las skills instaladas en la plataforma cuando aporten procedimientos útiles para la tarea.
+- Definición portátil de ingeniería backend: `.agents/agents/backend-engineer/AGENT.md`. Su lectura no registra ni activa automáticamente un subagente.
 - Contexto del repositorio: `.agents/context.md`
 - Diseño de capas: `.agents/architecture/backend.architecture.md`
 - Patrones concretos: `.agents/architecture/backend.patterns.md`

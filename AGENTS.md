@@ -6,6 +6,8 @@ Este archivo es la entrada de instrucciones para el repositorio. Lee `.agents/AG
 
 Usa las skills instaladas en la plataforma cuando sean pertinentes a la tarea. Las skills locales de `.agents/skills/` complementan esas capacidades con convenciones específicas del repositorio.
 
+Para una implementación de backend que requiera coordinar análisis, diseño, cambios y verificaciones, consulta también la definición portátil [`backend-engineer`](.agents/agents/backend-engineer/AGENT.md). Complementa estas instrucciones y las skills locales; no sustituye `.agents/AGENTS.md` ni registra o ejecuta automáticamente un subagente.
+
 - Contexto y tecnologías: `.agents/context.md`.
 - Arquitectura y patrones: `.agents/architecture/`.
 - Implementación, seguridad y contratos OpenAPI: `.agents/instructions/`.
