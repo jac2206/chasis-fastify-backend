@@ -52,6 +52,7 @@ Como ejemplo de uso del chasis, consulta la [arquitectura de referencia para rec
 ### Integración de ejemplo
 
 - [Consultar Pokémon por nombre](use-case/get-pokemon-by-name.md) — `GET /chasis/v1/generic/pokemon/:name`
+- [Consultar especie de Pokémon](use-case/get-pokemon-species.md) — `GET /chasis/v1/generic/pokemon-species/:name`
 
 ### Usuarios
 

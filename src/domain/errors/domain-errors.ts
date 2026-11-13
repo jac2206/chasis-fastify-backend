@@ -27,6 +27,11 @@ export const DomainErrors = {
     message: "Name must have at least 3 characters",
     statusCode: 422,
   },
+  POKEMON_SPECIES_NOT_FOUND: {
+    code: "POKEMON_SPECIES_NOT_FOUND",
+    message: "Pokemon species not found",
+    statusCode: 404,
+  },
   POKEMON_NOT_FOUND: {
     code: "POKEMON_NOT_FOUND",
     message: "Pokemon not exist",

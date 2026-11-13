@@ -9,7 +9,7 @@ La pipeline principal del repositorio es GitHub Actions, definida en `.github/wo
 - Cliente de base de datos: `npm run prisma:generate` genera Prisma Client antes de compilar o probar.
 - Pruebas: `npm run test:coverage` ejecuta Vitest con cobertura V8.
 - Compilación: `npm run build` ejecuta TypeScript (`tsc`).
-- Biome: `npm run check` se ejecuta en ambas pipelines. La validacion de Prisma (`npm run prisma:validate`) sigue disponible localmente.
+- Biome: `npm run check` se ejecuta en Azure Pipelines, pero no en GitHub Actions. La validación de Prisma (`npm run prisma:validate`) sigue disponible localmente y no está configurada en las pipelines.
 - Las pipelines no aplican migraciones de base de datos.
 
 ## Flujo principal: GitHub Actions
@@ -18,7 +18,7 @@ Archivo: `.github/workflows/ci_cd.yml`.
 
 - Se activa con push a `master` y pull request hacia `develop` o `master`.
 - Los trabajos se ejecutan en Ubuntu y siguen la secuencia `test` → `build` → `sonar`.
-- `test` instala dependencias, ejecuta Biome, genera Prisma Client y ejecuta cobertura.
+- `test` instala dependencias, genera Prisma Client y ejecuta cobertura; no ejecuta Biome.
 - `build` vuelve a instalar dependencias, genera Prisma Client y compila.
 - `sonar` vuelve a instalar dependencias, genera Prisma Client, ejecuta cobertura y llama a SonarQube Scan. Usa el secreto `TOKEN_SONAR` como `SONAR_TOKEN`.
 - `deploy` depende de `sonar` y solo corre en push a `master`; instala Railway CLI y ejecuta `railway up --service chasis-fastify-backend --ci` con el secreto `RAILWAY_TOKEN`.
